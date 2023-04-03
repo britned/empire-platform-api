@@ -10,12 +10,12 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.102.0
+  version: 0.102.1
   contact:
     name: BritNed
     url: https://www.britned.com
     email: britned.info@britned.com
-  termsOfService: https://www.britned.com/regulation/access-rules
+  termsOfService: https://www.britned.com/who-we-are/about-britned/empire-api-terms-of-use/
 servers:
   - description: DEV
     url: https://api.dev.empire.scapps.io
