@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.86.3
+  version: 0.102.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -2890,9 +2890,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InvoiceDetails'
+                $ref: '#/components/schemas/InvoiceDetails'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -5588,6 +5586,20 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/BorderDirectionWithBoth'
+        - name: timescales
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AuctionTimescale'
+        - name: statuses
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/BuyNowOfferStatus'
         - name: deliveryPeriodStart
           in: query
           required: true
@@ -5625,11 +5637,14 @@ paths:
 
             *  `PERIOD_MISALIGNED` - both for validity period and delivery period start and end dates must come after each other
             *  `PERIOD_TOO_LONG` - both for validity period and delivery period the maximum period length is 1 year
+            *  `TIMESCALE_MISMATCH` - endpoint matching ID/DA Auction timescale need to be used
           x-errors:
             - code: PERIOD_MISALIGNED
               description: both for validity period and delivery period start and end dates must come after each other
             - code: PERIOD_TOO_LONG
               description: both for validity period and delivery period the maximum period length is 1 year
+            - code: TIMESCALE_MISMATCH
+              description: endpoint matching ID/DA Auction timescale need to be used
           content:
             application/json:
               schema:
@@ -9028,6 +9043,21 @@ components:
         - ISO 8601 compliant string in `yyyy-mm-dd` format
       format: date
       example: '2022-01-04'
+    DatePeriod:
+      type: object
+      description: |
+        Period of calendar days, interpreted in **System Time**
+
+        - both ends of the period are inclusive
+        - should be interpreted on the timeline as from _start date 00:00_ until _end date 24:00_
+      required:
+        - start
+        - end
+      properties:
+        start:
+          $ref: '#/components/schemas/Date'
+        end:
+          $ref: '#/components/schemas/Date'
     DateTime:
       type: string
       description: |
@@ -9559,7 +9589,9 @@ components:
         - MISSING_EXECUTION_MESSAGE
         - MISSING_MANUAL_VALUE
         - MISSING_PRIORITY
+        - MISSING_VAT_RATE_MARKET
         - MTU_BORDER_MISMATCH
+        - MTU_LIST_GATES_MISALIGNED
         - MTU_LIST_MISALIGNED
         - MTU_NOT_EDITABLE
         - MTU_PERIOD_OVERLAP
@@ -9641,9 +9673,6 @@ components:
     FinanceInformation:
       type: object
       required:
-        - sageSettings
-        - billingAddress
-        - billingEmail
         - vatDetails
         - letterOfCredits
         - bankDeposits
@@ -9735,8 +9764,11 @@ components:
       type: object
       required:
         - orgCode
+        - orgShortName
       properties:
         orgCode:
+          type: string
+        orgShortName:
           type: string
     Identifier:
       type: string
@@ -9798,7 +9830,6 @@ components:
         - participant
         - netAmount
         - grossAmount
-        - dueDate
         - status
         - lastStatusChange
       properties:
@@ -9809,9 +9840,9 @@ components:
         participant:
           $ref: '#/components/schemas/InvoiceParticipantDetails'
         netAmount:
-          $ref: '#/components/schemas/Capacity'
+          $ref: '#/components/schemas/Currency'
         grossAmount:
-          $ref: '#/components/schemas/Capacity'
+          $ref: '#/components/schemas/Currency'
         dueDate:
           $ref: '#/components/schemas/Date'
         status:
@@ -9846,9 +9877,9 @@ components:
         - id
         - displayId
         - participant
+        - period
         - netAmount
         - grossAmount
-        - dueDate
         - status
         - lastStatusChange
         - sendable
@@ -9863,11 +9894,15 @@ components:
           type: string
         participant:
           $ref: '#/components/schemas/InvoiceParticipantDetails'
+        period:
+          $ref: '#/components/schemas/DatePeriod'
         netAmount:
-          $ref: '#/components/schemas/Capacity'
+          $ref: '#/components/schemas/Currency'
         grossAmount:
-          $ref: '#/components/schemas/Capacity'
+          $ref: '#/components/schemas/Currency'
         dueDate:
+          $ref: '#/components/schemas/Date'
+        sentDate:
           $ref: '#/components/schemas/Date'
         status:
           $ref: '#/components/schemas/InvoiceStatus'
@@ -9963,6 +9998,8 @@ components:
         direction:
           $ref: '#/components/schemas/BorderDirection'
         netAmount:
+          $ref: '#/components/schemas/Currency'
+        netAmountGbp:
           $ref: '#/components/schemas/Currency'
         vatAmount:
           $ref: '#/components/schemas/Currency'
@@ -10179,6 +10216,8 @@ components:
         - finalOc
       properties:
         preliminaryOc:
+          $ref: '#/components/schemas/Capacity'
+        returnedOc:
           $ref: '#/components/schemas/Capacity'
         finalOc:
           $ref: '#/components/schemas/Capacity'
@@ -10762,16 +10801,16 @@ components:
     ParticipantDashboardFinanceOverviewData:
       type: object
       required:
+        - creditCover
+        - creditUtilization
         - creditLimit
-        - unpaidLiabilities
-        - remainingCreditCover
         - invoices
       properties:
+        creditCover:
+          $ref: '#/components/schemas/Currency'
+        creditUtilization:
+          $ref: '#/components/schemas/Currency'
         creditLimit:
-          $ref: '#/components/schemas/Currency'
-        unpaidLiabilities:
-          $ref: '#/components/schemas/Currency'
-        remainingCreditCover:
           $ref: '#/components/schemas/Currency'
         invoices:
           type: array
@@ -11100,15 +11139,15 @@ components:
         financeOverview:
           type: object
           required:
+            - creditCover
+            - creditUtilization
             - creditLimit
-            - unpaidLiabilities
-            - remainingCreditCover
           properties:
+            creditCover:
+              $ref: '#/components/schemas/Currency'
+            creditUtilization:
+              $ref: '#/components/schemas/Currency'
             creditLimit:
-              $ref: '#/components/schemas/Currency'
-            unpaidLiabilities:
-              $ref: '#/components/schemas/Currency'
-            remainingCreditCover:
               $ref: '#/components/schemas/Currency'
         organisationMembers:
           type: object
@@ -11231,6 +11270,8 @@ components:
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
         - VIEW_OWN_SETTLEMENT
         - VIEW_ANY_SETTLEMENT
         - VIEW_OWN_INVOICES
@@ -11238,7 +11279,7 @@ components:
         - MANAGE_INVOICES
         - VIEW_OWN_UIOSI
         - VIEW_ANY_UIOSI
-        - VIEW_CREDIT_COVERS
+        - VIEW_CREDIT_OVERVIEW
     PhoneNumber:
       type: string
       format: phone-number
@@ -11451,6 +11492,7 @@ components:
         - allocationMtuSize
         - allocationResolution
         - processSteps
+        - mtus
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
@@ -11520,6 +11562,7 @@ components:
         - allocationMtuSize
         - allocationResolution
         - processSteps
+        - mtus
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
@@ -11604,6 +11647,7 @@ components:
             type: object
             required:
               - value
+              - allocatedCapacity
               - status
             properties:
               value:
@@ -11674,23 +11718,67 @@ components:
       type: string
       enum:
         - NL_GB_EXPLICIT_ANNUAL_AUCTIONS
+        - NL_GB_EXPLICIT_SEASONAL_AUCTIONS
+        - NL_GB_EXPLICIT_MULTI_ANNUAL_AUCTIONS
         - NL_GB_EXPLICIT_QUARTERLY_AUCTIONS
         - NL_GB_EXPLICIT_MONTHLY_AUCTIONS
+        - NL_GB_EXPLICIT_WEEKLY_AUCTIONS
         - NL_GB_EXPLICIT_MULTI_DAY_AUCTIONS
+        - NL_GB_EXPLICIT_LONG_WEEKEND_AUCTIONS
+        - NL_GB_EXPLICIT_WEEKEND_AUCTIONS
         - NL_GB_EXPLICIT_INTRA_DAY_AUCTIONS
         - NL_GB_EXPLICIT_DAY_AHEAD_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_ANNUAL_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_SEASONAL_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_MULTI_ANNUAL_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_QUARTERLY_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_MONTHLY_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_WEEKLY_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_MULTI_DAY_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_LONG_WEEKEND_AUCTIONS
+        - NL_GB_EXPLICIT_RETURN_WEEKEND_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_ANNUAL_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_SEASONAL_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_MULTI_ANNUAL_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_QUARTERLY_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_MONTHLY_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_WEEKLY_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_MULTI_DAY_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_LONG_WEEKEND_AUCTIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_WEEKEND_AUCTIONS
+        - NL_GB_EXPLICIT_BUY_NOW
+        - NL_GB_UIOSI_COMPENSATIONS
         - GB_NL_EXPLICIT_ANNUAL_AUCTIONS
+        - GB_NL_EXPLICIT_SEASONAL_AUCTIONS
+        - GB_NL_EXPLICIT_MULTI_ANNUAL_AUCTIONS
         - GB_NL_EXPLICIT_QUARTERLY_AUCTIONS
         - GB_NL_EXPLICIT_MONTHLY_AUCTIONS
+        - GB_NL_EXPLICIT_WEEKLY_AUCTIONS
         - GB_NL_EXPLICIT_MULTI_DAY_AUCTIONS
+        - GB_NL_EXPLICIT_LONG_WEEKEND_AUCTIONS
+        - GB_NL_EXPLICIT_WEEKEND_AUCTIONS
         - GB_NL_EXPLICIT_INTRA_DAY_AUCTIONS
         - GB_NL_EXPLICIT_DAY_AHEAD_AUCTIONS
-        - NL_GB_EXPLICIT_RESALES
-        - GB_NL_EXPLICIT_RESALES
-        - NL_GB_EXPLICIT_CURTAILMENT
-        - GB_NL_EXPLICIT_CURTAILMENT
-        - NL_GB_EXPLICIT_UIOSI_COMPENSATIONS
-        - GB_NL_EXPLICIT_UIOSI_COMPENSATIONS
+        - GB_NL_EXPLICIT_RETURN_ANNUAL_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_SEASONAL_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_MULTI_ANNUAL_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_QUARTERLY_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_MONTHLY_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_WEEKLY_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_MULTI_DAY_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_LONG_WEEKEND_AUCTIONS
+        - GB_NL_EXPLICIT_RETURN_WEEKEND_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_ANNUAL_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_SEASONAL_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_MULTI_ANNUAL_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_QUARTERLY_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_MONTHLY_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_WEEKLY_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_MULTI_DAY_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_LONG_WEEKEND_AUCTIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_WEEKEND_AUCTIONS
+        - GB_NL_EXPLICIT_BUY_NOW
+        - GB_NL_UIOSI_COMPENSATIONS
     SecondaryMarketCapacityPriceMtu:
       type: object
       required:
@@ -11741,8 +11829,6 @@ components:
           $ref: '#/components/schemas/Date'
         direction:
           $ref: '#/components/schemas/BorderDirection'
-        expiryDate:
-          $ref: '#/components/schemas/Date'
         expiresAt:
           $ref: '#/components/schemas/DateTime'
         mtus:
@@ -11760,8 +11846,6 @@ components:
         - deliveryDayTo
         - timescale
         - direction
-        - capacity
-        - suggestedPrice
         - postedAt
         - expiresAt
         - matchingPercentage
@@ -11778,10 +11862,6 @@ components:
           $ref: '#/components/schemas/AuctionTimescale'
         direction:
           $ref: '#/components/schemas/BorderDirection'
-        capacity:
-          $ref: '#/components/schemas/Capacity'
-        suggestedPrice:
-          $ref: '#/components/schemas/Currency'
         postedAt:
           $ref: '#/components/schemas/DateTime'
         expiresAt:
