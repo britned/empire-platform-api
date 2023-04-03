@@ -8,7 +8,7 @@ Check back after 7.4.2023 to use that.
 
 ## Notes for developers
 - The YAML specification will be updated with the URLs of the platform where you can access it, when the URL is decided on. (This will hence be a new version/release)
-
+- Usage of our API is subject to our [Terms of Use](API%20terms%20of%20use%20for%20EMPIRE%20by%20participants%20-%20v1.pdf), of which you find a PDF on this repository and a link on our website.
 
 
 
