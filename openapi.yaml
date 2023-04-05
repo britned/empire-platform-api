@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.102.2
+  version: 0.107.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -2775,9 +2775,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UiosiOverviewPerMtu'
+                $ref: '#/components/schemas/UiosiOverview'
         '400':
           description: |-
             __Bad Request__
@@ -4975,7 +4973,7 @@ paths:
           in: query
           description: Filter for given (published) status
           schema:
-            $ref: '#/components/schemas/AuctionPublishedStatus'
+            $ref: '#/components/schemas/PublicAuctionStatus'
         - name: biddingPeriodStart
           in: query
           description: Filter for start of bidding period
@@ -8185,16 +8183,6 @@ components:
         - ID_EXPLICIT_ID_2
         - ID_EXPLICIT_ID_3
         - ID_EXPLICIT_ID_4
-    AuctionPublishedStatus:
-      type: string
-      enum:
-        - PRELIMINARY_SPEC_PUBLISHED
-        - FINAL_SPEC_PUBLISHED
-        - BIDDING_OPEN
-        - BIDDING_CLOSED
-        - PROVISIONAL_RESULTS_PUBLISHED
-        - FINAL_RESULTS_PUBLISHED
-        - CANCELLED
     AuctionReductionPeriod:
       type: object
       required:
@@ -11439,7 +11427,7 @@ components:
         borderDirection:
           $ref: '#/components/schemas/BorderDirection'
         status:
-          $ref: '#/components/schemas/AuctionPublishedStatus'
+          $ref: '#/components/schemas/PublicAuctionStatus'
         processing:
           type: boolean
         deliveryPeriod:
@@ -11478,6 +11466,15 @@ components:
           $ref: '#/components/schemas/Identifier'
         name:
           type: string
+    PublicAuctionStatus:
+      type: string
+      enum:
+        - PRELIMINARY_SPEC_PUBLISHED
+        - FINAL_SPEC_PUBLISHED
+        - BIDDING_OPEN
+        - BIDDING_CLOSED
+        - PROVISIONAL_RESULTS_PUBLISHED
+        - FINAL_RESULTS_PUBLISHED
     PublicDayAheadAuction:
       type: object
       required:
@@ -11505,7 +11502,7 @@ components:
         borderDirection:
           $ref: '#/components/schemas/BorderDirection'
         status:
-          $ref: '#/components/schemas/AuctionPublishedStatus'
+          $ref: '#/components/schemas/PublicAuctionStatus'
         processing:
           type: boolean
         deliveryPeriod:
@@ -11575,7 +11572,7 @@ components:
         borderDirection:
           $ref: '#/components/schemas/BorderDirection'
         status:
-          $ref: '#/components/schemas/AuctionPublishedStatus'
+          $ref: '#/components/schemas/PublicAuctionStatus'
         processing:
           type: boolean
         deliveryPeriod:
@@ -11617,7 +11614,7 @@ components:
         borderDirection:
           $ref: '#/components/schemas/BorderDirection'
         status:
-          $ref: '#/components/schemas/AuctionPublishedStatus'
+          $ref: '#/components/schemas/PublicAuctionStatus'
         processing:
           type: boolean
         deliveryPeriod:
@@ -12557,6 +12554,18 @@ components:
           $ref: '#/components/schemas/Capacity'
         reason:
           type: string
+    UiosiOverview:
+      type: object
+      required:
+        - mtuSize
+        - mtus
+      properties:
+        mtuSize:
+          $ref: '#/components/schemas/MtuSize'
+        mtus:
+          type: array
+          items:
+            $ref: '#/components/schemas/UiosiOverviewPerMtu'
     UiosiOverviewPerMtu:
       type: object
       required:
