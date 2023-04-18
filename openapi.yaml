@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.107.0
+  version: 0.112.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -21,6 +21,18 @@ servers:
     url: https://api.dev.empire.scapps.io
   - description: STAGING
     url: https://api.staging.empire.scapps.io
+  - description: Playground / BELL
+    url: https://api.bell.empire.scapps.io
+  - description: Playground / EDISON
+    url: https://api.edison.empire.scapps.io
+  - description: Playground / FRANKLIN
+    url: https://api.franklin.empire.scapps.io
+  - description: Playground / HERTZ
+    url: https://api.hertz.empire.scapps.io
+  - description: Playground / TESLA
+    url: https://api.tesla.empire.scapps.io
+  - description: Playground / VOLTA
+    url: https://api.volta.empire.scapps.io
 tags:
   - name: metadata
     description: Metadata endpoints
@@ -1415,7 +1427,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BuyNowDayAheadOffer'
+                type: array
+                items:
+                  $ref: '#/components/schemas/BuyNowOffer'
         '400':
           description: |-
             __Bad Request__
@@ -8473,6 +8487,7 @@ components:
         - UPDATE_INTRA_DAY_NOMINATION_WINDOWS_BUSINESS_SETTINGS
         - UPDATE_REALLOCATION_PRINCIPLES_BUSINESS_SETTINGS
         - UPDATE_FINANCE_BUSINESS_SETTINGS
+        - INIT_FINANCE_SAGE_AUTH
         - UPDATE_BPP_PROVIDER_BUSINESS_SETTINGS
         - SEND_FINANCE_INVOICE
         - RESEND_FINANCE_INVOICE
@@ -8582,7 +8597,18 @@ components:
         - NL_GB
         - BOTH
         - NONE
-    BuyNowDayAheadOffer:
+    BuyNowDayAheadOfferSortBy:
+      type: string
+      enum:
+        - CAPACITY_ASC
+        - CAPACITY_DESC
+        - MOST_MTU_OFFERED_ASC
+        - MOST_MTU_OFFERED_DESC
+        - PRICE_ASC
+        - PRICE_DESC
+        - TIME_LEFT_ASC
+        - TIME_LEFT_DESC
+    BuyNowOffer:
       type: object
       required:
         - id
@@ -8593,6 +8619,7 @@ components:
         - status
         - totalTrs
         - totalCost
+        - mtuSize
         - mtus
       properties:
         id:
@@ -8615,6 +8642,8 @@ components:
           $ref: '#/components/schemas/Currency'
         purchasedBy:
           $ref: '#/components/schemas/PurchasedByOrganisation'
+        mtuSize:
+          $ref: '#/components/schemas/MtuSize'
         mtus:
           type: array
           items:
@@ -8627,17 +8656,6 @@ components:
                 $ref: '#/components/schemas/MtuStart'
               oc:
                 $ref: '#/components/schemas/Capacity'
-    BuyNowDayAheadOfferSortBy:
-      type: string
-      enum:
-        - CAPACITY_ASC
-        - CAPACITY_DESC
-        - MOST_MTU_OFFERED_ASC
-        - MOST_MTU_OFFERED_DESC
-        - PRICE_ASC
-        - PRICE_DESC
-        - TIME_LEFT_ASC
-        - TIME_LEFT_DESC
     BuyNowOfferStatus:
       type: string
       enum:
@@ -9542,6 +9560,7 @@ components:
         - INVALID_DELIVERY_DAY
         - INVALID_EXECUTION_DAY
         - INVALID_EXPIRY_DAY
+        - INVALID_ID_AUCTION_PRODUCT_TYPE
         - INVALID_LINE_ITEM_ID
         - INVALID_MTU
         - INVALID_NEW_PERIOD_START
@@ -9625,7 +9644,7 @@ components:
         - TIMESCALE_MISMATCH
         - TOO_MANY_BIDS
         - TRANSFER_DATE_PERIOD_TOO_LONG
-        - TRENCH_SIZE_MISMATCH
+        - TRANCHE_SIZE_MISMATCH
         - UNAUTHORIZED
         - UNDER_MTU_SIZE_MINIMUM
         - UPDATE_DEADLINE_MISSED
@@ -9975,6 +9994,7 @@ components:
       enum:
         - DRAFT
         - SENT
+        - SENDING
         - PAID
     InvoiceSummary:
       type: object
