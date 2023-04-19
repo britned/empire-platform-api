@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.112.1
+  version: 0.113.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -143,6 +143,7 @@ paths:
       tags:
         - attachment
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_CRISIS_ACTIONS
@@ -208,6 +209,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -247,6 +249,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -286,6 +289,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -388,6 +392,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -437,6 +442,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -486,6 +492,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -535,6 +542,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_LT_AUCTION_BIDS
@@ -572,6 +580,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -643,6 +652,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_LT_AUCTION_BIDS
@@ -754,6 +764,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -820,6 +831,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_DA_ID_AUCTION_BIDS
@@ -932,6 +944,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -986,6 +999,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -1040,6 +1054,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -1102,6 +1117,7 @@ paths:
       tags:
         - auction
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -1164,6 +1180,7 @@ paths:
       tags:
         - audit-log
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_AUDIT_LOGS
@@ -1247,6 +1264,7 @@ paths:
       tags:
         - audit-log
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_AUDIT_LOGS
@@ -1284,6 +1302,7 @@ paths:
       tags:
         - bidding-configuration
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_BIDDING_CONFIGURATION
@@ -1332,6 +1351,7 @@ paths:
       tags:
         - bidding-configuration
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_BIDDING_CONFIGURATION
@@ -1385,6 +1405,7 @@ paths:
       tags:
         - buy-now-offers
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_BUY_NOW_OFFERS
@@ -1495,6 +1516,7 @@ paths:
       tags:
         - buy-now-offers
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - PURCHASE_BUY_NOW_OFFER
@@ -1547,6 +1569,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
@@ -1578,6 +1601,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
@@ -1676,6 +1700,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
@@ -1760,6 +1785,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
@@ -1849,6 +1875,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
@@ -1901,6 +1928,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
@@ -1984,6 +2012,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
@@ -2036,6 +2065,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
@@ -2128,6 +2158,7 @@ paths:
       tags:
         - default-bid
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
@@ -2176,6 +2207,7 @@ paths:
       tags:
         - default-nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_NOMINATIONS
@@ -2205,6 +2237,7 @@ paths:
       tags:
         - default-nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_NOMINATIONS
@@ -2288,6 +2321,7 @@ paths:
       tags:
         - default-nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_NOMINATIONS
@@ -2359,6 +2393,7 @@ paths:
       tags:
         - default-nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_NOMINATIONS
@@ -2397,6 +2432,7 @@ paths:
       tags:
         - default-nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_NOMINATIONS
@@ -2469,6 +2505,7 @@ paths:
       tags:
         - default-nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_NOMINATIONS
@@ -2515,6 +2552,7 @@ paths:
       tags:
         - finance-information
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
@@ -2562,6 +2600,7 @@ paths:
       tags:
         - finance
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_SETTLEMENT
@@ -2660,6 +2699,7 @@ paths:
       tags:
         - finance
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_SETTLEMENT
@@ -2758,6 +2798,7 @@ paths:
       tags:
         - finance
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_UIOSI
@@ -2820,6 +2861,7 @@ paths:
       tags:
         - finance
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_INVOICES
@@ -2886,6 +2928,7 @@ paths:
       tags:
         - finance
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_INVOICES
@@ -2925,6 +2968,7 @@ paths:
       tags:
         - manual-file-upload
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_MANUAL_FILE_UPLOAD
@@ -3003,6 +3047,7 @@ paths:
       tags:
         - manual-file-upload
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_MANUAL_FILE_UPLOAD
@@ -3082,6 +3127,7 @@ paths:
       tags:
         - manual-file-upload
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_MANUAL_FILE_UPLOAD
@@ -3150,6 +3196,7 @@ paths:
       tags:
         - messages
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_GENERAL_SYSTEM_MESSAGES
@@ -3237,6 +3284,7 @@ paths:
       tags:
         - messages
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_MESSAGES
@@ -3330,6 +3378,7 @@ paths:
       tags:
         - messages
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_MESSAGES
@@ -3374,6 +3423,7 @@ paths:
       tags:
         - nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_NOMINATIONS
@@ -3437,6 +3487,7 @@ paths:
       tags:
         - nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_NOMINATIONS
@@ -3504,6 +3555,7 @@ paths:
       tags:
         - nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_TIMESCALE_NOMINATIONS
@@ -3618,6 +3670,7 @@ paths:
       tags:
         - nomination
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
@@ -3688,6 +3741,7 @@ paths:
       tags:
         - organisation-document
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_ORGANISATION_DOCUMENTS
@@ -3735,6 +3789,7 @@ paths:
       tags:
         - organisation-document
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_ORGANISATION_DOCUMENTS
@@ -3830,6 +3885,7 @@ paths:
       tags:
         - organisation-document
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_ORGANISATION_DOCUMENTS
@@ -3892,6 +3948,7 @@ paths:
       tags:
         - organisation-document
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_ORGANISATION_DOCUMENTS
@@ -3938,6 +3995,7 @@ paths:
       tags:
         - organisation
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
@@ -3975,6 +4033,7 @@ paths:
       tags:
         - organisation
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
@@ -4018,6 +4077,7 @@ paths:
       tags:
         - organisation
       security:
+        - ApiKey: []
         - AuthToken: []
       responses:
         '200':
@@ -4045,6 +4105,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4084,6 +4145,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4125,6 +4187,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4190,6 +4253,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4235,6 +4299,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4307,6 +4372,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4359,6 +4425,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4411,6 +4478,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4450,6 +4518,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4489,6 +4558,7 @@ paths:
       tags:
         - participant-dashboard
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
@@ -4529,6 +4599,7 @@ paths:
       tags:
         - participant-overview
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
@@ -4570,6 +4641,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       responses:
         '200':
@@ -4588,6 +4660,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       responses:
         '200':
@@ -4609,6 +4682,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       x-audit-log: UPDATE_PROFILE_DETAILS
       requestBody:
@@ -4638,6 +4712,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       responses:
         '200':
@@ -4659,6 +4734,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       x-audit-log: UPDATE_PREFERENCES
       requestBody:
@@ -4680,6 +4756,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       responses:
         '200':
@@ -4705,6 +4782,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       x-audit-log: CREATE_API_KEY
       requestBody:
@@ -4746,6 +4824,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       x-audit-log: DELETE_API_KEY
       parameters:
@@ -4773,6 +4852,7 @@ paths:
       tags:
         - profile
       security:
+        - ApiKey: []
         - AuthToken: []
       responses:
         '200':
@@ -5333,6 +5413,7 @@ paths:
       tags:
         - reporting
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
@@ -5420,6 +5501,7 @@ paths:
       tags:
         - reporting
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_TRANSMISSION_RIGHTS
@@ -5511,6 +5593,7 @@ paths:
       tags:
         - reporting
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_NOMINATIONS
@@ -5588,6 +5671,7 @@ paths:
       tags:
         - reporting
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_BUY_NOW_OFFERS
@@ -5678,6 +5762,7 @@ paths:
       tags:
         - reporting
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_TRANSMISSION_RIGHTS
@@ -5755,6 +5840,7 @@ paths:
       tags:
         - reporting
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_USERS
@@ -5818,6 +5904,7 @@ paths:
       tags:
         - reporting
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_AUDIT_LOGS
@@ -5896,6 +5983,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_RETURNS
@@ -5947,6 +6035,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_RETURNS
@@ -6030,6 +6119,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_RETURNS
@@ -6089,6 +6179,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_RETURNS
@@ -6135,6 +6226,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
@@ -6221,6 +6313,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -6278,6 +6371,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -6335,6 +6429,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -6385,6 +6480,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
@@ -6434,6 +6530,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
@@ -6484,6 +6581,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -6549,6 +6647,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -6621,6 +6720,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -6685,6 +6785,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -6747,6 +6848,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
@@ -6827,6 +6929,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -6875,6 +6978,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -6938,6 +7042,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7005,6 +7110,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -7075,6 +7181,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7134,6 +7241,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
@@ -7172,6 +7280,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
@@ -7214,6 +7323,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -7276,6 +7386,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7338,6 +7449,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
@@ -7386,6 +7498,7 @@ paths:
       tags:
         - secondary-market
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7435,6 +7548,7 @@ paths:
       tags:
         - transmission-right
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_TRANSMISSION_RIGHTS
@@ -7520,6 +7634,7 @@ paths:
       tags:
         - user
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_USERS
@@ -7573,6 +7688,7 @@ paths:
       tags:
         - user
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - VIEW_OWN_USERS
@@ -7623,6 +7739,7 @@ paths:
       tags:
         - user
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
@@ -7688,6 +7805,7 @@ paths:
       tags:
         - user
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
@@ -7739,6 +7857,7 @@ paths:
       tags:
         - user
       security:
+        - ApiKey: []
         - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
@@ -12916,6 +13035,10 @@ components:
   requestBodies: {}
   headers: {}
   securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
     AuthToken:
       type: http
       scheme: bearer
