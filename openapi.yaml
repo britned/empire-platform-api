@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.113.1
+  version: 0.115.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -3214,7 +3214,7 @@ paths:
           in: query
           required: true
           schema:
-            $ref: '#/components/schemas/MessageCategory'
+            $ref: '#/components/schemas/SystemMessageCategory'
         - name: severities
           in: query
           required: true
@@ -8374,9 +8374,7 @@ components:
     AuctionStatus:
       type: string
       description: |
-        ICO can see all statuses
-
-        Participants can see these "publlished" statuses, see `AuctionPublishedStatus` schema.
+        Complete list of Auction statuses
       enum:
         - CREATED
         - INITIALISED
@@ -10449,6 +10447,7 @@ components:
     MessageSeverity:
       type: string
       enum:
+        - CRITICAL_ALERT
         - CRITICAL
         - MAJOR
         - NORMAL
@@ -11614,6 +11613,7 @@ components:
         - BIDDING_CLOSED
         - PROVISIONAL_RESULTS_PUBLISHED
         - FINAL_RESULTS_PUBLISHED
+        - CANCELLED
     PublicDayAheadAuction:
       type: object
       required:
@@ -12550,6 +12550,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubmitNominationsMtu'
+    SystemMessageCategory:
+      type: string
+      enum:
+        - GENERAL
+        - OPERATIONAL
     TimescaleNominationMtuStatus:
       type: string
       enum:
