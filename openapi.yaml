@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.115.1
+  version: 0.118.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -8747,8 +8747,6 @@ components:
           $ref: '#/components/schemas/Currency'
         nextPriceChangeAt:
           $ref: '#/components/schemas/DateTime'
-        offerEndsAt:
-          $ref: '#/components/schemas/DateTime'
         direction:
           $ref: '#/components/schemas/BorderDirection'
         status:
@@ -10027,6 +10025,8 @@ components:
         dueDate:
           $ref: '#/components/schemas/Date'
         sentDate:
+          $ref: '#/components/schemas/Date'
+        paidDate:
           $ref: '#/components/schemas/Date'
         status:
           $ref: '#/components/schemas/InvoiceStatus'
