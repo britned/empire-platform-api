@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.118.0
+  version: 0.125.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -204,7 +204,6 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `VIEW_PUBLISHED_AUCTIONS`
           * `VIEW_ANY_AUCTIONS`
       tags:
         - auction
@@ -212,7 +211,6 @@ paths:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
         - in: path
@@ -603,7 +601,7 @@ paths:
           in: query
           description: Filter for bids made by a given participant, optional
           schema:
-            $ref: '#/components/schemas/PossiblyAnonymisedIdentifier'
+            $ref: '#/components/schemas/Identifier'
       responses:
         '200':
           description: __OK__
@@ -775,21 +773,20 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/PageLimit'
+        - $ref: '#/components/parameters/PageOffset'
         - in: query
           name: participantId
-          required: true
-          description: Required filter for a given Participant
+          description: Filter for bids made by a given participant, optional
           schema:
-            $ref: '#/components/schemas/PossiblyAnonymisedIdentifier'
+            $ref: '#/components/schemas/Identifier'
       responses:
         '200':
           description: __OK__
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroup'
+                $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroupBatch'
         '400':
           description: |-
             __Bad Request__
@@ -1069,7 +1066,7 @@ paths:
           name: participantId
           required: true
           schema:
-            $ref: '#/components/schemas/PossiblyAnonymisedIdentifier'
+            $ref: '#/components/schemas/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1427,10 +1424,12 @@ paths:
           schema:
             $ref: '#/components/schemas/BorderDirection'
         - in: query
-          name: status
+          name: statuses
           required: true
           schema:
-            $ref: '#/components/schemas/BuyNowOfferStatus'
+            type: array
+            items:
+              $ref: '#/components/schemas/BuyNowOfferStatus'
         - name: sortBy
           in: query
           required: true
@@ -5462,7 +5461,7 @@ paths:
         '200':
           description: __OK__
           content:
-            application/vnd.ms-excel:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 $ref: '#/components/schemas/ReportFile'
         '401':
@@ -5545,7 +5544,7 @@ paths:
         '200':
           description: __OK__
           content:
-            application/vnd.ms-excel:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 $ref: '#/components/schemas/ReportFile'
         '400':
@@ -5720,7 +5719,7 @@ paths:
         '200':
           description: __OK__
           content:
-            application/vnd.ms-excel:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 $ref: '#/components/schemas/ReportFile'
         '401':
@@ -5792,7 +5791,7 @@ paths:
         '200':
           description: __OK__
           content:
-            application/vnd.ms-excel:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 $ref: '#/components/schemas/ReportFile'
         '400':
@@ -5871,7 +5870,7 @@ paths:
         '200':
           description: __OK__
           content:
-            application/vnd.ms-excel:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 $ref: '#/components/schemas/ReportFile'
         '400':
@@ -5936,7 +5935,7 @@ paths:
         '200':
           description: __OK__
           content:
-            application/vnd.ms-excel:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 $ref: '#/components/schemas/ReportFile'
         '400':
@@ -7974,8 +7973,11 @@ components:
     AggregatedNominationsMnsOrGb:
       type: object
       required:
+        - mtuSize
         - mtus
       properties:
+        mtuSize:
+          $ref: '#/components/schemas/MtuSize'
         mtus:
           type: array
           items:
@@ -8018,8 +8020,11 @@ components:
     AggregatedNominationsNl:
       type: object
       required:
+        - mtuSize
         - mtus
       properties:
+        mtuSize:
+          $ref: '#/components/schemas/MtuSize'
         mtus:
           type: array
           items:
@@ -8221,7 +8226,7 @@ components:
         - name
       properties:
         id:
-          $ref: '#/components/schemas/PossiblyAnonymisedIdentifier'
+          $ref: '#/components/schemas/Identifier'
         name:
           type: string
     AuctionBidStatus:
@@ -8351,11 +8356,14 @@ components:
       required:
         - id
         - name
+        - eicCode
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
         name:
           type: string
+        eicCode:
+          $ref: '#/components/schemas/OrganisationEicCode'
     AuctionSortBy:
       type: string
       enum:
@@ -9259,6 +9267,8 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
+        participant:
+          $ref: '#/components/schemas/AuctionBidParticipant'
         bids:
           type: array
           items:
@@ -9281,6 +9291,18 @@ components:
                     $ref: '#/components/schemas/DateTime'
                   status:
                     $ref: '#/components/schemas/AuctionBidStatus'
+    DayAheadOrIntraDayAuctionBidGroupBatch:
+      type: object
+      required:
+        - entries
+        - totalCount
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroup'
+        totalCount:
+          $ref: '#/components/schemas/Count'
     DayAheadOrIntraDayAuctionMtu:
       type: object
       description: |
@@ -9342,7 +9364,6 @@ components:
                   * `requestedCapacity` - Sum of ALL bids for the given MTU and Participant in kilowatts
                   * `allocatedTrs` - The SUM AC for the given MTU and Participant for the Auction in kilowatts
                 required:
-                  - requestedCapacity
                   - allocatedTrs
                 properties:
                   requestedCapacity:
@@ -9352,7 +9373,6 @@ components:
     DayAheadOrIntraDayAuctionResults:
       type: object
       required:
-        - congestionRent
         - mtus
         - successfulParticipants
       properties:
@@ -9769,7 +9789,6 @@ components:
         - VERSION_MISMATCH
         - WINDOW_OPEN_TIME_OUT_OF_BOUNDS
         - WINDOW_CLOSE_TIME_OUT_OF_BOUNDS
-        - WRONG_PRICE_STEP_MINUTES
     ErrorResponse:
       type: object
       required:
@@ -10207,7 +10226,6 @@ components:
       type: object
       required:
         - id
-        - participant
         - price
         - capacity
         - updatedAt
@@ -10247,7 +10265,6 @@ components:
     LongTermAuctionResults:
       type: object
       required:
-        - congestionRent
         - bids
         - allocatedCapacity
         - marginalPrice
@@ -10277,7 +10294,6 @@ components:
               * `allocatedTrs` - Transmission rights allocated for the given Participant in the Auction
             required:
               - participant
-              - requestedCapacity
               - allocatedTrs
             properties:
               participant:
@@ -10787,6 +10803,9 @@ components:
           $ref: '#/components/schemas/Identifier'
         name:
           type: string
+    OrganisationEicCode:
+      type: string
+      pattern: ^([0-9]|[A-Z]|-){16}$
     OrganisationFileSettings:
       type: object
       required:
@@ -10808,8 +10827,7 @@ components:
         - nlNominationSettings
       properties:
         eicCode:
-          type: string
-          pattern: ^([0-9]|[A-Z]|-){16}$
+          $ref: '#/components/schemas/OrganisationEicCode'
         gbNominationSettings:
           type: object
           required:
@@ -11406,6 +11424,7 @@ components:
         - VIEW_OWN_UIOSI
         - VIEW_ANY_UIOSI
         - VIEW_CREDIT_OVERVIEW
+        - VIEW_HELP_FAQ
     PhoneNumber:
       type: string
       format: phone-number
@@ -11419,18 +11438,6 @@ components:
         - DEFAULT
         - LIGHT
         - DARK
-    PossiblyAnonymisedIdentifier:
-      type: string
-      description: |
-        Unique (at least locally) identifier for a record in UUID4 format
-
-         A `PossiblyAnonymisedIdentifier` can either contain a normal `Identifier` or an `AnonymisedIdentifier` which need te be interpreted case-by-case based on Permissions.
-
-        * `AnonymisedIdentifier`s are derived by a salted hashing mechanism from standard `Identifiers``
-        * they have the same format (UUID4), but does not directly identify a record in the database
-        * the same hash function need to be re-run to be able to compare resulting hashes
-      format: uuid
-      example: 8d3787bb-b9ce-4d75-9a75-074ddd5d1e09
     Profile:
       type: object
       required:
@@ -11505,8 +11512,11 @@ components:
     PublicAggregatedNominationsOverviewResponse:
       type: object
       required:
+        - mtusize
         - mtus
       properties:
+        mtuSize:
+          $ref: '#/components/schemas/MtuSize'
         mtus:
           type: array
           items:
@@ -11594,16 +11604,6 @@ components:
         - SUCCESSFUL
         - PARTIALLY_SUCCESSFUL
         - UNSUCCESSFUL
-    PublicAuctionResultParticipant:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        name:
-          type: string
     PublicAuctionStatus:
       type: string
       enum:
@@ -11679,11 +11679,16 @@ components:
       type: object
       required:
         - mtus
+        - successfulParticipants
       properties:
         mtus:
           type: array
           items:
             $ref: '#/components/schemas/DayAheadOrIntraDayAuctionResultsMtu'
+        successfulParticipants:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuctionResultParticipant'
     PublicIntraDayAuction:
       type: object
       required:
@@ -11798,13 +11803,10 @@ components:
             type: object
             required:
               - participant
-              - requestedCapacity
               - allocatedTrs
             properties:
               participant:
-                $ref: '#/components/schemas/PublicAuctionResultParticipant'
-              requestedCapacity:
-                $ref: '#/components/schemas/Capacity'
+                $ref: '#/components/schemas/AuctionResultParticipant'
               allocatedTrs:
                 $ref: '#/components/schemas/Capacity'
         marginalPrice:
@@ -12605,8 +12607,11 @@ components:
     TimescaleNominations:
       type: object
       required:
+        - mtuSize
         - mtus
       properties:
+        mtuSize:
+          $ref: '#/components/schemas/MtuSize'
         mtus:
           type: array
           items:
@@ -12892,12 +12897,15 @@ components:
         generalNotifications:
           type: object
           required:
+            - criticalAlert
             - critical
             - major
             - normal
           properties:
-            critical:
+            criticalAlert:
               $ref: '#/components/schemas/NotificationPreferenceWithSms'
+            critical:
+              $ref: '#/components/schemas/NotificationPreference'
             major:
               $ref: '#/components/schemas/NotificationPreference'
             normal:
