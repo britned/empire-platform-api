@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.125.0
+  version: 0.130.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -1509,7 +1509,7 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `PURCHASE_BUY_NOW_OFFER`
+          * `PURCHASE_BUY_NOW_OFFERS`
 
         __Generates Audit Log Entry:__ `PURCHASE_BUY_NOW_OFFER`
       tags:
@@ -1518,7 +1518,7 @@ paths:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - PURCHASE_BUY_NOW_OFFER
+        - PURCHASE_BUY_NOW_OFFERS
       x-audit-log: PURCHASE_BUY_NOW_OFFER
       parameters:
         - in: path
@@ -3243,6 +3243,11 @@ paths:
           in: query
           schema:
             $ref: '#/components/schemas/DateTime'
+        - in: query
+          name: searchQuery
+          required: false
+          schema:
+            type: string
         - name: hasAttachment
           in: query
           schema:
@@ -3325,6 +3330,11 @@ paths:
           in: query
           schema:
             $ref: '#/components/schemas/DateTime'
+        - in: query
+          name: searchQuery
+          required: false
+          schema:
+            type: string
         - name: hasAttachment
           in: query
           schema:
@@ -10480,12 +10490,24 @@ components:
         - RECEIVED_AT_DESC
     MessageType:
       type: string
-      description: TODO - define exact types
       enum:
-        - GENERAL
         - AUCTION
-        - NOMINATION
+        - BPP
+        - BUY_NOW_AUCTION
         - CURTAILMENT
+        - FINANCE
+        - GENERAL
+        - MANUAL_MESSAGE
+        - NOMINATION
+        - OPERATIONAL_DATAFLOW
+        - OPERATIONAL_PROCESS
+        - PARTICIPANT_CONFIGURATION
+        - PARTICIPANT_PROCESS
+        - PLANNED_OUTAGE
+        - PROCESS
+        - SECONDARY_MARKET
+        - TRANSPARENCY_DATAFLOW
+        - UNPLANNED_OUTAGE
     MtuEnd:
       type: string
       description: |
@@ -11398,7 +11420,7 @@ components:
         - VIEW_ANY_BUY_NOW_OFFERS
         - VIEW_OWN_BUY_NOW_OFFERS
         - MANAGE_BUY_NOW_OFFERS
-        - PURCHASE_BUY_NOW_OFFER
+        - PURCHASE_BUY_NOW_OFFERS
         - VIEW_ANY_SECONDARY_MARKET_RETURNS
         - VIEW_OWN_SECONDARY_MARKET_RETURNS
         - MANAGE_SECONDARY_MARKET_RETURNS
@@ -11866,6 +11888,8 @@ components:
         - NL_GB_EXPLICIT_WEEKEND_AUCTIONS
         - NL_GB_EXPLICIT_INTRA_DAY_AUCTIONS
         - NL_GB_EXPLICIT_DAY_AHEAD_AUCTIONS
+        - NL_GB_EXPLICIT_BUY_NOW_DAY_AHEAD
+        - NL_GB_EXPLICIT_BUY_NOW_INTRA_DAY
         - NL_GB_EXPLICIT_RETURN_ANNUAL_AUCTIONS
         - NL_GB_EXPLICIT_RETURN_SEASONAL_AUCTIONS
         - NL_GB_EXPLICIT_RETURN_MULTI_ANNUAL_AUCTIONS
@@ -11875,17 +11899,11 @@ components:
         - NL_GB_EXPLICIT_RETURN_MULTI_DAY_AUCTIONS
         - NL_GB_EXPLICIT_RETURN_LONG_WEEKEND_AUCTIONS
         - NL_GB_EXPLICIT_RETURN_WEEKEND_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_ANNUAL_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_SEASONAL_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_MULTI_ANNUAL_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_QUARTERLY_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_MONTHLY_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_WEEKLY_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_MULTI_DAY_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_LONG_WEEKEND_AUCTIONS
-        - NL_GB_EXPLICIT_CURTAILMENT_WEEKEND_AUCTIONS
-        - NL_GB_EXPLICIT_BUY_NOW
-        - NL_GB_UIOSI_COMPENSATIONS
+        - NL_GB_EXPLICIT_CURTAILMENT_LONG_TERM
+        - NL_GB_EXPLICIT_CURTAILMENT_INTRA_DAY
+        - NL_GB_EXPLICIT_CURTAILMENT_DAY_AHEAD
+        - NL_GB_UIOSI_COMPENSATIONS_INTRA_DAY
+        - NL_GB_UIOSI_COMPENSATIONS_DAY_AHEAD
         - GB_NL_EXPLICIT_ANNUAL_AUCTIONS
         - GB_NL_EXPLICIT_SEASONAL_AUCTIONS
         - GB_NL_EXPLICIT_MULTI_ANNUAL_AUCTIONS
@@ -11897,6 +11915,8 @@ components:
         - GB_NL_EXPLICIT_WEEKEND_AUCTIONS
         - GB_NL_EXPLICIT_INTRA_DAY_AUCTIONS
         - GB_NL_EXPLICIT_DAY_AHEAD_AUCTIONS
+        - GB_NL_EXPLICIT_BUY_NOW_DAY_AHEAD
+        - GB_NL_EXPLICIT_BUY_NOW_INTRA_DAY
         - GB_NL_EXPLICIT_RETURN_ANNUAL_AUCTIONS
         - GB_NL_EXPLICIT_RETURN_SEASONAL_AUCTIONS
         - GB_NL_EXPLICIT_RETURN_MULTI_ANNUAL_AUCTIONS
@@ -11906,17 +11926,11 @@ components:
         - GB_NL_EXPLICIT_RETURN_MULTI_DAY_AUCTIONS
         - GB_NL_EXPLICIT_RETURN_LONG_WEEKEND_AUCTIONS
         - GB_NL_EXPLICIT_RETURN_WEEKEND_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_ANNUAL_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_SEASONAL_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_MULTI_ANNUAL_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_QUARTERLY_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_MONTHLY_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_WEEKLY_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_MULTI_DAY_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_LONG_WEEKEND_AUCTIONS
-        - GB_NL_EXPLICIT_CURTAILMENT_WEEKEND_AUCTIONS
-        - GB_NL_EXPLICIT_BUY_NOW
-        - GB_NL_UIOSI_COMPENSATIONS
+        - GB_NL_EXPLICIT_CURTAILMENT_LONG_TERM
+        - GB_NL_EXPLICIT_CURTAILMENT_INTRA_DAY
+        - GB_NL_EXPLICIT_CURTAILMENT_DAY_AHEAD
+        - GB_NL_UIOSI_COMPENSATIONS_INTRA_DAY
+        - GB_NL_UIOSI_COMPENSATIONS_DAY_AHEAD
     SecondaryMarketCapacityPriceMtu:
       type: object
       required:
