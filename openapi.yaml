@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.130.0
+  version: 0.134.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -2814,15 +2814,15 @@ paths:
           schema:
             $ref: '#/components/schemas/BorderDirection'
         - in: query
+          name: timescale
+          required: true
+          schema:
+            $ref: '#/components/schemas/AuctionTimescale'
+        - in: query
           name: participantId
           required: false
           schema:
             $ref: '#/components/schemas/Identifier'
-        - in: query
-          name: timescale
-          required: false
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
       responses:
         '200':
           description: __OK__
@@ -8139,7 +8139,13 @@ components:
           $ref: '#/components/schemas/DateTime'
     Attachment:
       type: object
-      description: Represents an attachment (file) stored in a persistent way
+      description: |
+        Represents an attachment (file) stored in a persistent way
+
+        - `fileName`: Name of the attachment including extension, example: `attachment.xls`
+        - `fileSize`: Size of the file in bytes, example: `2338`
+        - `mimeType`: Standard MIME type of attachment, example: `application/vnd.ms-excel`
+        - `url`: Address from where the binary file can be downloaded, example: `https://example.com/document.xls`
       required:
         - id
         - fileName
@@ -8151,21 +8157,12 @@ components:
           $ref: '#/components/schemas/Identifier'
         fileName:
           type: string
-          description: Name of the attachment including extension
-          example: attachment.xls
         fileSize:
-          type: integer
-          format: int64
-          description: Size of the file in bytes
-          example: 2338
+          $ref: '#/components/schemas/Count'
         mimeType:
           type: string
-          description: Standard MIME type of attachment
-          example: application/vnd.ms-excel
         url:
           type: string
-          description: Address from where the binary file can be downloaded
-          example: https://example.com/document.xls
     Auction:
       type: object
       description: |
@@ -9151,8 +9148,9 @@ components:
           $ref: '#/components/schemas/Identifier'
     Currency:
       type: number
-      description: Currency value in Euros (€)
+      description: Currency value in Euros (€), accepted with a precision of maximum 2 decimal places
       format: decimal
+      multipleOf: 0.01
     DashboardNextNominationGate:
       type: object
       required:
@@ -9473,6 +9471,11 @@ components:
                       $ref: '#/components/schemas/LocalMtuStart'
                     value:
                       $ref: '#/components/schemas/BidValue'
+    Decimal:
+      type: number
+      description: Decimal numbers, accepted with a precision of maximum 4 decimal places
+      format: decimal
+      multipleOf: 0.0001
     DefaultBid:
       type: object
       required:
@@ -10160,8 +10163,7 @@ components:
         vatAmountGbp:
           $ref: '#/components/schemas/Currency'
         exchangeRate:
-          type: number
-          format: decimal
+          $ref: '#/components/schemas/Decimal'
         exchangeRateDay:
           $ref: '#/components/schemas/Date'
     InvoiceVatRate:
@@ -10444,7 +10446,7 @@ components:
         read:
           type: boolean
         entityId:
-          $ref: '#/components/schemas/Identifier'
+          type: string
         attachment:
           $ref: '#/components/schemas/Attachment'
     MessageBatch:
@@ -11340,8 +11342,11 @@ components:
               $ref: '#/components/schemas/OrganisationHelpdeskPin'
     Percentage:
       type: number
+      description: Percentage values, accepted with a precision of maximum 2 decimal places
+      format: decimal
       minimum: 0
       maximum: 100
+      multipleOf: 0.01
     Permission:
       type: string
       enum:
@@ -12735,7 +12740,6 @@ components:
         - mtu
         - allocatedCapacity
         - unnominatedCapacity
-        - totalRevenue
         - resold
         - notResold
       properties:
@@ -12749,8 +12753,6 @@ components:
           $ref: '#/components/schemas/UiosiResold'
         notResold:
           $ref: '#/components/schemas/UiosiNotResold'
-        totalRevenue:
-          $ref: '#/components/schemas/Currency'
     UiosiResold:
       type: object
       required:
