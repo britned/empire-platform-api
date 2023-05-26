@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.134.0
+  version: 0.137.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -9776,6 +9776,7 @@ components:
         - PERIODS_OVERLAP
         - PERIODS_UNORDERED
         - PRICE_RANGE_MISMATCH
+        - PROCESS_STEPS_DST_ERROR
         - PROCESS_STEPS_MISALIGNED
         - PROCESS_STEPS_GAP_ERROR
         - PROCESS_STEP_PRECISION_ERROR
@@ -9802,6 +9803,7 @@ components:
         - VERSION_MISMATCH
         - WINDOW_OPEN_TIME_OUT_OF_BOUNDS
         - WINDOW_CLOSE_TIME_OUT_OF_BOUNDS
+        - INVALID_ACCOUNTING_CODE
     ErrorResponse:
       type: object
       required:
@@ -10496,9 +10498,8 @@ components:
         - AUCTION
         - BPP
         - BUY_NOW_AUCTION
-        - CURTAILMENT
         - FINANCE
-        - GENERAL
+        - JAO
         - MANUAL_MESSAGE
         - NOMINATION
         - OPERATIONAL_DATAFLOW
@@ -10990,7 +10991,6 @@ components:
         - id
         - displayId
         - status
-        - attachment
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
