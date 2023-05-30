@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.137.1
+  version: 0.138.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -980,7 +980,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
+        '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/auctions/day-ahead-or-intra-day/{id}/results:
     get:
@@ -1035,7 +1035,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
+        '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/auctions/day-ahead-or-intra-day/{id}/results/participants/{participantId}:
     get:
@@ -1098,7 +1098,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
+        '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/auctions/day-ahead-or-intra-day/{id}/results/mtus:
     get:
@@ -1161,7 +1161,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
+        '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/audit-logs:
     get:
@@ -1466,9 +1466,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-        '503':
+        '409':
           description: |-
-            __Service Unavailable__
+            __Conflict__
 
             *  `NO_OFFERS_PRESENT`
                 based on timing logic handle "nothing can be displayed" cases
@@ -5285,7 +5285,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
+        '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/public/auctions/day-ahead-or-intra-day/{id}/results:
     get:
@@ -5328,7 +5328,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
+        '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/public/auctions/day-ahead-or-intra-day/{id}/results/mtus:
     get:
@@ -5379,7 +5379,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
+        '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/public/nominations/aggregated-overview:
     get:
@@ -13026,7 +13026,7 @@ components:
       description: __No Content__
     AuctionResultsNotAvailable:
       description: |-
-        __Service Unavailable__
+        __Conflict__
 
         *  `AUCTION_RESULTS_NOT_AVAILABLE`
             - the Auction's results are only available after:
