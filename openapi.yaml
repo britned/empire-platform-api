@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.138.0
+  version: 0.138.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -2957,6 +2957,8 @@ paths:
       description: |-
         Upload bids as a Participant for a Long Term Auction as a "Bid Document", read more at: https://eepublicdownloads.entsoe.eu/clean-documents/EDI/Library/cim_based/schema/Bid_document_UML_model_and_schema_v1.1.pdf
 
+        First you need to upload the "Bid Document" XML as a standard Attachment using the `uploadAttachment` endpoint, then you need to submit the returned ID of the Attachment to this endpoint, which validates file syntax and contents before accepting it.
+
         ---
 
         __Requires Permission:__ (at least one)
@@ -3035,6 +3037,8 @@ paths:
       operationId: uploadDayAheadOrIntraDayBids
       description: |-
         Upload Bids as a Participant for Day Ahead or Intra-Day Auction as a "Bid Document", read more at: https://eepublicdownloads.entsoe.eu/clean-documents/EDI/Library/cim_based/schema/Bid_document_UML_model_and_schema_v1.1.pdf
+
+        First you need to upload the "Bid Document" XML as a standard Attachment using the `uploadAttachment` endpoint, then you need to submit the returned ID of the Attachment to this endpoint, which validates file syntax and contents before accepting it.
 
         ---
 
@@ -3115,6 +3119,8 @@ paths:
       operationId: uploadTimescaleNominations
       description: |-
         Upload Timescale Nominations for Participant as a "Schedule Document", read more at: https://eepublicdownloads.entsoe.eu/clean-documents/EDI/Library/cim_based/schema/Schedule%20document%20uml%20model%20and%20schema%20v1.1.pdf
+
+        First you need to upload the "Schedule Document" XML as a standard Attachment using the `uploadAttachment` endpoint, then you need to submit the returned ID of the Attachment to this endpoint, which validates file syntax and contents before accepting it.
 
         ---
 
