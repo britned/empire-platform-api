@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.138.1
+  version: 0.143.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -722,6 +722,7 @@ paths:
             *  `INVALID_BID_PRICE`
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
                 - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction
+                - price value must be unique across all bids for the given Auction
             *  `TOO_MANY_BIDS`
                 - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion
           x-errors:
@@ -741,6 +742,7 @@ paths:
               description: |
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
                 - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction
+                - price value must be unique across all bids for the given Auction
             - code: TOO_MANY_BIDS
               description: |
                 - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion
@@ -892,6 +894,7 @@ paths:
             *  `INVALID_BID_PRICE`
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
                 - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration
+                - price value for a given MTU must be unique across all bid groups for the given Auction
             *  `TOO_MANY_BIDS`
                 - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion for the Auction's border direction
             *  `MTU_LIST_MISALIGNED`
@@ -915,6 +918,7 @@ paths:
               description: |
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
                 - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration
+                - price value for a given MTU must be unique across all bid groups for the given Auction
             - code: TOO_MANY_BIDS
               description: |
                 - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion for the Auction's border direction
@@ -9161,12 +9165,23 @@ components:
       type: object
       required:
         - timescale
+        - window
         - deliveryPeriod
         - status
         - nextActionAt
       properties:
         timescale:
           $ref: '#/components/schemas/AuctionTimescale'
+        window:
+          type: object
+          required:
+            - opensAt
+            - closesAt
+          properties:
+            opensAt:
+              $ref: '#/components/schemas/DateTime'
+            closesAt:
+              $ref: '#/components/schemas/DateTime'
         deliveryPeriod:
           $ref: '#/components/schemas/MtuPeriod'
         status:
@@ -12947,19 +12962,23 @@ components:
     UserRole:
       type: string
       enum:
-        - ICO_ADMIN
-        - ICO_HELPDESK
-        - ICO_ONCALL_MANAGER
+        - ICO_ADMIN_BDL
+        - ICO_ADMIN_HELPDESK
+        - ICO_ONCALL_MGR
+        - ICO_ONCALL_MGR_AUCT
+        - ICO_ONCALL_MGR_FIN
         - ICO_ONCALL_ANALYST
+        - ICO_ONCALL_ANALYIST_AUCT
+        - ICO_ONCALL_TRAINING
         - ICO_FINANCE
-        - ICO_BASIC
         - ICO_VIEW
-        - TSO_ADMIN
-        - TSO_BASIC
+        - ICO_VIEW_AUCT
+        - TSO_USER
         - PART_ADMIN
         - PART_TRADER
         - PART_NOMINATOR
-        - PART_REPORTER
+        - PART_NOM_TRADER
+        - PART_VIEW
     UserStatus:
       type: string
       enum:
