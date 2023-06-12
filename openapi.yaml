@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.143.1
+  version: 0.146.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -5618,11 +5618,6 @@ paths:
         - VIEW_OWN_TIMESCALE_NOMINATIONS
         - VIEW_ANY_TIMESCALE_NOMINATIONS
       parameters:
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirectionWithBoth'
         - name: deliveryPeriodStart
           in: query
           required: true
@@ -5650,9 +5645,12 @@ paths:
             __Bad Request__
 
             *  `INVALID_PARTICIPANT_ID` - the specified Participant not found in the system
+            *  `PERIOD_NOT_WHOLE_MONTHS` - period must cover whole months
           x-errors:
             - code: INVALID_PARTICIPANT_ID
               description: the specified Participant not found in the system
+            - code: PERIOD_NOT_WHOLE_MONTHS
+              description: period must cover whole months
           content:
             application/json:
               schema:
@@ -8333,6 +8331,9 @@ components:
         - LT_EXPLICIT_QUARTERLY
         - LT_EXPLICIT_MONTHLY
         - LT_EXPLICIT_MULTIDAY
+        - LT_EXPLICIT_WEEKLY
+        - LT_EXPLICIT_WEEKEND
+        - LT_EXPLICIT_LONG_WEEKEND
         - DA_EXPLICIT_DA
         - ID_EXPLICIT_ID_1
         - ID_EXPLICIT_ID_2
@@ -8415,7 +8416,7 @@ components:
       type: string
       description: |
         Shorthand grouping of similar `AuctionProductType`
-        - `LONG_TERM = [LT_EXPLICIT_MULTI_ANNUAL, LT_EXPLICIT_ANNUAL, LT_EXPLICIT_SEASONAL, LT_EXPLICIT_QUARTERLY, LT_EXPLICIT_MONTHLY, LT_EXPLICIT_MULTIDAY]`
+        - `LONG_TERM = [LT_EXPLICIT_MULTI_ANNUAL, LT_EXPLICIT_ANNUAL, LT_EXPLICIT_SEASONAL, LT_EXPLICIT_QUARTERLY, LT_EXPLICIT_MONTHLY, LT_EXPLICIT_MULTIDAY, LT_EXPLICIT_WEEKLY, LT_EXPLICIT_WEEKEND, LT_EXPLICIT_LONG_WEEKEND]`
         - `DAY_AHEAD = [DA_EXPLICIT_DA]`
         - `INTRA_DAY = [ID_EXPLICIT_ID_1, ID_EXPLICIT_ID_2, ID_EXPLICIT_ID_3, ID_EXPLICIT_ID_4]`
       enum:
@@ -9794,6 +9795,7 @@ components:
         - PERIOD_OVERLAP
         - PERIOD_START_TOO_SOON
         - PERIOD_TOO_LONG
+        - PERIOD_NOT_WHOLE_MONTHS
         - PERIODS_OVERLAP
         - PERIODS_UNORDERED
         - PRICE_RANGE_MISMATCH
