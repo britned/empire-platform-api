@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.146.1
+  version: 0.149.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -12465,11 +12465,14 @@ components:
       type: object
       required:
         - source
+        - subSource
         - totalAmount
         - values
       properties:
         source:
-          type: string
+          $ref: '#/components/schemas/SettlementSourceType'
+        settlementProductType:
+          $ref: '#/components/schemas/SettlementSubSourceType'
         totalAmount:
           $ref: '#/components/schemas/Currency'
         values:
@@ -12484,6 +12487,36 @@ components:
         - UIOSI
         - RESALE
         - BUY_NOW
+    SettlementSubSourceType:
+      type: string
+      enum:
+        - EXPLICIT_AUCTION_MULTI_ANNUAL
+        - EXPLICIT_AUCTION_ANNUAL
+        - EXPLICIT_AUCTION_SEASONAL
+        - EXPLICIT_AUCTION_QUARTERLY
+        - EXPLICIT_AUCTION_MONTHLY
+        - EXPLICIT_AUCTION_MULTI_DAY
+        - EXPLICIT_AUCTION_WEEKLY
+        - EXPLICIT_AUCTION_WEEKEND
+        - EXPLICIT_AUCTION_LONG_WEEKEND
+        - EXPLICIT_AUCTION_DA
+        - EXPLICIT_AUCTION_ID
+        - LT_RETURN_MULTI_ANNUAL
+        - LT_RETURN_ANNUAL
+        - LT_RETURN_SEASONAL
+        - LT_RETURN_QUARTERLY
+        - LT_RETURN_MONTHLY
+        - LT_RETURN_MULTI_DAY
+        - LT_RETURN_WEEKLY
+        - LT_RETURN_WEEKEND
+        - LT_RETURN_LONG_WEEKEND
+        - CURTAILMENT_LT
+        - CURTAILMENT_DA
+        - CURTAILMENT_ID
+        - BUY_NOW_DA
+        - BUY_NOW_ID
+        - UIOSI_ID
+        - UIOSI_DA
     SourceAuction:
       type: object
       required:
