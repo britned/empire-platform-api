@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.149.0
+  version: 0.163.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -8293,10 +8293,8 @@ components:
       description: Deadlines of each phase of the auction
       required:
         - preliminarySpecPublish
-        - returnsWindowOpen
         - finalSpecPublish
         - biddingOpen
-        - showBidsForOpenAuctions
         - biddingClose
         - provisionalResultsPublish
         - finalResultsPublish
@@ -9292,7 +9290,6 @@ components:
     DayAheadOrIntraDayAuctionBidGroup:
       type: object
       required:
-        - id
         - bids
       properties:
         id:
@@ -9312,7 +9309,6 @@ components:
                 type: object
                 required:
                   - value
-                  - updatedAt
                   - status
                 properties:
                   value:
@@ -9922,7 +9918,7 @@ components:
       properties:
         validityFrom:
           $ref: '#/components/schemas/FinanceInformationLockableDate'
-        validatyTo:
+        validityTo:
           $ref: '#/components/schemas/FinanceInformationLockableDate'
         amount:
           $ref: '#/components/schemas/FinanceInformationLockableAmount'
@@ -10262,10 +10258,8 @@ components:
     LongTermAuctionBid:
       type: object
       required:
-        - id
         - price
         - capacity
-        - updatedAt
         - status
       properties:
         id:
@@ -10737,13 +10731,15 @@ components:
     OrganisationDocument:
       type: object
       required:
+        - id
         - fileType
         - description
         - uploadedAt
         - uploadedByUser
         - status
-        - attachment
       properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
         fileType:
           $ref: '#/components/schemas/OrganisationDocumentFileType'
         description:
@@ -11829,7 +11825,7 @@ components:
       type: object
       required:
         - bids
-        - allocatedCapacity
+        - successfulParticipants
         - marginalPrice
       properties:
         bids:
@@ -11838,7 +11834,6 @@ components:
             type: object
             required:
               - value
-              - allocatedCapacity
               - status
             properties:
               value:
@@ -11847,18 +11842,10 @@ components:
                 $ref: '#/components/schemas/Capacity'
               status:
                 $ref: '#/components/schemas/PublicAuctionBidStatus'
-        allocatedCapacity:
+        successfulParticipants:
           type: array
           items:
-            type: object
-            required:
-              - participant
-              - allocatedTrs
-            properties:
-              participant:
-                $ref: '#/components/schemas/AuctionResultParticipant'
-              allocatedTrs:
-                $ref: '#/components/schemas/Capacity'
+            $ref: '#/components/schemas/AuctionResultParticipant'
         marginalPrice:
           $ref: '#/components/schemas/Currency'
     PurchasedByOrganisation:
@@ -12124,7 +12111,7 @@ components:
         timescale:
           $ref: '#/components/schemas/AuctionTimescale'
         deliveryPeriod:
-          $ref: '#/components/schemas/MtuPeriod'
+          $ref: '#/components/schemas/DatePeriod'
         direction:
           $ref: '#/components/schemas/BorderDirection'
         requestedAt:
@@ -12279,7 +12266,7 @@ components:
         type:
           $ref: '#/components/schemas/NoticeboardEntryType'
         deliveryPeriod:
-          $ref: '#/components/schemas/DateTimePeriod'
+          $ref: '#/components/schemas/DatePeriod'
         timescale:
           $ref: '#/components/schemas/AuctionTimescale'
         direction:
@@ -12376,7 +12363,7 @@ components:
         timescale:
           $ref: '#/components/schemas/AuctionTimescale'
         deliveryPeriod:
-          $ref: '#/components/schemas/MtuPeriod'
+          $ref: '#/components/schemas/DatePeriod'
         direction:
           $ref: '#/components/schemas/BorderDirection'
         transferredCapacity:
@@ -12471,7 +12458,7 @@ components:
       properties:
         source:
           $ref: '#/components/schemas/SettlementSourceType'
-        settlementProductType:
+        subSource:
           $ref: '#/components/schemas/SettlementSubSourceType'
         totalAmount:
           $ref: '#/components/schemas/Currency'
