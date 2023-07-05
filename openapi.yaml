@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.163.0
+  version: 0.166.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -3841,11 +3841,11 @@ paths:
         - name: uploadedAtFrom
           in: query
           schema:
-            $ref: '#/components/schemas/DateTime'
+            $ref: '#/components/schemas/Date'
         - name: uploadedAtTo
           in: query
           schema:
-            $ref: '#/components/schemas/DateTime'
+            $ref: '#/components/schemas/Date'
         - name: uploadedByOrgId
           in: query
           schema:
