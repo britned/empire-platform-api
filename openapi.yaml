@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.166.0
+  version: 0.167.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -1749,8 +1749,7 @@ paths:
             __Unprocessable Entity__
 
             *  `INVALID_BID_CAPACITY`
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             *  `INVALID_BID_PRICE`
                 - must be greater or equal than 0
             *  `PERIOD_MISALIGNED`
@@ -1759,8 +1758,7 @@ paths:
           x-errors:
             - code: INVALID_BID_CAPACITY
               description: |
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             - code: INVALID_BID_PRICE
               description: |
                 - must be greater or equal than 0
@@ -1834,8 +1832,7 @@ paths:
             __Unprocessable Entity__
 
             *  `INVALID_BID_CAPACITY`
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             *  `INVALID_BID_PRICE`
                 - must be greater or equal than 0
             *  `PERIOD_MISALIGNED`
@@ -1847,8 +1844,7 @@ paths:
           x-errors:
             - code: INVALID_BID_CAPACITY
               description: |
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             - code: INVALID_BID_PRICE
               description: |
                 - must be greater or equal than 0
@@ -1978,8 +1974,7 @@ paths:
             __Unprocessable Entity__
 
             *  `INVALID_BID_CAPACITY`
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             *  `INVALID_BID_PRICE`
                 - must be greater or equal than 0
             *  `PERIOD_MISALIGNED`
@@ -1988,8 +1983,7 @@ paths:
           x-errors:
             - code: INVALID_BID_CAPACITY
               description: |
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             - code: INVALID_BID_PRICE
               description: |
                 - must be greater or equal than 0
@@ -2115,8 +2109,7 @@ paths:
             __Unprocessable Entity__
 
             *  `INVALID_BID_CAPACITY`
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             *  `INVALID_BID_PRICE`
                 - must be greater or equal than 0
             *  `PERIOD_MISALIGNED`
@@ -2128,8 +2121,7 @@ paths:
           x-errors:
             - code: INVALID_BID_CAPACITY
               description: |
-                - must be greater than 0 AND
-                - must be a multiplication of the smallest possible "allocation resolution" on the System
+                - must be greater than 0
             - code: INVALID_BID_PRICE
               description: |
                 - must be greater or equal than 0
@@ -3635,7 +3627,7 @@ paths:
                 - one or more MTU start times are not aligned to MTU borders (considering MTU size)
                 - the number of MTUs defined does not match the required number (pay special attention to daylight saving changes!)
             *  `MTU_NOT_EDITABLE`
-                - only MTUs that are in `mtuState = EDITABLE` can contain not-empty values
+                - only MTUs that are in `mtuStatus = EDITABLE` can contain not-empty values
                 - an MTU can be non-editable because:
                   - the MTU nomination window for the selected timescale is closed
                   - has already FIRM or CURTAILED nominations
@@ -3655,7 +3647,7 @@ paths:
                 - the number of MTUs defined does not match the required number (pay special attention to daylight saving changes!)
             - code: MTU_NOT_EDITABLE
               description: |
-                - only MTUs that are in `mtuState = EDITABLE` can contain not-empty values
+                - only MTUs that are in `mtuStatus = EDITABLE` can contain not-empty values
                 - an MTU can be non-editable because:
                   - the MTU nomination window for the selected timescale is closed
                   - has already FIRM or CURTAILED nominations
@@ -12552,11 +12544,8 @@ components:
     SubmitDayAheadOrIntraDayBidsRequest:
       type: object
       required:
-        - participantId
         - bidGroups
       properties:
-        participantId:
-          $ref: '#/components/schemas/Identifier'
         bidGroups:
           type: array
           items:
@@ -12580,11 +12569,8 @@ components:
     SubmitLongTermBidsRequest:
       type: object
       required:
-        - participantId
         - bids
       properties:
-        participantId:
-          $ref: '#/components/schemas/Identifier'
         bids:
           type: array
           items:
@@ -12679,13 +12665,25 @@ components:
           items:
             type: object
             description: |
+              * `mtuStatus`
+                - LOCKED => if either of the following cases are true for the MTU:
+                  - the MTU nomination window for the selected timescale is closed
+                  - the MTU was curtailed
+                  - every MTU is by definition LOCKED if
+                    - the specified Participant has `ableToNominate = FALSE` AND
+                    - does not have an `onBehalfParticipantId` specified
+                    - **in eihter markets**
+                - EDITABLE => if either of the following cases are true for the MTU:
+                  - MTU nom window for the selected timescale is either not yet open or currently open
+                  - There was no curtailment for the MTU
+                - NO_TR => if either of the following cases are true for the MTU:
+                  - the user has no TR for the specific MTU, therefore there is nothing to nominate
               * `totalTrs` - Total value of Transmission Rights in kilowatts
               * `currentNomination.value` - Current value of Nominations in kilowatts
               * `notNominatedTrs` - Difference between total TRs and currentNomination.value
             required:
               - mtu
               - mtuStatus
-              - status
               - totalTrs
               - notNominatedTrs
             properties:
