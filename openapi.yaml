@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.167.0
+  version: 0.175.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -89,7 +89,7 @@ paths:
     get:
       operationId: getVersion
       description: |
-        Fetch the current version of the Platform Backend in MAJOR.MINOR.PATCH format
+        Fetch the current version of the Platform Backend and API in MAJOR.MINOR.PATCH format
       tags:
         - metadata
       responses:
@@ -3630,11 +3630,9 @@ paths:
                 - only MTUs that are in `mtuStatus = EDITABLE` can contain not-empty values
                 - an MTU can be non-editable because:
                   - the MTU nomination window for the selected timescale is closed
-                  - has already FIRM or CURTAILED nominations
+                  - has already FIRM or LOCKED nominations
             *  `INVALID_NOMINATION_VALUE`
                 - nomination values can be empty for any MTU, where not empty has to be
-                - in CAPPED state:
-                  - 0 <= value <= Cap Value
                 - in FLOORED state:
                   - Floor Value <= value <= Total TRs
                 - otherwise:
@@ -3650,12 +3648,10 @@ paths:
                 - only MTUs that are in `mtuStatus = EDITABLE` can contain not-empty values
                 - an MTU can be non-editable because:
                   - the MTU nomination window for the selected timescale is closed
-                  - has already FIRM or CURTAILED nominations
+                  - has already FIRM or LOCKED nominations
             - code: INVALID_NOMINATION_VALUE
               description: |
                 - nomination values can be empty for any MTU, where not empty has to be
-                - in CAPPED state:
-                  - 0 <= value <= Cap Value
                 - in FLOORED state:
                   - Floor Value <= value <= Total TRs
                 - otherwise:
@@ -3664,6 +3660,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /v1/nominations/aggregated/options:
+    get:
+      operationId: getAggregatedNominationOptions
+      description: |-
+        Fetch options for Aggregated Nominations
+
+        Returns if the current Participant organisation is configured as "nomination on behalf" for any Markets. If yes, the list of "nominees" returned.
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_OWN_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS`
+      tags:
+        - nomination
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_OWN_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregatedNominationOptions'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `ORGANISATION_TYPE_MISMATCH` - only users of PARTICIPANT type Organisations can fetch the Aggregated Nomination options
+          x-errors:
+            - code: ORGANISATION_TYPE_MISMATCH
+              description: only users of PARTICIPANT type Organisations can fetch the Aggregated Nomination options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
   /v1/nominations/aggregated:
     get:
       operationId: getAggregatedNominations
@@ -7959,6 +7997,25 @@ components:
           $ref: '#/components/schemas/Capacity'
         averageClearingPrice:
           $ref: '#/components/schemas/Currency'
+    AggregatedNominationOptions:
+      type: object
+      required:
+        - nominatorOnBehalf
+      properties:
+        nominatorOnBehalf:
+          type: boolean
+        nomineeParticipants:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - name
+            properties:
+              id:
+                $ref: '#/components/schemas/Identifier'
+              name:
+                type: string
     AggregatedNominationType:
       type: string
       enum:
@@ -10291,6 +10348,7 @@ components:
         - bids
         - allocatedCapacity
         - marginalPrice
+        - reservePrice
       properties:
         congestionRent:
           $ref: '#/components/schemas/AuctionResultCongestionRent'
@@ -10326,6 +10384,8 @@ components:
               allocatedTrs:
                 $ref: '#/components/schemas/Capacity'
         marginalPrice:
+          $ref: '#/components/schemas/Currency'
+        reservePrice:
           $ref: '#/components/schemas/Currency'
     LongTermBiddingResults:
       type: object
@@ -10597,12 +10657,18 @@ components:
           type: string
         message:
           type: string
+    NominationCapacityResolution:
+      type: string
+      enum:
+        - RES_1_KW
+        - RES_100_KW
+        - RES_500_KW
+        - RES_1_MW
     NominationRestrictionType:
       type: string
       enum:
-        - CAPPED
         - FLOORED
-        - CURTAILED
+        - LOCKED
     NoticeboardEntryType:
       type: string
       enum:
@@ -11819,6 +11885,7 @@ components:
         - bids
         - successfulParticipants
         - marginalPrice
+        - reservePrice
       properties:
         bids:
           type: array
@@ -11839,6 +11906,8 @@ components:
           items:
             $ref: '#/components/schemas/AuctionResultParticipant'
         marginalPrice:
+          $ref: '#/components/schemas/Currency'
+        reservePrice:
           $ref: '#/components/schemas/Currency'
     PurchasedByOrganisation:
       type: object
@@ -12637,9 +12706,8 @@ components:
         - PRE
         - DRAFT
         - FIRM
-        - CAPPED
         - FLOORED
-        - CURTAILED
+        - LOCKED
     TimescaleNominationType:
       type: string
       enum:
@@ -12655,9 +12723,12 @@ components:
     TimescaleNominations:
       type: object
       required:
+        - capacityResolution
         - mtuSize
         - mtus
       properties:
+        capacityResolution:
+          $ref: '#/components/schemas/NominationCapacityResolution'
         mtuSize:
           $ref: '#/components/schemas/MtuSize'
         mtus:
@@ -12698,7 +12769,7 @@ components:
                 description: |
                   Optional field for storing Nomination status and value (if any nomination has been made already)
 
-                  * `curtailedOrCappedOrFlooredValue` - Only sent when the current nomination is in CAPPED, FLOORED or CURTAILED status
+                  * `lockedOrFlooredValue` - Only sent when the current nomination is in FLOORED or LOCKED status
                 required:
                   - status
                   - value
@@ -12707,7 +12778,7 @@ components:
                     $ref: '#/components/schemas/TimescaleNominationStatus'
                   value:
                     $ref: '#/components/schemas/Capacity'
-                  curtailedOrCappedOrFlooredValue:
+                  lockedOrFlooredValue:
                     $ref: '#/components/schemas/Capacity'
               notNominatedTrs:
                 $ref: '#/components/schemas/Capacity'
@@ -13020,8 +13091,11 @@ components:
       type: object
       required:
         - version
+        - apiVersion
       properties:
         version:
+          type: string
+        apiVersion:
           type: string
     ZendeskChatTokenResponse:
       type: object
