@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.175.1
+  version: 0.176.3
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -134,8 +134,9 @@ paths:
         __Requires Permission:__ (at least one)
           * `MANAGE_CRISIS_ACTIONS`
           * `INVITE_USERS`
+          * `MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS`
+          * `MANAGE_OWN_MANUAL_FILE_UPLOAD_NOMINATIONS`
           * `MANAGE_ANY_MANUAL_FILE_UPLOAD`
-          * `MANAGE_OWN_MANUAL_FILE_UPLOAD`
           * `MANAGE_ANY_ORGANISATION_DOCUMENTS`
           * `MANAGE_OWN_ORGANISATION_DOCUMENTS`
 
@@ -148,8 +149,9 @@ paths:
       x-permissions:
         - MANAGE_CRISIS_ACTIONS
         - INVITE_USERS
+        - MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS
+        - MANAGE_OWN_MANUAL_FILE_UPLOAD_NOMINATIONS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
-        - MANAGE_OWN_MANUAL_FILE_UPLOAD
         - MANAGE_ANY_ORGANISATION_DOCUMENTS
         - MANAGE_OWN_ORGANISATION_DOCUMENTS
       x-audit-log: UPLOAD_ATTACHMENT
@@ -890,10 +892,8 @@ paths:
                 - capacity for day ahead or intra-day bid
                 - must be greater than or equal to zero
                 - must be a multiply of the Auction's allocation resolution
-                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction
             *  `INVALID_BID_PRICE`
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
-                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration
                 - price value for a given MTU must be unique across all bid groups for the given Auction
             *  `TOO_MANY_BIDS`
                 - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion for the Auction's border direction
@@ -913,11 +913,9 @@ paths:
                 - capacity for day ahead or intra-day bid
                 - must be greater than or equal to zero
                 - must be a multiply of the Auction's allocation resolution
-                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction
             - code: INVALID_BID_PRICE
               description: |
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
-                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration
                 - price value for a given MTU must be unique across all bid groups for the given Auction
             - code: TOO_MANY_BIDS
               description: |
@@ -2958,7 +2956,7 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_MANUAL_FILE_UPLOAD`
+          * `MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS`
           * `MANAGE_ANY_MANUAL_FILE_UPLOAD`
 
         __Generates Audit Log Entry:__ `UPLOAD_LONG_TERM_BIDS`
@@ -2968,7 +2966,7 @@ paths:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - MANAGE_OWN_MANUAL_FILE_UPLOAD
+        - MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
       x-audit-log: UPLOAD_LONG_TERM_BIDS
       requestBody:
@@ -3039,7 +3037,7 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_MANUAL_FILE_UPLOAD`
+          * `MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS`
           * `MANAGE_ANY_MANUAL_FILE_UPLOAD`
 
         __Generates Audit Log Entry:__ `UPLOAD_DAY_AHEAD_OR_INTRA_DAY_BIDS`
@@ -3049,7 +3047,7 @@ paths:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - MANAGE_OWN_MANUAL_FILE_UPLOAD
+        - MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
       x-audit-log: UPLOAD_DAY_AHEAD_OR_INTRA_DAY_BIDS
       requestBody:
@@ -3121,7 +3119,7 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_MANUAL_FILE_UPLOAD`
+          * `MANAGE_OWN_MANUAL_FILE_UPLOAD_NOMINATIONS`
           * `MANAGE_ANY_MANUAL_FILE_UPLOAD`
 
         __Generates Audit Log Entry:__ `UPLOAD_TIMESCALE_NOMINATIONS`
@@ -3131,7 +3129,7 @@ paths:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - MANAGE_OWN_MANUAL_FILE_UPLOAD
+        - MANAGE_OWN_MANUAL_FILE_UPLOAD_NOMINATIONS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
       x-audit-log: UPLOAD_TIMESCALE_NOMINATIONS
       requestBody:
@@ -9749,6 +9747,7 @@ components:
         - DELETE_DEADLINE_MISSED
         - DISMISS_BPP_NOT_POSSIBLE
         - DISMISS_CURTAILMENT_NOT_POSSIBLE
+        - EIC_CODE_SHOULD_BE_UNIQUE
         - EMAIL_ADDRESS_NOT_UNIQUE
         - ENTITY_CANNOT_BE_UPDATED
         - EXECUTION_PERIOD_TOO_LONG
@@ -9762,6 +9761,7 @@ components:
         - GLOBAL_MTU_SIZE_MISMATCH
         - HELPDESK_PIN_SHOULD_BE_UNIQUE
         - INTERNAL_SERVER_ERROR
+        - INVALID_ACCOUNTING_CODE
         - INVALID_ATTACHMENT_FILE_TYPE
         - INVALID_ATTACHMENT_ID
         - INVALID_BID_ID
@@ -9871,7 +9871,6 @@ components:
         - VERSION_MISMATCH
         - WINDOW_OPEN_TIME_OUT_OF_BOUNDS
         - WINDOW_CLOSE_TIME_OUT_OF_BOUNDS
-        - INVALID_ACCOUNTING_CODE
     ErrorResponse:
       type: object
       required:
@@ -10348,7 +10347,6 @@ components:
         - bids
         - allocatedCapacity
         - marginalPrice
-        - reservePrice
       properties:
         congestionRent:
           $ref: '#/components/schemas/AuctionResultCongestionRent'
@@ -11514,7 +11512,8 @@ components:
         - MANAGE_BUSINESS_PROCESSES
         - VIEW_DATA_FLOWS
         - MANAGE_DATA_FLOWS
-        - MANAGE_OWN_MANUAL_FILE_UPLOAD
+        - MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS
+        - MANAGE_OWN_MANUAL_FILE_UPLOAD_NOMINATIONS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
@@ -11885,7 +11884,6 @@ components:
         - bids
         - successfulParticipants
         - marginalPrice
-        - reservePrice
       properties:
         bids:
           type: array
@@ -11978,7 +11976,7 @@ components:
         - NL_GB_EXPLICIT_CURTAILMENT_LONG_TERM
         - NL_GB_EXPLICIT_CURTAILMENT_INTRA_DAY
         - NL_GB_EXPLICIT_CURTAILMENT_DAY_AHEAD
-        - NL_GB_UIOSI_COMPENSATIONS_INTRA_DAY
+        - NL_GB_UIOSI_COMPENSATIONS_LONG_TERM
         - NL_GB_UIOSI_COMPENSATIONS_DAY_AHEAD
         - GB_NL_EXPLICIT_ANNUAL_AUCTIONS
         - GB_NL_EXPLICIT_SEASONAL_AUCTIONS
@@ -12005,7 +12003,7 @@ components:
         - GB_NL_EXPLICIT_CURTAILMENT_LONG_TERM
         - GB_NL_EXPLICIT_CURTAILMENT_INTRA_DAY
         - GB_NL_EXPLICIT_CURTAILMENT_DAY_AHEAD
-        - GB_NL_UIOSI_COMPENSATIONS_INTRA_DAY
+        - GB_NL_UIOSI_COMPENSATIONS_LONG_TERM
         - GB_NL_UIOSI_COMPENSATIONS_DAY_AHEAD
     SecondaryMarketCapacityPriceMtu:
       type: object
@@ -12769,7 +12767,10 @@ components:
                 description: |
                   Optional field for storing Nomination status and value (if any nomination has been made already)
 
-                  * `lockedOrFlooredValue` - Only sent when the current nomination is in FLOORED or LOCKED status
+                  * `flooredValue` - only sent when the current nomination is in FLOORED status
+                  * `preCurtailedValue`
+                    - only sent in LOCKED or FIRM status AND
+                    - if the current nomination had a curtailment action before (last draft nomination value)
                 required:
                   - status
                   - value
@@ -12778,7 +12779,9 @@ components:
                     $ref: '#/components/schemas/TimescaleNominationStatus'
                   value:
                     $ref: '#/components/schemas/Capacity'
-                  lockedOrFlooredValue:
+                  flooredValue:
+                    $ref: '#/components/schemas/Capacity'
+                  preCurtailedValue:
                     $ref: '#/components/schemas/Capacity'
               notNominatedTrs:
                 $ref: '#/components/schemas/Capacity'
