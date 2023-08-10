@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.178.0
+  version: 0.178.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -205,11 +205,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -336,11 +332,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -386,11 +378,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -436,11 +424,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -486,11 +470,7 @@ paths:
         - MANAGE_LT_AUCTION_BIDS
         - MANAGE_DA_ID_AUCTION_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -524,11 +504,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
         - name: sortBy
@@ -592,11 +568,7 @@ paths:
         - MANAGE_LT_AUCTION_BIDS
       x-audit-log: SUBMIT_LONG_TERM_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -706,11 +678,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
         - $ref: '#/components/parameters/ParticipantIdOptional'
@@ -768,11 +736,7 @@ paths:
         - MANAGE_DA_ID_AUCTION_BIDS
       x-audit-log: SUBMIT_DAY_AHEAD_OR_INTRA_DAY_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -879,11 +843,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -934,11 +894,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -989,11 +945,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - in: path
           name: participantId
           required: true
@@ -1052,11 +1004,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - in: query
           name: mtu
           required: true
@@ -1196,11 +1144,7 @@ paths:
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1429,11 +1373,7 @@ paths:
         - PURCHASE_BUY_NOW_OFFERS
       x-audit-log: PURCHASE_BUY_NOW_OFFER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -1762,11 +1702,7 @@ paths:
         - VIEW_OWN_DEFAULT_BIDS
         - VIEW_ANY_DEFAULT_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1816,11 +1752,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: UPDATE_LONG_TERM_DEFAULT_BID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -1897,11 +1829,7 @@ paths:
         - VIEW_OWN_DEFAULT_BIDS
         - VIEW_ANY_DEFAULT_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1951,11 +1879,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: UPDATE_DAY_AHEAD_OR_INTRA_DAY_DEFAULT_BID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -2042,11 +1966,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: DELETE_DEFAULT_BID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -2258,11 +2178,7 @@ paths:
         - VIEW_OWN_DEFAULT_NOMINATIONS
         - VIEW_ANY_DEFAULT_NOMINATIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -2298,11 +2214,7 @@ paths:
         - MANAGE_ANY_DEFAULT_NOMINATIONS
       x-audit-log: UPDATE_DEFAULT_NOMINATION
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -2371,11 +2283,7 @@ paths:
         - MANAGE_ANY_DEFAULT_NOMINATIONS
       x-audit-log: DELETE_DEFAULT_NOMINATION
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -2737,11 +2645,7 @@ paths:
         - VIEW_OWN_INVOICES
         - VIEW_ANY_INVOICES
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -3773,11 +3677,7 @@ paths:
         - MANAGE_ANY_ORGANISATION_DOCUMENTS
       x-audit-log: DELETE_ORGANISATION_DOCUMENT
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -3819,11 +3719,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -3857,11 +3753,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -4624,11 +4516,7 @@ paths:
         - AuthToken: []
       x-audit-log: DELETE_API_KEY
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -4786,11 +4674,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -4893,11 +4777,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -4931,11 +4811,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -4969,11 +4845,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5007,11 +4879,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5050,11 +4918,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5093,11 +4957,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - in: query
           name: mtu
           required: true
@@ -5872,12 +5732,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_RETURNS
       x-audit-log: WITHDRAW_SECONDARY_MARKET_RETURN_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Return request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -5997,12 +5852,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: ACCEPT_SECONDARY_MARKET_TRANSFER_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Transfer request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6055,12 +5905,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: REJECT_SECONDARY_MARKET_TRANSFER_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Transfer request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6113,12 +5958,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: WITHDRAW_SECONDARY_MARKET_TRANSFER_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Transfer request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6163,11 +6003,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -6213,11 +6049,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -6588,11 +6420,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: DELETE_SECONDARY_MARKET_NOTICEBOARD_ENTRY
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6886,12 +6714,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          description: Entry identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -6925,12 +6748,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          description: Entry identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -7309,11 +7127,7 @@ paths:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -7361,11 +7175,7 @@ paths:
         - MANAGE_ANY_USERS
       x-audit-log: UPDATE_USER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -7427,11 +7237,7 @@ paths:
         - MANAGE_ANY_USERS
       x-audit-log: SUSPEND_USER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -7479,11 +7285,7 @@ paths:
         - MANAGE_ANY_USERS
       x-audit-log: UNSUSPEND_USER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -12751,6 +12553,13 @@ components:
       description: MTU Size definition
       schema:
         $ref: '#/components/schemas/MtuSize'
+    Identifier:
+      in: path
+      name: id
+      required: true
+      description: Internal unique ID of an entity
+      schema:
+        $ref: '#/components/schemas/Identifier'
     PageLimit:
       in: query
       name: limit
