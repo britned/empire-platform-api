@@ -10,29 +10,17 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.176.3
+  version: 0.178.1
   contact:
     name: BritNed
     url: https://www.britned.com
     email: britned.info@britned.com
   termsOfService: https://www.britned.com/who-we-are/about-britned/empire-api-terms-of-use/
 servers:
-  - description: DEV
-    url: https://api.dev.empire.scapps.io
-  - description: STAGING
-    url: https://api.staging.empire.scapps.io
-  - description: Playground / BELL
-    url: https://api.bell.empire.scapps.io
-  - description: Playground / EDISON
-    url: https://api.edison.empire.scapps.io
-  - description: Playground / FRANKLIN
-    url: https://api.franklin.empire.scapps.io
-  - description: Playground / HERTZ
-    url: https://api.hertz.empire.scapps.io
-  - description: Playground / TESLA
-    url: https://api.tesla.empire.scapps.io
-  - description: Playground / VOLTA
-    url: https://api.volta.empire.scapps.io
+  - description: PRODUCTION
+    url: https://api.empire.scapps.io
+  - description: TRAINING
+    url: https://api.training.empire.scapps.io
 tags:
   - name: metadata
     description: Metadata endpoints
@@ -197,44 +185,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /v1/auctions/{id}/participants:
-    get:
-      operationId: getAuctionParticipants
-      description: |-
-        Fetch every Participant who placed a bid (participated) in the Auction
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `VIEW_ANY_AUCTIONS`
-      tags:
-        - auction
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - VIEW_ANY_AUCTIONS
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AuctionBidParticipant'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
   /v1/auctions/{id}/reduction-periods:
     get:
       operationId: getAuctionReductionPeriods
@@ -255,11 +205,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -303,21 +249,9 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/AuctionSortBy'
-        - name: borderDirection
-          in: query
-          description: Filter for given border direction
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - name: timescale
-          in: query
-          description: Filter for given timescale
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
-        - name: productType
-          in: query
-          description: Filter for given product type
-          schema:
-            $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
+        - $ref: '#/components/parameters/TimescaleOptional'
+        - $ref: '#/components/parameters/ProductTypeOptional'
         - name: status
           in: query
           description: Filter for given status
@@ -398,11 +332,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -448,11 +378,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -498,11 +424,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -548,11 +470,7 @@ paths:
         - MANAGE_LT_AUCTION_BIDS
         - MANAGE_DA_ID_AUCTION_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -586,11 +504,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
         - name: sortBy
@@ -599,11 +513,7 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/LongTermAuctionBidSortBy'
-        - name: participantId
-          in: query
-          description: Filter for bids made by a given participant, optional
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -658,11 +568,7 @@ paths:
         - MANAGE_LT_AUCTION_BIDS
       x-audit-log: SUBMIT_LONG_TERM_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -772,18 +678,10 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
-        - in: query
-          name: participantId
-          description: Filter for bids made by a given participant, optional
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -838,11 +736,7 @@ paths:
         - MANAGE_DA_ID_AUCTION_BIDS
       x-audit-log: SUBMIT_DAY_AHEAD_OR_INTRA_DAY_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -949,11 +843,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1004,11 +894,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1059,11 +945,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - in: path
           name: participantId
           required: true
@@ -1122,11 +1004,7 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - in: query
           name: mtu
           required: true
@@ -1198,10 +1076,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/AuditLogDomain'
-        - name: organisationId
-          in: query
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationIdOptional'
         - name: createdAtFrom
           in: query
           schema:
@@ -1269,11 +1144,7 @@ paths:
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1307,11 +1178,7 @@ paths:
         - VIEW_OWN_BIDDING_CONFIGURATION
         - VIEW_ANY_BIDDING_CONFIGURATION
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -1357,11 +1224,7 @@ paths:
         - MANAGE_ANY_BIDDING_CONFIGURATION
       x-audit-log: UPDATE_BIDDING_CONFIGURATION
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -1415,16 +1278,8 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: timescale
-          required: true
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/Timescale'
+        - $ref: '#/components/parameters/BorderDirection'
         - in: query
           name: statuses
           required: true
@@ -1437,12 +1292,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/BuyNowDayAheadOfferSortBy'
-        - in: query
-          name: productType
-          required: false
-          description: Only for ID timescale
-          schema:
-            $ref: '#/components/schemas/AuctionIntraDayProductType'
+        - $ref: '#/components/parameters/ProductTypeIntraDayOptional'
       responses:
         '200':
           description: __OK__
@@ -1523,11 +1373,7 @@ paths:
         - PURCHASE_BUY_NOW_OFFERS
       x-audit-log: PURCHASE_BUY_NOW_OFFER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -1616,23 +1462,9 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/DefaultBidSortBy'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - name: auctionProductTypes
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirectionWithBoth'
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/ProductTypes'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
         - name: deliveryPeriodStart
           in: query
           required: true
@@ -1708,11 +1540,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: CREATE_LONG_TERM_DEFAULT_BID
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -1791,11 +1619,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: CREATE_DAY_AHEAD_OR_INTRA_DAY_DEFAULT_BID
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -1878,11 +1702,7 @@ paths:
         - VIEW_OWN_DEFAULT_BIDS
         - VIEW_ANY_DEFAULT_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -1932,11 +1752,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: UPDATE_LONG_TERM_DEFAULT_BID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -2013,11 +1829,7 @@ paths:
         - VIEW_OWN_DEFAULT_BIDS
         - VIEW_ANY_DEFAULT_BIDS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -2067,11 +1879,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: UPDATE_DAY_AHEAD_OR_INTRA_DAY_DEFAULT_BID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -2158,11 +1966,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: DELETE_DEFAULT_BID
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -2244,23 +2048,9 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/DefaultNominationSortBy'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - name: timescales
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirectionWithBoth'
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/Timescales'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
         - name: deliveryPeriodStart
           in: query
           required: true
@@ -2321,11 +2111,7 @@ paths:
         - MANAGE_ANY_DEFAULT_NOMINATIONS
       x-audit-log: CREATE_DEFAULT_NOMINATION
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -2392,11 +2178,7 @@ paths:
         - VIEW_OWN_DEFAULT_NOMINATIONS
         - VIEW_ANY_DEFAULT_NOMINATIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -2432,11 +2214,7 @@ paths:
         - MANAGE_ANY_DEFAULT_NOMINATIONS
       x-audit-log: UPDATE_DEFAULT_NOMINATION
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -2505,11 +2283,7 @@ paths:
         - MANAGE_ANY_DEFAULT_NOMINATIONS
       x-audit-log: DELETE_DEFAULT_NOMINATION
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -2551,11 +2325,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -2609,13 +2379,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: auctionProductTypes
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/ProductTypes'
         - in: query
           name: sources
           required: true
@@ -2623,21 +2387,9 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/SettlementSourceType'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - in: query
-          name: direction
-          required: false
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - in: query
-          name: timescale
-          required: false
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
+        - $ref: '#/components/parameters/TimescaleOptional'
       responses:
         '200':
           description: __OK__
@@ -2708,13 +2460,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: auctionProductTypes
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/ProductTypes'
         - in: query
           name: sources
           required: true
@@ -2722,21 +2468,9 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/SettlementSourceType'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - in: query
-          name: direction
-          required: false
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - in: query
-          name: timescale
-          required: false
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
+        - $ref: '#/components/parameters/TimescaleOptional'
       responses:
         '200':
           description: __OK__
@@ -2802,21 +2536,9 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - in: query
-          name: timescale
-          required: true
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/BorderDirection'
+        - $ref: '#/components/parameters/Timescale'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -2879,11 +2601,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/InvoiceStatus'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -2927,11 +2645,7 @@ paths:
         - VIEW_OWN_INVOICES
         - VIEW_ANY_INVOICES
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -2982,14 +2696,14 @@ paths:
           description: |-
             __Bad Request__
 
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+            *  `INVALID_PARTICIPANT_EIC_CODE` - specified EIC code for a Participant not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Bid Document" schema
             *  `TIMESCALE_MISMATCH` - matching endpoint need to be used, see `submitLongTermBids`
             *  `BIDDING_NOT_POSSIBLE` - bidding is only possible in certain statuses, see `submitLongTermBids`
           x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
+            - code: INVALID_PARTICIPANT_EIC_CODE
+              description: specified EIC code for a Participant not found in the system
             - code: INVALID_ATTACHMENT_ID
               description: Attachment ID not found in the system
             - code: SCHEMA_VALIDATION_ERROR
@@ -3063,14 +2777,14 @@ paths:
           description: |-
             __Bad Request__
 
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+            *  `INVALID_PARTICIPANT_EIC_CODE` - specified EIC code for a Participant not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Bid Document" schema
             *  `TIMESCALE_MISMATCH` - matching endpoint need to be used, see `submitDayAheadOrIntraDayBids`
             *  `BIDDING_NOT_POSSIBLE` - bidding is only possible in certain statuses, see `submitDayAheadOrIntraDayBids`
           x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
+            - code: INVALID_PARTICIPANT_EIC_CODE
+              description: specified EIC code for a Participant not found in the system
             - code: INVALID_ATTACHMENT_ID
               description: Attachment ID not found in the system
             - code: SCHEMA_VALIDATION_ERROR
@@ -3145,12 +2859,12 @@ paths:
           description: |-
             __Bad Request__
 
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+            *  `INVALID_PARTICIPANT_EIC_CODE` - specified EIC code for a Participant not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Schedule Document" schema
           x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
+            - code: INVALID_PARTICIPANT_EIC_CODE
+              description: specified EIC code for a Participant not found in the system
             - code: INVALID_ATTACHMENT_ID
               description: Attachment ID not found in the system
             - code: SCHEMA_VALIDATION_ERROR
@@ -3245,7 +2959,6 @@ paths:
             $ref: '#/components/schemas/DateTime'
         - in: query
           name: searchQuery
-          required: false
           schema:
             type: string
         - name: hasAttachment
@@ -3332,7 +3045,6 @@ paths:
             $ref: '#/components/schemas/DateTime'
         - in: query
           name: searchQuery
-          required: false
           schema:
             type: string
         - name: hasAttachment
@@ -3448,11 +3160,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -3512,16 +3220,8 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/BorderDirection'
       responses:
         '200':
           description: __OK__
@@ -3581,16 +3281,8 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/BorderDirection'
       requestBody:
         required: true
         content:
@@ -3740,12 +3432,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantIds
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdsOptional'
       responses:
         '200':
           description: __OK__
@@ -3794,11 +3481,7 @@ paths:
         - VIEW_OWN_ORGANISATION_DOCUMENTS
         - VIEW_ANY_ORGANISATION_DOCUMENTS
       parameters:
-        - name: organisationId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
       responses:
         '200':
           description: __OK__
@@ -3850,11 +3533,7 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/OrganisationDocumentSortBy'
-        - name: organisationId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
         - name: query
           in: query
           description: Free text search in fileName and description
@@ -3939,11 +3618,7 @@ paths:
         - MANAGE_ANY_ORGANISATION_DOCUMENTS
       x-audit-log: CREATE_ORGANISATION_DOCUMENT
       parameters:
-        - name: organisationId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
       requestBody:
         required: true
         content:
@@ -4002,11 +3677,7 @@ paths:
         - MANAGE_ANY_ORGANISATION_DOCUMENTS
       x-audit-log: DELETE_ORGANISATION_DOCUMENT
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -4048,11 +3719,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -4086,11 +3753,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -4361,13 +4024,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: timescales
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/Timescales'
       responses:
         '200':
           description: __OK__
@@ -4429,13 +4086,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: timescales
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/Timescales'
       responses:
         '200':
           description: __OK__
@@ -4482,13 +4133,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: timescales
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/Timescales'
       responses:
         '200':
           description: __OK__
@@ -4652,11 +4297,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -4875,11 +4516,7 @@ paths:
         - AuthToken: []
       x-audit-log: DELETE_API_KEY
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -4925,20 +4562,9 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/AllocatedAuctionSortBy'
-        - name: borderDirection
-          in: query
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - name: timescale
-          in: query
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
-        - name: productTypes
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
+        - $ref: '#/components/parameters/TimescaleOptional'
+        - $ref: '#/components/parameters/ProductTypesOptional'
         - name: deliveryPeriodStart
           in: query
           schema:
@@ -4985,20 +4611,9 @@ paths:
       tags:
         - public-allocated-auction
       parameters:
-        - name: borderDirection
-          in: query
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - name: timescale
-          in: query
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
-        - name: productTypes
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
+        - $ref: '#/components/parameters/TimescaleOptional'
+        - $ref: '#/components/parameters/ProductTypesOptional'
         - name: deliveryPeriodStart
           in: query
           schema:
@@ -5059,11 +4674,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5095,21 +4706,9 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/AuctionSortBy'
-        - name: borderDirection
-          in: query
-          description: Filter for given border direction
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - name: timescale
-          in: query
-          description: Filter for given timescale
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
-        - name: productType
-          in: query
-          description: Filter for given product type
-          schema:
-            $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
+        - $ref: '#/components/parameters/TimescaleOptional'
+        - $ref: '#/components/parameters/ProductTypeOptional'
         - name: status
           in: query
           description: Filter for given (published) status
@@ -5178,11 +4777,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5216,11 +4811,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5254,11 +4845,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5292,11 +4879,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5335,11 +4918,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -5378,11 +4957,7 @@ paths:
       tags:
         - public-auction
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
         - in: query
           name: mtu
           required: true
@@ -5432,13 +5007,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: timescales
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/Timescales'
       responses:
         '200':
           description: __OK__
@@ -5466,18 +5035,8 @@ paths:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
       parameters:
-        - name: productTypes
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirectionWithBoth'
+        - $ref: '#/components/parameters/ProductTypes'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
         - name: statuses
           in: query
           required: true
@@ -5557,21 +5116,13 @@ paths:
         - VIEW_ANY_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
         - VIEW_SOSO_AGGREGATED_NOMINATIONS
       parameters:
-        - name: mtuSize
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/MtuSize'
+        - $ref: '#/components/parameters/MtuSize'
         - name: type
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/AggregatedNominationType'
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirectionWithBoth'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
         - name: deliveryPeriodStart
           in: query
           required: true
@@ -5582,12 +5133,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantIds
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdsOptional'
       responses:
         '200':
           description: __OK__
@@ -5656,11 +5202,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -5722,18 +5264,8 @@ paths:
         - VIEW_ANY_BUY_NOW_OFFERS
         - VIEW_OWN_BUY_NOW_OFFERS
       parameters:
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirectionWithBoth'
-        - name: timescales
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - $ref: '#/components/parameters/Timescales'
         - name: statuses
           in: query
           required: true
@@ -5826,13 +5358,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantIds
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIds'
       responses:
         '200':
           description: __OK__
@@ -5891,23 +5417,15 @@ paths:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
       parameters:
-        - in: query
-          name: organisationIds
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationIds'
         - in: query
           name: statuses
-          required: false
           schema:
             type: array
             items:
               $ref: '#/components/schemas/UserStatus'
         - in: query
           name: roles
-          required: false
           schema:
             type: array
             items:
@@ -5955,11 +5473,7 @@ paths:
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
       parameters:
-        - in: query
-          name: organisationId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
         - name: periodStart
           in: query
           required: true
@@ -5972,7 +5486,6 @@ paths:
             $ref: '#/components/schemas/Date'
         - in: query
           name: domains
-          required: false
           schema:
             type: array
             items:
@@ -6088,21 +5601,10 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
-        - in: query
-          name: participantId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - in: query
-          name: directions
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/BorderDirections'
         - in: query
           name: searchQuery
-          required: false
           description: Searching in the Target Auction Auction ID and Auction name
           schema:
             type: string
@@ -6230,12 +5732,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_RETURNS
       x-audit-log: WITHDRAW_SECONDARY_MARKET_RETURN_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Return request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6279,18 +5776,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
-        - in: query
-          name: participantId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-        - in: query
-          name: directions
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/BorderDirections'
         - in: query
           name: transferType
           required: true
@@ -6365,12 +5852,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: ACCEPT_SECONDARY_MARKET_TRANSFER_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Transfer request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6423,12 +5905,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: REJECT_SECONDARY_MARKET_TRANSFER_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Transfer request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6481,12 +5958,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: WITHDRAW_SECONDARY_MARKET_TRANSFER_REQUEST
       parameters:
-        - in: path
-          name: id
-          description: Transfer request identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -6531,11 +6003,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -6581,11 +6049,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -6643,11 +6107,7 @@ paths:
           description: Last day of the period
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
       responses:
         '200':
           description: __OK__
@@ -6703,17 +6163,8 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - in: query
-          name: timescale
-          description: Timescale needs to be DA/ID
-          required: true
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/BorderDirection'
+        - $ref: '#/components/parameters/Timescale'
       responses:
         '200':
           description: __OK__
@@ -6906,20 +6357,8 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NoticeboardEntryTypeWithBoth'
-        - in: query
-          name: directions
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/BorderDirection'
-        - in: query
-          name: timescales
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/BorderDirections'
+        - $ref: '#/components/parameters/Timescales'
         - name: deliveryPeriodFrom
           in: query
           required: true
@@ -6981,11 +6420,7 @@ paths:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: DELETE_SECONDARY_MARKET_NOTICEBOARD_ENTRY
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -7040,11 +6475,7 @@ paths:
           description: Last day of the period
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
       responses:
         '200':
           description: __OK__
@@ -7097,17 +6528,8 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
-        - in: query
-          name: timescale
-          description: Timescale needs to be DA/ID
-          required: true
-          schema:
-            $ref: '#/components/schemas/AuctionTimescale'
+        - $ref: '#/components/parameters/BorderDirection'
+        - $ref: '#/components/parameters/Timescale'
       responses:
         '200':
           description: __OK__
@@ -7292,12 +6714,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          description: Entry identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -7331,12 +6748,7 @@ paths:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
       parameters:
-        - in: path
-          name: id
-          description: Entry identifier
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -7604,30 +7016,10 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantIds
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
-        - name: borderDirection
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirectionWithBoth'
-        - name: timescales
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionTimescale'
-        - name: mtuSize
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/MtuSize'
+        - $ref: '#/components/parameters/ParticipantIds'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - $ref: '#/components/parameters/Timescales'
+        - $ref: '#/components/parameters/MtuSize'
       responses:
         '200':
           description: __OK__
@@ -7685,11 +7077,7 @@ paths:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
       parameters:
-        - in: query
-          name: organisationId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
         - name: statuses
@@ -7739,11 +7127,7 @@ paths:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '200':
           description: __OK__
@@ -7791,11 +7175,7 @@ paths:
         - MANAGE_ANY_USERS
       x-audit-log: UPDATE_USER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       requestBody:
         required: true
         content:
@@ -7857,11 +7237,7 @@ paths:
         - MANAGE_ANY_USERS
       x-audit-log: SUSPEND_USER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -7909,11 +7285,7 @@ paths:
         - MANAGE_ANY_USERS
       x-audit-log: UNSUSPEND_USER
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/Identifier'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -8348,7 +7720,7 @@ components:
       properties:
         preliminarySpecPublish:
           $ref: '#/components/schemas/DateTime'
-        returnsWindowOpen:
+        returnsWindowClose:
           $ref: '#/components/schemas/DateTime'
         finalSpecPublish:
           $ref: '#/components/schemas/DateTime'
@@ -9786,6 +9158,7 @@ components:
         - INVALID_NTC_OVERRIDE_VALUE
         - INVALID_ORGANISATION_ID
         - INVALID_OUTAGE_PERIOD_VALUE
+        - INVALID_PARTICIPANT_EIC_CODE
         - INVALID_PARTICIPANT_ID
         - INVALID_PERIOD_AMOUNT
         - INVALID_PURCHASE_VALUE
@@ -9793,6 +9166,7 @@ components:
         - INVALID_RESPONSE_CAPACITY
         - INVALID_RESPONSE_PRICE
         - INVALID_RETURN_CAPACITY
+        - RETURNS_WINDOW_CLOSED
         - INVALID_STATUS
         - INVALID_SUBMISSION_ID
         - INVALID_TARGET_NTC_VALUE
@@ -12561,8 +11935,8 @@ components:
         - CURTAILMENT_ID
         - BUY_NOW_DA
         - BUY_NOW_ID
-        - UIOSI_ID
         - UIOSI_DA
+        - UIOSI_LT
     SourceAuction:
       type: object
       required:
@@ -13165,6 +12539,27 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    BorderDirectionWithBoth:
+      in: query
+      name: borderDirection
+      required: true
+      description: Border Direction with additional 'BOTH' option
+      schema:
+        $ref: '#/components/schemas/BorderDirectionWithBoth'
+    MtuSize:
+      in: query
+      name: mtuSize
+      required: true
+      description: MTU Size definition
+      schema:
+        $ref: '#/components/schemas/MtuSize'
+    Identifier:
+      in: path
+      name: id
+      required: true
+      description: Internal unique ID of an entity
+      schema:
+        $ref: '#/components/schemas/Identifier'
     PageLimit:
       in: query
       name: limit
@@ -13182,6 +12577,131 @@ components:
       schema:
         type: integer
         minimum: 0
+    BorderDirectionOptional:
+      in: query
+      name: borderDirection
+      description: Border Direction (optional)
+      schema:
+        $ref: '#/components/schemas/BorderDirection'
+    TimescaleOptional:
+      in: query
+      name: timescale
+      description: Auction Timescale (optional)
+      schema:
+        $ref: '#/components/schemas/AuctionTimescale'
+    ProductTypeOptional:
+      in: query
+      name: productType
+      description: Auction Product Type (optional)
+      schema:
+        $ref: '#/components/schemas/AuctionProductType'
+    ParticipantIdOptional:
+      in: header
+      name: X-Participant-Id
+      description: Internal ID of a Participant-type Organisation (optional)
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    OrganisationIdOptional:
+      in: header
+      name: X-Organisation-Id
+      description: Internal ID of an Organisation (optional)
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ParticipantId:
+      in: header
+      name: X-Participant-Id
+      required: true
+      description: Internal ID of a Participant-type Organisation
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ParticipantIds:
+      in: header
+      name: X-Participant-Ids
+      required: true
+      description: List of internal IDs of Participant-type Organisations
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Identifier'
+    BorderDirection:
+      in: query
+      name: borderDirection
+      required: true
+      description: Border Direction
+      schema:
+        $ref: '#/components/schemas/BorderDirection'
+    Timescale:
+      in: query
+      name: timescale
+      required: true
+      description: Auction Timescale
+      schema:
+        $ref: '#/components/schemas/AuctionTimescale'
+    ProductTypeIntraDayOptional:
+      in: query
+      name: productType
+      description: Auction Product Type (ID only, optional)
+      schema:
+        $ref: '#/components/schemas/AuctionIntraDayProductType'
+    ProductTypes:
+      in: query
+      name: productTypes
+      required: true
+      description: List of Auction Product Types
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/AuctionProductType'
+    Timescales:
+      in: query
+      name: timescales
+      required: true
+      description: List of Auction Timescales
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/AuctionTimescale'
+    ParticipantIdsOptional:
+      in: header
+      name: X-Participant-Ids
+      description: List of internal IDs of Participant-type Organisations (optional)
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Identifier'
+    OrganisationId:
+      in: header
+      name: X-Organisation-Id
+      required: true
+      description: Internal ID of an Organisation
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ProductTypesOptional:
+      in: query
+      name: productTypes
+      description: List of Auction Product Types (optional)
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/AuctionProductType'
+    OrganisationIds:
+      in: header
+      name: X-Organisation-Ids
+      required: true
+      description: List of internal IDs of Organisations
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Identifier'
+    BorderDirections:
+      in: query
+      name: borderDirection
+      required: true
+      description: List Border Directions
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/BorderDirection'
   examples: {}
   requestBodies: {}
   headers: {}
