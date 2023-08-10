@@ -2,6 +2,10 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - main
+    paths:
+      - public/**
 
 name: Deploy to GitHub Pages
 
@@ -23,10 +27,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Copy OpenAPI Specification
-        run: cp openapi.yaml public/
+      - name: Copy OpenAPI Specification for all versions
+        run: |
+          mkdir .tmp
+
+          versions=`git tag -l --sort=creatordate`
+          for version in $versions; do
+            git checkout tags/$version
+            cp openapi.yaml .tmp/openapi-$version.yaml
+            echo $version >> .tmp/versions.txt
+          done
+
+          git checkout $GITHUB_REF
+
+          cp -R .tmp/* public/
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
