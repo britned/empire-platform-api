@@ -34,6 +34,8 @@ An example for retrieving ten auctions ordered by the start of their bidding per
 ```
 
 ## Change log
+
+- 2023-08-10 Access multiple versions of the API spec on GitHub Pages
 - 2023-07-19 Published a new version of the API spec and added instructions to use the python client
 - 2023-04-04 Web-based navigation of the API spec, through GitHub Pages added, updated the README accordingly.
 - 2023-04-03 Added Readme and open up the repository to the public internet
