@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.176.6
+  version: 0.176.7
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -8298,7 +8298,7 @@ components:
       properties:
         preliminarySpecPublish:
           $ref: '#/components/schemas/DateTime'
-        returnsWindowOpen:
+        returnsWindowClose:
           $ref: '#/components/schemas/DateTime'
         finalSpecPublish:
           $ref: '#/components/schemas/DateTime'
@@ -9743,6 +9743,7 @@ components:
         - INVALID_RESPONSE_CAPACITY
         - INVALID_RESPONSE_PRICE
         - INVALID_RETURN_CAPACITY
+        - RETURNS_WINDOW_CLOSED
         - INVALID_STATUS
         - INVALID_SUBMISSION_ID
         - INVALID_TARGET_NTC_VALUE
