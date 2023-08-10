@@ -10,29 +10,17 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.176.3
+  version: 0.176.5
   contact:
     name: BritNed
     url: https://www.britned.com
     email: britned.info@britned.com
   termsOfService: https://www.britned.com/who-we-are/about-britned/empire-api-terms-of-use/
 servers:
-  - description: DEV
-    url: https://api.dev.empire.scapps.io
-  - description: STAGING
-    url: https://api.staging.empire.scapps.io
-  - description: Playground / BELL
-    url: https://api.bell.empire.scapps.io
-  - description: Playground / EDISON
-    url: https://api.edison.empire.scapps.io
-  - description: Playground / FRANKLIN
-    url: https://api.franklin.empire.scapps.io
-  - description: Playground / HERTZ
-    url: https://api.hertz.empire.scapps.io
-  - description: Playground / TESLA
-    url: https://api.tesla.empire.scapps.io
-  - description: Playground / VOLTA
-    url: https://api.volta.empire.scapps.io
+  - description: PRODUCTION
+    url: https://api.empire.scapps.io
+  - description: TRAINING
+    url: https://api.training.empire.scapps.io
 tags:
   - name: metadata
     description: Metadata endpoints
@@ -197,44 +185,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /v1/auctions/{id}/participants:
-    get:
-      operationId: getAuctionParticipants
-      description: |-
-        Fetch every Participant who placed a bid (participated) in the Auction
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `VIEW_ANY_AUCTIONS`
-      tags:
-        - auction
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - VIEW_ANY_AUCTIONS
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AuctionBidParticipant'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
   /v1/auctions/{id}/reduction-periods:
     get:
       operationId: getAuctionReductionPeriods
@@ -12561,8 +12511,8 @@ components:
         - CURTAILMENT_ID
         - BUY_NOW_DA
         - BUY_NOW_ID
-        - UIOSI_ID
         - UIOSI_DA
+        - UIOSI_LT
     SourceAuction:
       type: object
       required:
