@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.176.9
+  version: 0.177.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -549,11 +549,7 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/LongTermAuctionBidSortBy'
-        - name: participantId
-          in: query
-          description: Filter for bids made by a given participant, optional
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -729,11 +725,7 @@ paths:
             $ref: '#/components/schemas/Identifier'
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
-        - in: query
-          name: participantId
-          description: Filter for bids made by a given participant, optional
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -1148,10 +1140,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/AuditLogDomain'
-        - name: organisationId
-          in: query
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationIdOptional'
         - name: createdAtFrom
           in: query
           schema:
@@ -1257,11 +1246,7 @@ paths:
         - VIEW_OWN_BIDDING_CONFIGURATION
         - VIEW_ANY_BIDDING_CONFIGURATION
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -1307,11 +1292,7 @@ paths:
         - MANAGE_ANY_BIDDING_CONFIGURATION
       x-audit-log: UPDATE_BIDDING_CONFIGURATION
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -1566,11 +1547,7 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/DefaultBidSortBy'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
         - name: auctionProductTypes
           in: query
           required: true
@@ -1658,11 +1635,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: CREATE_LONG_TERM_DEFAULT_BID
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -1741,11 +1714,7 @@ paths:
         - MANAGE_ANY_DEFAULT_BIDS
       x-audit-log: CREATE_DAY_AHEAD_OR_INTRA_DAY_DEFAULT_BID
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -2194,11 +2163,7 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/DefaultNominationSortBy'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
         - name: timescales
           in: query
           required: true
@@ -2271,11 +2236,7 @@ paths:
         - MANAGE_ANY_DEFAULT_NOMINATIONS
       x-audit-log: CREATE_DEFAULT_NOMINATION
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       requestBody:
         required: true
         content:
@@ -2501,11 +2462,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -2573,11 +2530,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/SettlementSourceType'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
         - in: query
           name: direction
           required: false
@@ -2672,11 +2625,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/SettlementSourceType'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
         - in: query
           name: direction
           required: false
@@ -2762,11 +2711,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/AuctionTimescale'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -2829,11 +2774,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/InvoiceStatus'
-        - in: query
-          name: participantId
-          required: false
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
@@ -3398,11 +3339,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -3462,11 +3399,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
         - name: borderDirection
           in: query
           required: true
@@ -3531,11 +3464,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
         - name: borderDirection
           in: query
           required: true
@@ -3690,12 +3619,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/TimescaleNominationType'
-        - name: participantIds
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdsOptional'
       responses:
         '200':
           description: __OK__
@@ -3744,11 +3668,7 @@ paths:
         - VIEW_OWN_ORGANISATION_DOCUMENTS
         - VIEW_ANY_ORGANISATION_DOCUMENTS
       parameters:
-        - name: organisationId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
       responses:
         '200':
           description: __OK__
@@ -3800,11 +3720,7 @@ paths:
           description: Sort list by given attribute and direction
           schema:
             $ref: '#/components/schemas/OrganisationDocumentSortBy'
-        - name: organisationId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
         - name: query
           in: query
           description: Free text search in fileName and description
@@ -3889,11 +3805,7 @@ paths:
         - MANAGE_ANY_ORGANISATION_DOCUMENTS
       x-audit-log: CREATE_ORGANISATION_DOCUMENT
       parameters:
-        - name: organisationId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
       requestBody:
         required: true
         content:
@@ -4602,11 +4514,7 @@ paths:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
       parameters:
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -5532,12 +5440,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantIds
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIdsOptional'
       responses:
         '200':
           description: __OK__
@@ -5606,11 +5509,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
@@ -5776,13 +5675,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantIds
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIds'
       responses:
         '200':
           description: __OK__
@@ -5841,13 +5734,7 @@ paths:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
       parameters:
-        - in: query
-          name: organisationIds
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationIds'
         - in: query
           name: statuses
           required: false
@@ -5905,11 +5792,7 @@ paths:
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
       parameters:
-        - in: query
-          name: organisationId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
         - name: periodStart
           in: query
           required: true
@@ -6038,11 +5921,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
-        - in: query
-          name: participantId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
         - in: query
           name: directions
           required: true
@@ -6229,11 +6108,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
-        - in: query
-          name: participantId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
         - in: query
           name: directions
           required: true
@@ -7554,13 +7429,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - name: participantIds
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/ParticipantIds'
         - name: borderDirection
           in: query
           required: true
@@ -7635,11 +7504,7 @@ paths:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
       parameters:
-        - in: query
-          name: organisationId
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
+        - $ref: '#/components/parameters/OrganisationId'
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
         - name: statuses
@@ -13134,6 +12999,58 @@ components:
       schema:
         type: integer
         minimum: 0
+    ParticipantIdOptional:
+      in: header
+      name: X-Participant-Id
+      description: Internal ID of a Participant-type Organisation (optional)
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    OrganisationIdOptional:
+      in: header
+      name: X-Organisation-Id
+      description: Internal ID of an Organisation (optional)
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ParticipantId:
+      in: header
+      name: X-Participant-Id
+      required: true
+      description: Internal ID of a Participant-type Organisation
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    ParticipantIds:
+      in: header
+      name: X-Participant-Ids
+      required: true
+      description: List of internal IDs of Participant-type Organisations
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Identifier'
+    ParticipantIdsOptional:
+      in: header
+      name: X-Participant-Ids
+      description: List of internal IDs of Participant-type Organisations (optional)
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Identifier'
+    OrganisationId:
+      in: header
+      name: X-Organisation-Id
+      required: true
+      description: Internal ID of an Organisation
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    OrganisationIds:
+      in: header
+      name: X-Organisation-Ids
+      required: true
+      description: List of internal IDs of Organisations
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Identifier'
   examples: {}
   requestBodies: {}
   headers: {}
