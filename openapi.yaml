@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.177.1
+  version: 0.178.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -1335,11 +1335,7 @@ paths:
           schema:
             $ref: '#/components/schemas/Date'
         - $ref: '#/components/parameters/Timescale'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
         - in: query
           name: statuses
           required: true
@@ -1527,13 +1523,7 @@ paths:
           schema:
             $ref: '#/components/schemas/DefaultBidSortBy'
         - $ref: '#/components/parameters/ParticipantId'
-        - name: auctionProductTypes
-          in: query
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/ProductTypes'
         - $ref: '#/components/parameters/BorderDirectionWithBoth'
         - name: deliveryPeriodStart
           in: query
@@ -2481,13 +2471,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: auctionProductTypes
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/ProductTypes'
         - in: query
           name: sources
           required: true
@@ -2496,10 +2480,7 @@ paths:
             items:
               $ref: '#/components/schemas/SettlementSourceType'
         - $ref: '#/components/parameters/ParticipantIdOptional'
-        - in: query
-          name: direction
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
         - $ref: '#/components/parameters/TimescaleOptional'
       responses:
         '200':
@@ -2571,13 +2552,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: auctionProductTypes
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AuctionProductType'
+        - $ref: '#/components/parameters/ProductTypes'
         - in: query
           name: sources
           required: true
@@ -2586,10 +2561,7 @@ paths:
             items:
               $ref: '#/components/schemas/SettlementSourceType'
         - $ref: '#/components/parameters/ParticipantIdOptional'
-        - in: query
-          name: direction
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirectionOptional'
         - $ref: '#/components/parameters/TimescaleOptional'
       responses:
         '200':
@@ -2656,11 +2628,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
         - $ref: '#/components/parameters/Timescale'
         - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
@@ -5774,13 +5742,7 @@ paths:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
         - $ref: '#/components/parameters/ParticipantId'
-        - in: query
-          name: directions
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirections'
         - in: query
           name: searchQuery
           description: Searching in the Target Auction Auction ID and Auction name
@@ -5960,13 +5922,7 @@ paths:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
         - $ref: '#/components/parameters/ParticipantId'
-        - in: query
-          name: directions
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirections'
         - in: query
           name: transferType
           required: true
@@ -6319,11 +6275,7 @@ paths:
           description: Last day of the period
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
       responses:
         '200':
           description: __OK__
@@ -6379,11 +6331,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
         - $ref: '#/components/parameters/Timescale'
       responses:
         '200':
@@ -6577,13 +6525,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/NoticeboardEntryTypeWithBoth'
-        - in: query
-          name: directions
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirections'
         - $ref: '#/components/parameters/Timescales'
         - name: deliveryPeriodFrom
           in: query
@@ -6705,11 +6647,7 @@ paths:
           description: Last day of the period
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
       responses:
         '200':
           description: __OK__
@@ -6762,11 +6700,7 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - in: query
-          name: direction
-          required: true
-          schema:
-            $ref: '#/components/schemas/BorderDirection'
+        - $ref: '#/components/parameters/BorderDirection'
         - $ref: '#/components/parameters/Timescale'
       responses:
         '200':
@@ -12880,6 +12814,13 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/Identifier'
+    BorderDirection:
+      in: query
+      name: borderDirection
+      required: true
+      description: Border Direction
+      schema:
+        $ref: '#/components/schemas/BorderDirection'
     Timescale:
       in: query
       name: timescale
@@ -12893,13 +12834,15 @@ components:
       description: Auction Product Type (ID only, optional)
       schema:
         $ref: '#/components/schemas/AuctionIntraDayProductType'
-    BorderDirection:
+    ProductTypes:
       in: query
-      name: borderDirection
+      name: productTypes
       required: true
-      description: Border Direction
+      description: List of Auction Product Types
       schema:
-        $ref: '#/components/schemas/BorderDirection'
+        type: array
+        items:
+          $ref: '#/components/schemas/AuctionProductType'
     Timescales:
       in: query
       name: timescales
@@ -12932,15 +12875,6 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/AuctionProductType'
-    ProductTypes:
-      in: query
-      name: productTypes
-      required: true
-      description: List of Auction Product Types
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/AuctionProductType'
     OrganisationIds:
       in: header
       name: X-Organisation-Ids
@@ -12950,6 +12884,15 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/Identifier'
+    BorderDirections:
+      in: query
+      name: borderDirection
+      required: true
+      description: List Border Directions
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/BorderDirection'
   examples: {}
   requestBodies: {}
   headers: {}
