@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.176.7
+  version: 0.176.8
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -2932,14 +2932,14 @@ paths:
           description: |-
             __Bad Request__
 
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+            *  `INVALID_PARTICIPANT_EIC_CODE` - specified EIC code for a Participant not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Bid Document" schema
             *  `TIMESCALE_MISMATCH` - matching endpoint need to be used, see `submitLongTermBids`
             *  `BIDDING_NOT_POSSIBLE` - bidding is only possible in certain statuses, see `submitLongTermBids`
           x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
+            - code: INVALID_PARTICIPANT_EIC_CODE
+              description: specified EIC code for a Participant not found in the system
             - code: INVALID_ATTACHMENT_ID
               description: Attachment ID not found in the system
             - code: SCHEMA_VALIDATION_ERROR
@@ -3013,14 +3013,14 @@ paths:
           description: |-
             __Bad Request__
 
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+            *  `INVALID_PARTICIPANT_EIC_CODE` - specified EIC code for a Participant not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Bid Document" schema
             *  `TIMESCALE_MISMATCH` - matching endpoint need to be used, see `submitDayAheadOrIntraDayBids`
             *  `BIDDING_NOT_POSSIBLE` - bidding is only possible in certain statuses, see `submitDayAheadOrIntraDayBids`
           x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
+            - code: INVALID_PARTICIPANT_EIC_CODE
+              description: specified EIC code for a Participant not found in the system
             - code: INVALID_ATTACHMENT_ID
               description: Attachment ID not found in the system
             - code: SCHEMA_VALIDATION_ERROR
@@ -3095,12 +3095,12 @@ paths:
           description: |-
             __Bad Request__
 
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+            *  `INVALID_PARTICIPANT_EIC_CODE` - specified EIC code for a Participant not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Schedule Document" schema
           x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
+            - code: INVALID_PARTICIPANT_EIC_CODE
+              description: specified EIC code for a Participant not found in the system
             - code: INVALID_ATTACHMENT_ID
               description: Attachment ID not found in the system
             - code: SCHEMA_VALIDATION_ERROR
@@ -9736,6 +9736,7 @@ components:
         - INVALID_NTC_OVERRIDE_VALUE
         - INVALID_ORGANISATION_ID
         - INVALID_OUTAGE_PERIOD_VALUE
+        - INVALID_PARTICIPANT_EIC_CODE
         - INVALID_PARTICIPANT_ID
         - INVALID_PERIOD_AMOUNT
         - INVALID_PURCHASE_VALUE
