@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.178.3
+  version: 0.179.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -493,45 +493,33 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `VIEW_PUBLISHED_AUCTIONS`
-          * `VIEW_ANY_AUCTIONS`
+          * `MANAGE_LT_AUCTION_BIDS`
       tags:
         - auction
       security:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - VIEW_PUBLISHED_AUCTIONS
-        - VIEW_ANY_AUCTIONS
+        - MANAGE_LT_AUCTION_BIDS
       parameters:
         - $ref: '#/components/parameters/Identifier'
-        - $ref: '#/components/parameters/PageLimit'
-        - $ref: '#/components/parameters/PageOffset'
-        - name: sortBy
-          in: query
-          required: true
-          description: Sort list by given attribute and direction
-          schema:
-            $ref: '#/components/schemas/LongTermAuctionBidSortBy'
-        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LongTermAuctionBidBatch'
+                type: array
+                items:
+                  $ref: '#/components/schemas/LongTermAuctionBid'
         '400':
           description: |-
             __Bad Request__
 
             *  `TIMESCALE_MISMATCH` - endpoint matching Auction timescale need to be used
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
           x-errors:
             - code: TIMESCALE_MISMATCH
               description: endpoint matching Auction timescale need to be used
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
           content:
             application/json:
               schema:
@@ -543,7 +531,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
     put:
-      operationId: submitLongTermBids
+      operationId: submitLongTermAuctionBids
       description: |-
         Submit a collection of Bids for Long Term Auctions
 
@@ -667,39 +655,33 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `VIEW_PUBLISHED_AUCTIONS`
-          * `VIEW_ANY_AUCTIONS`
+          * `MANAGE_LT_AUCTION_BIDS`
       tags:
         - auction
       security:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - VIEW_PUBLISHED_AUCTIONS
-        - VIEW_ANY_AUCTIONS
+        - MANAGE_LT_AUCTION_BIDS
       parameters:
         - $ref: '#/components/parameters/Identifier'
-        - $ref: '#/components/parameters/PageLimit'
-        - $ref: '#/components/parameters/PageOffset'
-        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroupBatch'
+                type: array
+                items:
+                  $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroup'
         '400':
           description: |-
             __Bad Request__
 
             *  `TIMESCALE_MISMATCH` - endpoint matching Auction timescale need to be used
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
           x-errors:
             - code: TIMESCALE_MISMATCH
               description: endpoint matching Auction timescale need to be used
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
           content:
             application/json:
               schema:
@@ -711,7 +693,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
     put:
-      operationId: submitDayAheadOrIntraDayBids
+      operationId: submitDayAheadOrIntraDayAuctionBids
       description: |-
         Submit a collection of Bids for Day Ahead or Intra Day Auctions
 
@@ -1043,6 +1025,116 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/AuctionResultsNotAvailable'
+  /v1/auctions/long-term/{id}/results/bidding:
+    get:
+      operationId: getLongTermAuctionBiddingResults
+      description: |-
+        Fetch Bidding Results for a Long Term Auction by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_PUBLISHED_AUCTIONS`
+          * `VIEW_ANY_AUCTIONS`
+      tags:
+        - auction
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_PUBLISHED_AUCTIONS
+        - VIEW_ANY_AUCTIONS
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+        - $ref: '#/components/parameters/PageLimit'
+        - $ref: '#/components/parameters/PageOffset'
+        - name: sortBy
+          in: query
+          required: true
+          description: Sort list by given attribute and direction
+          schema:
+            $ref: '#/components/schemas/LongTermAuctionBidSortBy'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongTermAuctionBidResultBatch'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `TIMESCALE_MISMATCH` - endpoint matching Auction timescale need to be used
+            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+          x-errors:
+            - code: TIMESCALE_MISMATCH
+              description: endpoint matching Auction timescale need to be used
+            - code: INVALID_PARTICIPANT_ID
+              description: specified Participant not found in the system
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/auctions/day-ahead-or-intra-day/{id}/results/bidding:
+    get:
+      operationId: getDayAheadOrIntraDayAuctionBiddingResults
+      description: |-
+        Fetch Bidding Results for a Day Ahead or an Intra Day Auction by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_PUBLISHED_AUCTIONS`
+          * `VIEW_ANY_AUCTIONS`
+      tags:
+        - auction
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_PUBLISHED_AUCTIONS
+        - VIEW_ANY_AUCTIONS
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+        - $ref: '#/components/parameters/PageLimit'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroupResultBatch'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `TIMESCALE_MISMATCH` - endpoint matching Auction timescale need to be used
+            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+          x-errors:
+            - code: TIMESCALE_MISMATCH
+              description: endpoint matching Auction timescale need to be used
+            - code: INVALID_PARTICIPANT_ID
+              description: specified Participant not found in the system
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v1/audit-logs:
     get:
       operationId: getAuditLogs
@@ -8709,6 +8801,46 @@ components:
     DayAheadOrIntraDayAuctionBidGroup:
       type: object
       required:
+        - id
+        - bids
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        bids:
+          type: array
+          items:
+            type: object
+            required:
+              - mtu
+            properties:
+              mtu:
+                $ref: '#/components/schemas/MtuStart'
+              bid:
+                type: object
+                required:
+                  - value
+                  - updatedAt
+                  - status
+                properties:
+                  value:
+                    $ref: '#/components/schemas/BidValue'
+                  updatedAt:
+                    $ref: '#/components/schemas/DateTime'
+                  status:
+                    $ref: '#/components/schemas/AuctionBidStatus'
+                  results:
+                    type: object
+                    required:
+                      - allocatedCapacity
+                      - marginalPrice
+                    properties:
+                      allocatedCapacity:
+                        $ref: '#/components/schemas/Capacity'
+                      marginalPrice:
+                        $ref: '#/components/schemas/Currency'
+    DayAheadOrIntraDayAuctionBidGroupResult:
+      type: object
+      required:
         - bids
       properties:
         id:
@@ -8724,7 +8856,7 @@ components:
             properties:
               mtu:
                 $ref: '#/components/schemas/MtuStart'
-              value:
+              bid:
                 type: object
                 required:
                   - value
@@ -8736,7 +8868,7 @@ components:
                     $ref: '#/components/schemas/DateTime'
                   status:
                     $ref: '#/components/schemas/AuctionBidStatus'
-    DayAheadOrIntraDayAuctionBidGroupBatch:
+    DayAheadOrIntraDayAuctionBidGroupResultBatch:
       type: object
       required:
         - entries
@@ -8745,7 +8877,7 @@ components:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroup'
+            $ref: '#/components/schemas/DayAheadOrIntraDayAuctionBidGroupResult'
         totalCount:
           $ref: '#/components/schemas/Count'
     DayAheadOrIntraDayAuctionMtu:
@@ -9680,23 +9812,46 @@ components:
     LongTermAuctionBid:
       type: object
       required:
-        - price
-        - capacity
+        - id
+        - value
+        - updatedAt
+        - status
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        value:
+          $ref: '#/components/schemas/BidValue'
+        updatedAt:
+          $ref: '#/components/schemas/DateTime'
+        status:
+          $ref: '#/components/schemas/AuctionBidStatus'
+        results:
+          type: object
+          required:
+            - allocatedCapacity
+            - marginalPrice
+          properties:
+            allocatedCapacity:
+              $ref: '#/components/schemas/Capacity'
+            marginalPrice:
+              $ref: '#/components/schemas/Currency'
+    LongTermAuctionBidResult:
+      type: object
+      required:
+        - value
         - status
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
         participant:
           $ref: '#/components/schemas/AuctionBidParticipant'
-        price:
-          $ref: '#/components/schemas/Currency'
-        capacity:
-          $ref: '#/components/schemas/Capacity'
+        value:
+          $ref: '#/components/schemas/BidValue'
         updatedAt:
           $ref: '#/components/schemas/DateTime'
         status:
           $ref: '#/components/schemas/AuctionBidStatus'
-    LongTermAuctionBidBatch:
+    LongTermAuctionBidResultBatch:
       type: object
       required:
         - entries
@@ -9705,7 +9860,7 @@ components:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/LongTermAuctionBid'
+            $ref: '#/components/schemas/LongTermAuctionBidResult'
         totalCount:
           $ref: '#/components/schemas/Count'
     LongTermAuctionBidSortBy:
