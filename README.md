@@ -16,9 +16,9 @@ After installing the package you will be able to use the client by first instant
 ​
 ```python
 configuration = Configuration(
-        api_key={"ApiKey": "<your empire api key>"},
-        host="https://api.training.empire.britned.com"
-    )
+    api_key={"ApiKey": "<your empire api key>"},
+    host="https://api.training.empire.britned.com"
+)
 client = ApiClient(configuration=configuration)
 ```
 ​
@@ -27,10 +27,13 @@ During the testing phase of Empire we provide a single environment for testing a
 An example for retrieving ten auctions ordered by the start of their bidding periods:
 ​
 ```python
-    auction_api = AuctionApi(api_client=client)
-    auctions = auction_api.get_auctions(limit=10, offset=0,
-                                                      sort_by=AuctionSortBy.BIDDING_PERIOD_START_DESC)
-    print(auctions)
+auction_api = AuctionApi(api_client=client)
+auctions = auction_api.get_auctions(
+    limit=10,
+    offset=0,
+    sort_by=AuctionSortBy.BIDDING_PERIOD_START_DESC
+)
+print(auctions)
 ```
 
 ## Changelog
