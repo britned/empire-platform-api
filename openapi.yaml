@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.179.1
+  version: 0.179.2
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -5620,6 +5620,357 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/finance/billing:
+    get:
+      operationId: getFinanceBillingReport
+      description: |-
+        Fetch Finance Billing Report
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_OWN_FINANCE_REPORTS`
+          * `VIEW_ANY_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_OWN_FINANCE_REPORTS
+        - VIEW_ANY_FINANCE_REPORTS
+      parameters:
+        - $ref: '#/components/parameters/ParticipantIds'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - name: deliveryPeriodStart
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: deliveryPeriodEnd
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: invoicePeriod
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BeginningOfMonth'
+        - name: accountingCodes
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/SageCode'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - delivery period start and end dates must come after each other
+            *  `PERIOD_TOO_LONG` - delivery period the maximum period length is 1 year
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: delivery period start and end dates must come after each other
+            - code: PERIOD_TOO_LONG
+              description: delivery period the maximum period length is 1 year
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/finance/invoice-details:
+    get:
+      operationId: getFinanceInvoiceDetailsReport
+      description: |-
+        Fetch Finance Invoice Details Report
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_FINANCE_REPORTS`
+          * `VIEW_OWN_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
+      parameters:
+        - $ref: '#/components/parameters/ParticipantId'
+        - name: generationMonth
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BeginningOfMonth'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /v1/reporting/finance/single-invoice-details:
+    get:
+      operationId: getFinanceSingleInvoiceDetailsReport
+      description: |-
+        Fetch Finance Single Invoice Details
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_FINANCE_REPORTS`
+          * `VIEW_OWN_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
+      parameters:
+        - name: invoiceDisplayId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/reporting/finance/invoice-status:
+    get:
+      operationId: getFinanceInvoiceStatusReport
+      description: |-
+        Fetch Finance Invoice Status Report
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_FINANCE_REPORTS`
+          * `VIEW_OWN_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
+      parameters:
+        - $ref: '#/components/parameters/ParticipantIds'
+        - name: invoicePeriodFrom
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BeginningOfMonth'
+        - name: invoicePeriodTo
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BeginningOfMonth'
+        - name: statuses
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/InvoiceStatus'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - period from and to must come after each other
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: period from and to must come after each other
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/finance/auction-results-settlement:
+    get:
+      operationId: getFinanceAuctionResultsSettlementReport
+      description: |-
+        Fetch Finance Auction Results Settlement Report
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_FINANCE_REPORTS`
+          * `VIEW_OWN_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
+      parameters:
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - name: deliveryPeriodStart
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: deliveryPeriodEnd
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: finalResultsPublishedFrom
+          in: query
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: finalResultsPublishedTo
+          in: query
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: accountingCodes
+          in: query
+          required: true
+          schema:
+            items:
+              $ref: '#/components/schemas/SageCode'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - both for final resuls published period and delivery period start and end dates must come after each other
+            *  `PERIOD_TOO_LONG` - both for final results published period and delivery period the maximum period length is 1 year
+            *  `INVALID_ACCOUNTING_CODE` - only Auction-relevant accounting codes are acceptable. The Border direction must be the same as the accounting code's border direction
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: both for final resuls published period and delivery period start and end dates must come after each other
+            - code: PERIOD_TOO_LONG
+              description: both for final results published period and delivery period the maximum period length is 1 year
+            - code: INVALID_ACCOUNTING_CODE
+              description: only Auction-relevant accounting codes are acceptable. The Border direction must be the same as the accounting code's border direction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/finance/uiosi:
+    get:
+      operationId: getFinanceUiosiReport
+      description: |-
+        Fetch Finance UIoSI Report
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_FINANCE_REPORTS`
+          * `VIEW_OWN_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
+      parameters:
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - name: deliveryPeriodStart
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: deliveryPeriodEnd
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - $ref: '#/components/parameters/ParticipantIds'
+        - $ref: '#/components/parameters/Timescale'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `TIMESCALE_MISMATCH` - endpoint matching Auction LT/DA timescale need to be used
+          x-errors:
+            - code: TIMESCALE_MISMATCH
+              description: endpoint matching Auction LT/DA timescale need to be used
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - delivery period start and end dates must come after each other
+            *  `PERIOD_TOO_LONG` - delivery period the maximum period length is 1 year
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: delivery period start and end dates must come after each other
+            - code: PERIOD_TOO_LONG
+              description: delivery period the maximum period length is 1 year
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/secondary-market/return-requests/options:
     get:
       operationId: getSecondaryMarketReturnRequestOptions
@@ -8178,6 +8529,15 @@ components:
           $ref: '#/components/schemas/Identifier'
         name:
           type: string
+    BeginningOfMonth:
+      type: string
+      description: |
+        One single calendar day, interpreted in **System Time**
+
+        - ISO 8601 compliant string in `yyyy-mm-01` format
+      format: date
+      pattern: \d{4}-\d{2}-01
+      example: '2022-01-01'
     BidValue:
       type: object
       required:
