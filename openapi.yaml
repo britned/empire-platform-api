@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.179.3
+  version: 0.179.4
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -655,14 +655,14 @@ paths:
         ---
 
         __Requires Permission:__ (at least one)
-          * `MANAGE_LT_AUCTION_BIDS`
+          * `MANAGE_DA_ID_AUCTION_BIDS`
       tags:
         - auction
       security:
         - ApiKey: []
         - AuthToken: []
       x-permissions:
-        - MANAGE_LT_AUCTION_BIDS
+        - MANAGE_DA_ID_AUCTION_BIDS
       parameters:
         - $ref: '#/components/parameters/Identifier'
       responses:
