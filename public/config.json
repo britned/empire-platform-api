@@ -1,6 +1,10 @@
 {
-  "v0.176.5": {
-    "label": "deployed on TRAINING",
-    "selected": true
-  }
+  "environments": [
+    {
+      "name": "TRAINING",
+      "baseUrl": "https://api.training.empire.britned.com",
+      "default": true
+    }
+  ],
+  "labels": {}
 }

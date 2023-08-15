@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="OpenAPI specification for the REST API of Empire, the allocation and nomination platform of BritNed."
+      content="API Navigator for the REST API of Empire, the allocation and nomination platform of BritNed."
     />
-    <title>Empire - Platform API</title>
+    <title>Empire API Navigator</title>
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css" />
     <style type="text/css">
       body {
@@ -33,45 +34,74 @@
   <script src="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-standalone-preset.js" crossorigin></script>
   <script>
     window.onload = async () => {
-      const [configResponse, versionsResponse] = await Promise.all([
+      const [configResponse, versionListResponse] = await Promise.all([
         fetch('config.json'),
         fetch('versions.txt')
       ]);
 
-      if (!configResponse.ok || !versionsResponse.ok) {
+      if (!configResponse.ok || !versionListResponse.ok) {
         console.error('Failed to load config or versions');
         return;
       }
 
       const config = await configResponse.json();
-      const versions = await versionsResponse.text().then(text => text.split('\n').filter(v => v));
+      const versionList = await versionListResponse.text()
+        .then(text => text.split('\n').filter(v => v));
 
-      console.log(config, versions);
+      console.log('config', config);
+      console.log('versionList', versionList);
 
-      let selectedName;
-
-      const urls = versions.map(version => {
-        let name = version;
-
-        if (config[version] && config[version].label) {
-          name += ` - ${config[version].label}`;
-        }
-
-        if (config[version] && config[version].selected) {
-          selectedName = name;
-        }
-
+      // prepare data structure
+      const versions = versionList.map(version => {
         return {
-          name: name,
-          url: `openapi-${version}.yaml`
+          name: version,
+          file: `openapi-${version}.yaml`,
+          environments: [],
+          label: null,
+          default: false
         }
       });
 
-      const hasSelectedName = new URLSearchParams(window.location.search).get('urls.primaryName');
+      // fetch environment data
+      for (const environment of config.environments) {
+        const apiVersion = await fetch(`${environment.baseUrl}/v1/public/version`)
+          .then(response => response.json())
+          .then(json => `v${json['apiVersion']}`);
 
+        const version = versions.find(v => v.name === apiVersion)
+
+        version.environments.push(environment.name);
+        version.default = environment.default;
+      };
+
+      // attach optional labels
+      for (const versionKey in config.labels) {
+        const version = versions.find(v => v.name === versionKey);
+
+        if (version) {
+          version.label = config.labels[versionKey];
+        }
+      }
+
+      console.log('versions', versions);
+
+      // compose urls
+      const urls = versions.map(version => {
+        return {
+          name: version.name,
+          url: version.file
+        }
+      });
+
+      // determine selected version
+      const urlName = new URLSearchParams(window.location.search).get('urls.primaryName');
+      const defaultName = versions.find(version => version.default).name;
+      const selectedName = urlName || defaultName;
+
+      // initialize Swagger UI
       window.ui = SwaggerUIBundle({
         urls: urls,
-        'urls.primaryName': hasSelectedName ? hasSelectedName : selectedName,
+        'urls.primaryName': selectedName,
         dom_id: '#swagger-ui',
         displayOperationId: true,
         deepLinking: true,
@@ -87,6 +117,22 @@
       logo.addEventListener('click', () => {
         window.location.href = window.location.href.split('?')[0];
       })
+
+      // attach custom labels
+      for (const version of versions) {
+        const option = document.querySelector(`#swagger-ui .topbar-wrapper select option[value="${version.file}"]`);
+        const text = option.text;
+
+        if (version.environments.length) {
+          option.text = `${text} - deployed on ${version.environments.join(', ')}`;
+          continue;
+        }
+
+        if (version.label) {
+          option.text = `${text} - ${version.label}`;
+          continue;
+        }
+      }
     };
   </script>
 

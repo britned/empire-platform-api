@@ -2,7 +2,7 @@
 
 OpenAPI specification for the REST API of Empire, the allocation and nomination platform of BritNed.
 
-The common OpenAPI specification (single YAML file) is available in the root of this repository. The recommended exploration of the options is to use the web-based navigation through it at [https://britned.github.io/empire-platform-api](https://britned.github.io/empire-platform-api)
+The common OpenAPI specification (single YAML file) is available in the root of this repository. The recommended exploration of the options is to use the web-based **API Navigator** found at [https://britned.github.io/empire-platform-api](https://britned.github.io/empire-platform-api)
 
 ## Notes for developers
 
