@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.179.4
+  version: 0.179.5
   contact:
     name: BritNed
     url: https://www.britned.com
