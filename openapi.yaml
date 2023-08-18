@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.179.6
+  version: 0.179.7
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -5138,12 +5138,10 @@ paths:
               $ref: '#/components/schemas/AuctionStatus'
         - name: biddingPeriodStart
           in: query
-          required: true
           schema:
             $ref: '#/components/schemas/Date'
         - name: biddingPeriodEnd
           in: query
-          required: true
           schema:
             $ref: '#/components/schemas/Date'
         - name: deliveryPeriodStart
@@ -5377,12 +5375,10 @@ paths:
             $ref: '#/components/schemas/Date'
         - name: validityPeriodStart
           in: query
-          required: true
           schema:
             $ref: '#/components/schemas/Date'
         - name: validityPeriodEnd
           in: query
-          required: true
           schema:
             $ref: '#/components/schemas/Date'
       responses:
@@ -5644,17 +5640,14 @@ paths:
         - $ref: '#/components/parameters/BorderDirectionWithBoth'
         - name: deliveryPeriodStart
           in: query
-          required: true
           schema:
             $ref: '#/components/schemas/Date'
         - name: deliveryPeriodEnd
           in: query
-          required: true
           schema:
             $ref: '#/components/schemas/Date'
         - name: invoicePeriod
           in: query
-          required: true
           schema:
             $ref: '#/components/schemas/BeginningOfMonth'
         - name: accountingCodes
@@ -5679,9 +5672,12 @@ paths:
           description: |-
             __Unprocessable Entity__
 
+            *  `MISSING_PERIOD` - either (`deliveryPeriodStart` AND `deliveryPeriodEnd`) OR `invoicePeriod` must be specified
             *  `PERIOD_MISALIGNED` - delivery period start and end dates must come after each other
             *  `PERIOD_TOO_LONG` - delivery period the maximum period length is 1 year
           x-errors:
+            - code: MISSING_PERIOD
+              description: either (`deliveryPeriodStart` AND `deliveryPeriodEnd`) OR `invoicePeriod` must be specified
             - code: PERIOD_MISALIGNED
               description: delivery period start and end dates must come after each other
             - code: PERIOD_TOO_LONG
@@ -9676,6 +9672,7 @@ components:
         - MISSING_DIRECTIONAL_CONFIG
         - MISSING_EXECUTION_MESSAGE
         - MISSING_MANUAL_VALUE
+        - MISSING_PERIOD
         - MISSING_PRIORITY
         - MISSING_VAT_RATE_MARKET
         - MTU_BORDER_MISMATCH
