@@ -1,3 +1,11 @@
+### [0.179.8](https://github.com/britned/empire-platform-api/compare/v0.179.7...v0.179.8) (2023-08-18)
+
+
+### Bug Fixes
+
+* **auctions, public-auctions:** remove unused biddingResults from LT details
+* **auctions:** add totalRequested and totalAllocated capacity for LT results
+
 ### [0.179.7](https://github.com/britned/empire-platform-api/compare/v0.179.6...v0.179.7) (2023-08-18)
 
 

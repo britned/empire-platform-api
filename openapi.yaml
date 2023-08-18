@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.179.7
+  version: 0.179.8
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -10164,8 +10164,6 @@ components:
           $ref: '#/components/schemas/LongTermOfferedCapacity'
         reservePrice:
           $ref: '#/components/schemas/LongTermReservePrice'
-        biddingResults:
-          $ref: '#/components/schemas/LongTermBiddingResults'
     LongTermAuctionBid:
       type: object
       required:
@@ -10231,6 +10229,8 @@ components:
       type: object
       required:
         - bids
+        - totalRequestedCapacity
+        - totalAllocatedCapacity
         - allocatedCapacity
         - marginalPrice
       properties:
@@ -10250,6 +10250,10 @@ components:
                 $ref: '#/components/schemas/Capacity'
               status:
                 $ref: '#/components/schemas/AuctionBidStatus'
+        totalRequestedCapacity:
+          $ref: '#/components/schemas/Capacity'
+        totalAllocatedCapacity:
+          $ref: '#/components/schemas/Capacity'
         allocatedCapacity:
           type: array
           items:
@@ -10270,21 +10274,6 @@ components:
         marginalPrice:
           $ref: '#/components/schemas/Currency'
         reservePrice:
-          $ref: '#/components/schemas/Currency'
-    LongTermBiddingResults:
-      type: object
-      description: |
-        * `totalRequestedCapacity` - Capacity that has been requested in the bids
-        * `preliminaryAllocatedCapacity` - Capacity that can be allocated at the current time (optional, if there are successful bids)
-        * `preliminaryMarginalPrice` - Marginal price at the current time (optional, if there are successful bids)
-      required:
-        - totalRequestedCapacity
-      properties:
-        totalRequestedCapacity:
-          $ref: '#/components/schemas/Capacity'
-        preliminaryAllocatedCapacity:
-          $ref: '#/components/schemas/Capacity'
-        preliminaryMarginalPrice:
           $ref: '#/components/schemas/Currency'
     LongTermDefaultBid:
       type: object
@@ -11762,8 +11751,6 @@ components:
           $ref: '#/components/schemas/LongTermOfferedCapacity'
         reservePrice:
           $ref: '#/components/schemas/LongTermReservePrice'
-        biddingResults:
-          $ref: '#/components/schemas/LongTermBiddingResults'
     PublicLongTermAuctionResults:
       type: object
       required:
