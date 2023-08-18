@@ -1,3 +1,10 @@
+### [0.179.9](https://github.com/britned/empire-platform-api/compare/v0.179.8...v0.179.9) (2023-08-18)
+
+
+### Bug Fixes
+
+* **dashboard:** remove timescale filter from netted nominations
+
 ### [0.179.8](https://github.com/britned/empire-platform-api/compare/v0.179.7...v0.179.8) (2023-08-18)
 
 
