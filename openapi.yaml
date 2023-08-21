@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.179.10
+  version: 0.179.11
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -5179,6 +5179,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/auctions/{id}/allocation-results:
+    get:
+      operationId: getAuctionAllocationResultsReport
+      description: |-
+        Fetch Auction Allocation Results Report in "ECAN Allocation Results Document v4.0" format
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_PUBLISHED_AUCTIONS`
+          * `VIEW_ANY_AUCTIONS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_PUBLISHED_AUCTIONS
+        - VIEW_ANY_AUCTIONS
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/xml:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/AuctionResultsNotAvailable'
   /v1/reporting/trs-and-nominations/overview:
     get:
       operationId: getTrsAndNominationsOverviewReport

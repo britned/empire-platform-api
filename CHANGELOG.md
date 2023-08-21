@@ -1,3 +1,10 @@
+### [0.179.11](https://github.com/britned/empire-platform-api/compare/v0.179.10...v0.179.11) (2023-08-21)
+
+
+### Features
+
+* **auctions:** add report for fetching auction results in XML
+
 ### [0.179.10](https://github.com/britned/empire-platform-api/compare/v0.179.9...v0.179.10) (2023-08-21)
 
 > No changes affecting Participants.
