@@ -1,3 +1,10 @@
+### [0.179.12](https://github.com/britned/empire-platform-api/compare/v0.179.11...v0.179.12) (2023-08-21)
+
+
+### Bug Fixes
+
+* **reporting:** add participant ID to getAuctionAllocationResultsReport
+
 ### [0.179.11](https://github.com/britned/empire-platform-api/compare/v0.179.10...v0.179.11) (2023-08-21)
 
 

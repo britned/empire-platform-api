@@ -10,7 +10,7 @@ info:
       * _capacity values_ => kW (integers)
       * _dates and local times_ => System Time
       * _currencies_ => EUR
-  version: 0.179.11
+  version: 0.179.12
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -5200,6 +5200,7 @@ paths:
         - VIEW_ANY_AUCTIONS
       parameters:
         - $ref: '#/components/parameters/Identifier'
+        - $ref: '#/components/parameters/ParticipantId'
       responses:
         '200':
           description: __OK__
