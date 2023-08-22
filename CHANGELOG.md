@@ -1,3 +1,10 @@
+### [0.179.13](https://github.com/britned/empire-platform-api/compare/v0.179.12...v0.179.13) (2023-08-22)
+
+
+### Bug Fixes
+
+* **reporting:** make invoice period required in getFinanceBillingReport
+
 ### [0.179.12](https://github.com/britned/empire-platform-api/compare/v0.179.11...v0.179.12) (2023-08-21)
 
 
