@@ -1,26 +1,23 @@
 openapi: 3.0.3
 info:
-  title: Empire - Platform API
+  title: Platform API
   description: |
-    OpenAPI specification for the Platform REST API of Empire
+    _OpenAPI specification for the **Platform API** of **Empire**, the allocation and nomination platform of BritNed_
 
-    **System Time:** Europe/Amsterdam
+    ---
 
-    **General data formats:**
-      * _capacity values_ => kW (integers)
-      * _dates and local times_ => System Time
-      * _currencies_ => EUR
-  version: 0.179.13
+    Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
+  version: 1.0.0
   contact:
     name: BritNed
     url: https://www.britned.com
     email: britned.info@britned.com
-  termsOfService: https://www.britned.com/who-we-are/about-britned/empire-api-terms-of-use/
+  termsOfService: https://www.britned.com/empire-api-terms-of-use/
 servers:
   - description: PRODUCTION
-    url: https://api.empire.scapps.io
+    url: https://api.empire.britned.com
   - description: TRAINING
-    url: https://api.training.empire.scapps.io
+    url: https://api.training.empire.britned.com
 tags:
   - name: metadata
     description: Metadata endpoints
@@ -13030,10 +13027,10 @@ components:
       description: |-
         __Forbidden__
 
-        *  `FORBIDDEN` - insufficient permissions
+        *  `FORBIDDEN` - insufficient permissions or authorization failed
       x-errors:
         - code: FORBIDDEN
-          description: insufficient permissions
+          description: insufficient permissions or authorization failed
       content:
         application/json:
           schema:

@@ -1,3 +1,10 @@
+## [1.0.0](https://github.com/britned/empire-platform-api/compare/v0.179.13...v1.0.0) (2023-08-29)
+
+
+### Documentation
+
+* update API info and server URLs
+
 ### [0.179.13](https://github.com/britned/empire-platform-api/compare/v0.179.12...v0.179.13) (2023-08-22)
 
 
