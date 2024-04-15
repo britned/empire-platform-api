@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 3.0.7
+  version: 3.0.8
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -8902,6 +8902,7 @@ components:
         - UPDATE_UNPLANNED_OUTAGE
         - CANCEL_UNPLANNED_OUTAGE
         - END_UNPLANNED_OUTAGE
+        - REOPEN_UNPLANNED_OUTAGE
         - CREATE_PLANNED_OUTAGE
         - UPDATE_PLANNED_OUTAGE
         - DELETE_PLANNED_OUTAGE
@@ -10197,6 +10198,7 @@ components:
         - OUTAGE_PERIOD_CANNOT_BE_REMOVED
         - OUTAGE_PERIOD_TOO_SHORT
         - OUTAGE_PERIODS_CROSS_OVER_YEAR
+        - OUTAGE_PERIOD_ELAPSED
         - OUTAGE_PERIODS_UNORDERED
         - PERIOD_CANNOT_BE_REMOVED
         - PERIOD_END_TOO_LATE
