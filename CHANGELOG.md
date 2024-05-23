@@ -1,3 +1,10 @@
+### [3.0.10](https://github.com/britned/empire-platform-api/compare/v3.0.9...v3.0.10) (2024-05-23)
+
+
+### Features
+
+* **nomination:** enable querying bpp nominations for providers
+
 ### [3.0.9](https://github.com/britned/empire-platform-api/compare/v3.0.8...v3.0.9) (2024-05-23)
 
 > No changes affecting Participants.
