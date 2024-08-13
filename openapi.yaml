@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 3.0.10
+  version: 4.0.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -5940,6 +5940,72 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/finance/bought-or-sold-capacity:
+    get:
+      operationId: getFinanceBoughtOrSoldCapacityReport
+      description: |-
+        Fetch Finance Bought Or Sold Capacity Report
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_OWN_FINANCE_REPORTS`
+          * `VIEW_ANY_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_OWN_FINANCE_REPORTS
+        - VIEW_ANY_FINANCE_REPORTS
+      parameters:
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - name: deliveryPeriodStart
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: deliveryPeriodEnd
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/Timescales'
+        - name: transactionTypes
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionType'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - delivery period start and end dates must come after each other
+            *  `PERIOD_TOO_LONG` - delivery period the maximum period length is 1 year
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: delivery period start and end dates must come after each other
+            - code: PERIOD_TOO_LONG
+              description: delivery period the maximum period length is 1 year
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/reporting/finance/credit-cover:
     get:
       operationId: getFinanceCreditCoverReport
@@ -6166,6 +6232,81 @@ paths:
           x-errors:
             - code: PERIOD_MISALIGNED
               description: period from and to must come after each other
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/finance/auction-results-settlement-per-participant:
+    get:
+      operationId: getFinanceAuctionResultsSettlementPerParticipantReport
+      description: |-
+        Fetch Finance Auction Results Settlement Report Per Participant
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_FINANCE_REPORTS`
+          * `VIEW_OWN_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
+      parameters:
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - name: deliveryPeriodStart
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: deliveryPeriodEnd
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: finalResultsPublishedFrom
+          in: query
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: finalResultsPublishedTo
+          in: query
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: accountingCodes
+          in: query
+          required: true
+          schema:
+            items:
+              $ref: '#/components/schemas/SageCode'
+        - $ref: '#/components/parameters/ParticipantIds'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - both for final resuls published period and delivery period start and end dates must come after each other
+            *  `PERIOD_TOO_LONG` - both for final results published period and delivery period the maximum period length is 1 year
+            *  `INVALID_ACCOUNTING_CODE` - only Auction-relevant accounting codes are acceptable. The Border direction must be the same as the accounting code's border direction
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: both for final resuls published period and delivery period start and end dates must come after each other
+            - code: PERIOD_TOO_LONG
+              description: both for final results published period and delivery period the maximum period length is 1 year
+            - code: INVALID_ACCOUNTING_CODE
+              description: only Auction-relevant accounting codes are acceptable. The Border direction must be the same as the accounting code's border direction
           content:
             application/json:
               schema:
@@ -8578,10 +8719,6 @@ components:
             $ref: '#/components/schemas/Auction'
         totalCount:
           $ref: '#/components/schemas/Count'
-    AuctionBidExternalId:
-      type: string
-      description: |
-        Optional external identifier for the bid, for example to differentiate between traders
     AuctionBidParticipant:
       type: object
       required:
@@ -8599,6 +8736,10 @@ components:
         - SUCCESSFUL
         - PARTIALLY_SUCCESSFUL
         - UNSUCCESSFUL
+    AuctionBidTag:
+      type: string
+      description: |
+        Optional external identifier for the bid, for example to differentiate between traders
     AuctionBiddingConfiguration:
       type: object
       required:
@@ -9632,6 +9773,7 @@ components:
         - biddingConfiguration
         - processSteps
         - offeredCapacitySetup
+        - offeredCapacityManuallyUpdated
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
@@ -9659,6 +9801,8 @@ components:
           $ref: '#/components/schemas/AuctionProcessStepsAbsolute'
         offeredCapacitySetup:
           $ref: '#/components/schemas/OfferedCapacitySetup'
+        offeredCapacityManuallyUpdated:
+          type: boolean
         mtus:
           type: array
           items:
@@ -9671,8 +9815,8 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
-        externalId:
-          $ref: '#/components/schemas/AuctionBidExternalId'
+        bidTag:
+          $ref: '#/components/schemas/AuctionBidTag'
         bids:
           type: array
           items:
@@ -10391,6 +10535,7 @@ components:
         - biddingConfiguration
         - processSteps
         - offeredCapacitySetup
+        - offeredCapacityManuallyUpdated
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
@@ -10418,6 +10563,8 @@ components:
           $ref: '#/components/schemas/AuctionProcessStepsAbsolute'
         offeredCapacitySetup:
           $ref: '#/components/schemas/OfferedCapacitySetup'
+        offeredCapacityManuallyUpdated:
+          type: boolean
         mtus:
           type: array
           items:
@@ -10688,8 +10835,8 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
-        externalId:
-          $ref: '#/components/schemas/AuctionBidExternalId'
+        bidTag:
+          $ref: '#/components/schemas/AuctionBidTag'
         value:
           $ref: '#/components/schemas/BidValue'
         updatedAt:
@@ -13031,8 +13178,8 @@ components:
             properties:
               id:
                 $ref: '#/components/schemas/NullableIdentifier'
-              externalId:
-                $ref: '#/components/schemas/AuctionBidExternalId'
+              bidTag:
+                $ref: '#/components/schemas/AuctionBidTag'
               bids:
                 type: array
                 items:
@@ -13058,8 +13205,8 @@ components:
             properties:
               id:
                 $ref: '#/components/schemas/NullableIdentifier'
-              externalId:
-                $ref: '#/components/schemas/AuctionBidExternalId'
+              bidTag:
+                $ref: '#/components/schemas/AuctionBidTag'
               value:
                 $ref: '#/components/schemas/BidValue'
     SubmitNominationsMtu:
@@ -13198,6 +13345,11 @@ components:
                     $ref: '#/components/schemas/Capacity'
               notNominatedTrs:
                 $ref: '#/components/schemas/Capacity'
+    TransactionType:
+      type: string
+      enum:
+        - BOUGHT
+        - SOLD
     TransmissionRightsOverview:
       type: object
       required:

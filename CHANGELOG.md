@@ -1,3 +1,17 @@
+## [4.0.0](https://github.com/britned/empire-platform-api/compare/v3.0.10...v4.0.0) (2024-08-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **auctions:** rename externalId field to bidTag
+
+### Features
+
+* **auctions:** add offeredCapacityManuallyUpdated flag to IntraDayAuction and DayAheadAuction
+* **auctions:** rename externalId field to bidTag
+* **reporting:** add getFinanceAuctionResultsSettlementPerParticipantReport endpoint
+* **reporting:** add getFinanceBoughtOrSoldCapacityReport endpoint
+
 ### [3.0.10](https://github.com/britned/empire-platform-api/compare/v3.0.9...v3.0.10) (2024-05-23)
 
 
