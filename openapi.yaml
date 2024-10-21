@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 4.0.0
+  version: 5.0.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -121,6 +121,16 @@ paths:
           in: query
           schema:
             $ref: '#/components/schemas/AllocatedAuctionParticipantStatus'
+        - name: biddingPeriodStart
+          in: query
+          description: Filter for start of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
+        - name: biddingPeriodEnd
+          in: query
+          description: Filter for end of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
         - name: deliveryPeriodStart
           in: query
           schema:
@@ -202,6 +212,16 @@ paths:
           in: query
           schema:
             $ref: '#/components/schemas/AllocatedAuctionParticipantStatus'
+        - name: biddingPeriodStart
+          in: query
+          description: Filter for start of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
+        - name: biddingPeriodEnd
+          in: query
+          description: Filter for end of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
         - name: deliveryPeriodStart
           in: query
           schema:
@@ -1669,6 +1689,44 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /v1/buy-now-offers/{id}:
+    get:
+      operationId: getBuyNowOffer
+      description: |-
+        Fetch a Buy Now Offer by UUID
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_BUY_NOW_OFFERS`
+          * `VIEW_OWN_BUY_NOW_OFFERS`
+      tags:
+        - buy-now-offers
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_BUY_NOW_OFFERS
+        - VIEW_OWN_BUY_NOW_OFFERS
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/Identifier'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyNowOffer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v1/default-bids/options:
     get:
       operationId: getDefaultBidOptions
@@ -2650,7 +2708,6 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Date'
-        - $ref: '#/components/parameters/ProductTypes'
         - in: query
           name: sources
           required: true
@@ -2658,9 +2715,10 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/SettlementSourceType'
+        - $ref: '#/components/parameters/ProductTypesOptional'
         - $ref: '#/components/parameters/ParticipantIdOptional'
         - $ref: '#/components/parameters/BorderDirectionOptional'
-        - $ref: '#/components/parameters/TimescaleOptional'
+        - $ref: '#/components/parameters/TimescalesOptional'
       responses:
         '200':
           description: __OK__
@@ -2879,7 +2937,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvoiceBatch'
+                $ref: '#/components/schemas/InvoiceGroupBatch'
         '400':
           description: |-
             __Bad Request__
@@ -2924,6 +2982,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvoiceDetails'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/finance/invoice-groups/{id}/download-all:
+    get:
+      operationId: downloadAllFinanceInvoiceGroupPdfs
+      description: |-
+        Fetch Invoice PDFs for an Invoice Group packaged in a ZIP archive
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_OWN_INVOICES`
+          * `VIEW_ANY_INVOICES`
+      tags:
+        - finance
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_OWN_INVOICES
+        - VIEW_ANY_INVOICES
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -4874,6 +4967,16 @@ paths:
         - $ref: '#/components/parameters/BorderDirectionOptional'
         - $ref: '#/components/parameters/TimescalesOptional'
         - $ref: '#/components/parameters/ProductTypesOptional'
+        - name: biddingPeriodStart
+          in: query
+          description: Filter for start of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
+        - name: biddingPeriodEnd
+          in: query
+          description: Filter for end of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
         - name: deliveryPeriodStart
           in: query
           schema:
@@ -4919,6 +5022,16 @@ paths:
         - $ref: '#/components/parameters/BorderDirectionOptional'
         - $ref: '#/components/parameters/TimescalesOptional'
         - $ref: '#/components/parameters/ProductTypesOptional'
+        - name: biddingPeriodStart
+          in: query
+          description: Filter for start of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
+        - name: biddingPeriodEnd
+          in: query
+          description: Filter for end of bidding period
+          schema:
+            $ref: '#/components/schemas/DateTime'
         - name: deliveryPeriodStart
           in: query
           schema:
@@ -5372,6 +5485,91 @@ paths:
             application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 $ref: '#/components/schemas/ReportFile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - both for bidding period and delivery period start and end dates must come after each other
+            *  `PERIOD_TOO_LONG` - both for bidding period and delivery period the maximum period length is 1 year
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: both for bidding period and delivery period start and end dates must come after each other
+            - code: PERIOD_TOO_LONG
+              description: both for bidding period and delivery period the maximum period length is 1 year
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/auctions/bids:
+    get:
+      operationId: getAuctionsBidsReport
+      description: |-
+        Fetch Auction Bids Report
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_PUBLISHED_AUCTIONS`
+          * `VIEW_ANY_AUCTIONS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_PUBLISHED_AUCTIONS
+        - VIEW_ANY_AUCTIONS
+      parameters:
+        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/ProductTypes'
+        - $ref: '#/components/parameters/BorderDirectionWithBoth'
+        - name: statuses
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AuctionStatus'
+        - name: biddingPeriodStart
+          in: query
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: biddingPeriodEnd
+          in: query
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: deliveryPeriodStart
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+        - name: deliveryPeriodEnd
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ReportFile'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `INVALID_PARTICIPANT_ID` - the specified Participant not found in the system
+            *  `INVALID_STATUS` - one or more of the selected statuses is not allowed for this report
+          x-errors:
+            - code: INVALID_PARTICIPANT_ID
+              description: the specified Participant not found in the system
+            - code: INVALID_STATUS
+              description: one or more of the selected statuses is not allowed for this report
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6453,6 +6651,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /v1/reporting/finance/invoice-pdfs:
+    get:
+      operationId: getFinanceInvoicePdfs
+      description: |-
+        Fetch Invoice PDFs packaged in a ZIP archive
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_FINANCE_REPORTS`
+          * `VIEW_OWN_FINANCE_REPORTS`
+      tags:
+        - reporting
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_ANY_FINANCE_REPORTS
+        - VIEW_OWN_FINANCE_REPORTS
+      parameters:
+        - name: invoicePeriodFrom
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BeginningOfMonth'
+        - name: invoicePeriodTo
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BeginningOfMonth'
+        - $ref: '#/components/parameters/ParticipantId'
+        - name: invoiceTypes
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/InvoiceTypeWithNettingStatement'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `PERIOD_MISALIGNED` - period from and to must come after each other
+          x-errors:
+            - code: PERIOD_MISALIGNED
+              description: period from and to must come after each other
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/secondary-market/return-requests/options:
     get:
       operationId: getSecondaryMarketReturnRequestOptions
@@ -6526,7 +6786,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
-        - $ref: '#/components/parameters/ParticipantId'
+        - $ref: '#/components/parameters/ParticipantIds'
         - $ref: '#/components/parameters/BorderDirections'
         - in: query
           name: searchQuery
@@ -8607,6 +8867,10 @@ components:
     AllocatedAuctionSortBy:
       type: string
       enum:
+        - BIDDING_PERIOD_START_ASC
+        - BIDDING_PERIOD_START_DESC
+        - BIDDING_PERIOD_END_ASC
+        - BIDDING_PERIOD_END_DESC
         - AUCTION_TYPE_ASC
         - AUCTION_TYPE_DESC
         - DELIVERY_PERIOD_START_ASC
@@ -9135,6 +9399,7 @@ components:
         - SEND_FINANCE_INVOICE
         - RESEND_FINANCE_INVOICE
         - MARK_PAID_FINANCE_INVOICE
+        - MARK_PAID_FINANCE_INVOICE_GROUP
         - SUBMIT_FINANCE_MANUAL_ITEMS_INVOICE
         - MANUAL_START_BUSINESS_PROCESS_WORKFLOW
         - RESOLVE_BUSINESS_PROCESS_STEP
@@ -9672,6 +9937,22 @@ components:
         - BOTH
         - BANK_DEPOSIT
         - LETTER_OF_CREDIT
+    CreditUtilizationOverviewData:
+      type: object
+      required:
+        - uninvoicedLiability
+        - uninvoicedCompensation
+        - pendingBidsPrice
+        - creditUtilization
+      properties:
+        uninvoicedLiability:
+          $ref: '#/components/schemas/Currency'
+        uninvoicedCompensation:
+          $ref: '#/components/schemas/Currency'
+        pendingBidsPrice:
+          $ref: '#/components/schemas/Currency'
+        creditUtilization:
+          $ref: '#/components/schemas/Currency'
     Currency:
       type: number
       description: Currency value in Euros (€), accepted with a precision of maximum 2 decimal places
@@ -9807,6 +10088,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DayAheadOrIntraDayAuctionMtu'
+        previousAuctionId:
+          $ref: '#/components/schemas/Identifier'
+        nextAuctionId:
+          $ref: '#/components/schemas/Identifier'
     DayAheadOrIntraDayAuctionBidGroup:
       type: object
       required:
@@ -10228,6 +10513,7 @@ components:
       pattern: ^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$
     ErrorCode:
       type: string
+      x-ordered-enum: true
       enum:
         - ACTIVE_UNPLANNED_OUTAGE_EXISTS
         - ALREADY_EXPIRED
@@ -10240,20 +10526,13 @@ components:
         - BIDDING_NOT_POSSIBLE
         - BUSINESS_DAY_PERIOD_TOO_LONG
         - CANCEL_DEADLINE_MISSED
-        - CANNOT_IMPERSONATE_SELF
         - CANNOT_IMPERSONATE_NESTED
+        - CANNOT_IMPERSONATE_SELF
         - CAPACTY_ALREADY_ALLOCATED
         - CLOSURE_TIMES_MISALIGNED
         - CREDIT_LIMIT_EXCEEDED
         - CREDIT_LIMIT_TO_BE_EXCEECED
         - CURTAILMENT_NOT_POSSIBLE
-        - DELIVERY_DAY_TOO_EARLY
-        - DELIVERY_DAY_TOO_LATE
-        - DELIVERY_DAY_TOO_SOON
-        - DELIVERY_PERIOD_END_TOO_LATE
-        - DELIVERY_PERIOD_ERROR
-        - DELIVERY_PERIOD_START_TOO_SOON
-        - DELIVERY_PERIOD_TOO_LONG
         - DATA_FLOW_NOT_CREATABLE
         - DATA_FLOW_NOT_EDITABLE
         - DATA_FLOW_UNDER_PROCESSING
@@ -10261,6 +10540,13 @@ components:
         - DATE_PERIOD_MISALIGNED
         - DATE_PERIOD_TOO_LONG
         - DELETE_DEADLINE_MISSED
+        - DELIVERY_DAY_TOO_EARLY
+        - DELIVERY_DAY_TOO_LATE
+        - DELIVERY_DAY_TOO_SOON
+        - DELIVERY_PERIOD_END_TOO_LATE
+        - DELIVERY_PERIOD_ERROR
+        - DELIVERY_PERIOD_START_TOO_SOON
+        - DELIVERY_PERIOD_TOO_LONG
         - DISMISS_BPP_NOT_POSSIBLE
         - DISMISS_CURTAILMENT_NOT_POSSIBLE
         - EIC_CODE_SHOULD_BE_UNIQUE
@@ -10268,8 +10554,8 @@ components:
         - ENTITY_CANNOT_BE_UPDATED
         - EXECUTION_PERIOD_TOO_LONG
         - FIRST_DAY_TOO_SOON
-        - FIRST_MTU_STARTED
         - FIRST_MTU_ERROR
+        - FIRST_MTU_STARTED
         - FORBIDDEN
         - GATE_CLOSE_TOO_CLOSE_TO_MTU
         - GATE_MISALIGNED
@@ -10280,15 +10566,15 @@ components:
         - INVALID_ACCOUNTING_CODE
         - INVALID_ATTACHMENT_FILE_TYPE
         - INVALID_ATTACHMENT_ID
-        - INVALID_BID_ID
         - INVALID_BID_CAPACITY
-        - INVALID_BPP_MARKET
+        - INVALID_BID_ID
         - INVALID_BID_PRICE
+        - INVALID_BPP_MARKET
         - INVALID_BPP_PROVIDER
         - INVALID_CLOSURE_TIME
+        - INVALID_DELIVERY_DAY
         - INVALID_DIRECTION_ENTRIES
         - INVALID_DIRECTIONAL_VALUES
-        - INVALID_DELIVERY_DAY
         - INVALID_EXECUTION_DAY
         - INVALID_EXPIRY_DAY
         - INVALID_ID_AUCTION_PRODUCT_TYPE
@@ -10296,9 +10582,9 @@ components:
         - INVALID_MTU
         - INVALID_NEW_PERIOD_START
         - INVALID_NOMINATION_VALUE
-        - INVALID_NOTICEBOARD_ENTRY
         - INVALID_NOTICE_CAPACITY
         - INVALID_NOTICE_PRICE
+        - INVALID_NOTICEBOARD_ENTRY
         - INVALID_NTC_OVERRIDE_VALUE
         - INVALID_ORGANISATION_ID
         - INVALID_OUTAGE_PERIOD_VALUE
@@ -10311,7 +10597,6 @@ components:
         - INVALID_RESPONSE_CAPACITY
         - INVALID_RESPONSE_PRICE
         - INVALID_RETURN_CAPACITY
-        - RETURNS_WINDOW_CLOSED
         - INVALID_STATUS
         - INVALID_SUBMISSION_ID
         - INVALID_TARGET_NTC_VALUE
@@ -10331,17 +10616,18 @@ components:
         - MISSING_MANUAL_VALUE
         - MISSING_PRIORITY
         - MISSING_VAT_RATE_MARKET
+        - MTU_ALREADY_LOCKED
         - MTU_BORDER_MISMATCH
         - MTU_LIST_GATES_MISALIGNED
         - MTU_LIST_MISALIGNED
         - MTU_NOT_EDITABLE
         - MTU_PERIOD_OVERLAP
-        - MTU_ALREADY_LOCKED
         - NO_ACTIVE_CRISIS
         - NO_EXCHANGE_RATE
         - NO_OFFERS_PRESENT
         - NOT_FOUND
         - NTC_ADDITION_ALREADY_IN_RANGE
+        - NTC_REDUCTION_ALREADY_IN_RANGE
         - OC_DEFINITION_MISMATCH
         - OC_LARGER_THAN_MAX_ATC
         - OC_UNDEFINED
@@ -10351,28 +10637,29 @@ components:
         - ORGANISATION_TYPE_MISMATCH
         - OUTAGE_CANNOT_BE_EXTENDED
         - OUTAGE_PERIOD_CANNOT_BE_REMOVED
+        - OUTAGE_PERIOD_ELAPSED
         - OUTAGE_PERIOD_TOO_SHORT
         - OUTAGE_PERIODS_CROSS_OVER_YEAR
-        - OUTAGE_PERIOD_ELAPSED
         - OUTAGE_PERIODS_UNORDERED
         - PERIOD_CANNOT_BE_REMOVED
         - PERIOD_END_TOO_LATE
         - PERIOD_MISALIGNED
+        - PERIOD_NOT_WHOLE_MONTHS
         - PERIOD_OVERLAP
         - PERIOD_START_TOO_SOON
         - PERIOD_TOO_LONG
-        - PERIOD_NOT_WHOLE_MONTHS
         - PERIODS_OVERLAP
         - PERIODS_UNORDERED
         - PRICE_RANGE_MISMATCH
-        - PROCESS_STEPS_DST_ERROR
-        - PROCESS_STEPS_MISALIGNED
-        - PROCESS_STEPS_GAP_ERROR
-        - PROCESS_STEP_PRECISION_ERROR
         - PROCESS_STEP_BOUNDARY_ERROR
+        - PROCESS_STEP_PRECISION_ERROR
+        - PROCESS_STEPS_DST_ERROR
+        - PROCESS_STEPS_GAP_ERROR
+        - PROCESS_STEPS_MISALIGNED
         - PROCESSING_ERROR
         - PRODUCT_TYPE_MISMATCH
         - REPORTING_PERIOD_OVERLAP
+        - RETURNS_WINDOW_CLOSED
         - ROLE_MISMATCH
         - SCHEMA_MISMATCH
         - SCHEMA_VALIDATION_ERROR
@@ -10381,8 +10668,8 @@ components:
         - TARGET_NTC_MISSING
         - TIMESCALE_MISMATCH
         - TOO_MANY_BIDS
-        - TRANSFER_DATE_PERIOD_TOO_LONG
         - TRANCHE_SIZE_MISMATCH
+        - TRANSFER_DATE_PERIOD_TOO_LONG
         - UNAUTHORIZED
         - UNDER_MTU_SIZE_MINIMUM
         - UPDATE_DEADLINE_MISSED
@@ -10390,8 +10677,8 @@ components:
         - VAT_NUMBER_MISSING
         - VAT_RATE_MARKET_MISMATCH
         - VERSION_MISMATCH
-        - WINDOW_OPEN_TIME_OUT_OF_BOUNDS
         - WINDOW_CLOSE_TIME_OUT_OF_BOUNDS
+        - WINDOW_OPEN_TIME_OUT_OF_BOUNDS
     ErrorResponse:
       type: object
       required:
@@ -10514,6 +10801,22 @@ components:
           type: string
         orgShortName:
           type: string
+    FinanceOverview:
+      type: object
+      required:
+        - creditCover
+        - unpaidInvoices
+        - creditUtilization
+        - creditLimit
+      properties:
+        creditCover:
+          $ref: '#/components/schemas/Currency'
+        unpaidInvoices:
+          $ref: '#/components/schemas/UnpaidInvoicesOverviewData'
+        creditUtilization:
+          $ref: '#/components/schemas/CreditUtilizationOverviewData'
+        creditLimit:
+          $ref: '#/components/schemas/Currency'
     Identifier:
       type: string
       description: Unique identifier for the record in UUID4 format
@@ -10569,6 +10872,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DayAheadOrIntraDayAuctionMtu'
+        previousAuctionId:
+          $ref: '#/components/schemas/Identifier'
+        nextAuctionId:
+          $ref: '#/components/schemas/Identifier'
     Invoice:
       type: object
       required:
@@ -10606,22 +10913,11 @@ components:
         - SENT
         - RESENT
         - MARKED_AS_PAID
-    InvoiceBatch:
-      type: object
-      required:
-        - entries
-        - totalCount
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Invoice'
-        totalCount:
-          $ref: '#/components/schemas/Count'
     InvoiceDetails:
       type: object
       required:
         - id
+        - groupId
         - displayId
         - participant
         - period
@@ -10636,6 +10932,8 @@ components:
         - history
       properties:
         id:
+          $ref: '#/components/schemas/Identifier'
+        groupId:
           $ref: '#/components/schemas/Identifier'
         displayId:
           type: string
@@ -10677,6 +10975,52 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InvoiceHistory'
+    InvoiceGroup:
+      type: object
+      required:
+        - id
+        - displayId
+        - invoices
+        - netAmount
+        - grossAmount
+        - status
+        - lastStatusChange
+        - participant
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        displayId:
+          type: string
+        attachment:
+          $ref: '#/components/schemas/Attachment'
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoice'
+        netAmount:
+          $ref: '#/components/schemas/Currency'
+        grossAmount:
+          $ref: '#/components/schemas/Currency'
+        status:
+          $ref: '#/components/schemas/InvoiceStatus'
+        dueDate:
+          $ref: '#/components/schemas/Date'
+        lastStatusChange:
+          $ref: '#/components/schemas/DateTime'
+        participant:
+          $ref: '#/components/schemas/InvoiceParticipantDetails'
+    InvoiceGroupBatch:
+      type: object
+      required:
+        - entries
+        - totalCount
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceGroup'
+        totalCount:
+          $ref: '#/components/schemas/Count'
     InvoiceHistory:
       type: object
       description: Participant basic information
@@ -10759,6 +11103,13 @@ components:
           $ref: '#/components/schemas/Decimal'
         exchangeRateDay:
           $ref: '#/components/schemas/Date'
+    InvoiceTypeWithNettingStatement:
+      type: string
+      enum:
+        - NS
+        - SB
+        - SC
+        - SI
     InvoiceVatRate:
       type: object
       description: Participant basic information
@@ -11582,17 +11933,11 @@ components:
     ParticipantDashboardFinanceOverviewData:
       type: object
       required:
-        - creditCover
-        - creditUtilization
-        - creditLimit
+        - financeOverview
         - invoices
       properties:
-        creditCover:
-          $ref: '#/components/schemas/Currency'
-        creditUtilization:
-          $ref: '#/components/schemas/Currency'
-        creditLimit:
-          $ref: '#/components/schemas/Currency'
+        financeOverview:
+          $ref: '#/components/schemas/FinanceOverview'
         invoices:
           type: array
           items:
@@ -11917,18 +12262,7 @@ components:
         billingAddress:
           $ref: '#/components/schemas/Address'
         financeOverview:
-          type: object
-          required:
-            - creditCover
-            - creditUtilization
-            - creditLimit
-          properties:
-            creditCover:
-              $ref: '#/components/schemas/Currency'
-            creditUtilization:
-              $ref: '#/components/schemas/Currency'
-            creditLimit:
-              $ref: '#/components/schemas/Currency'
+          $ref: '#/components/schemas/FinanceOverview'
         organisationMembers:
           type: object
           required:
@@ -12317,6 +12651,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DayAheadOrIntraDayAuctionMtu'
+        previousAuctionId:
+          $ref: '#/components/schemas/Identifier'
+        nextAuctionId:
+          $ref: '#/components/schemas/Identifier'
     PublicDayAheadOrIntraDayAuctionMtuResults:
       type: object
       required:
@@ -12392,6 +12730,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DayAheadOrIntraDayAuctionMtu'
+        previousAuctionId:
+          $ref: '#/components/schemas/Identifier'
+        nextAuctionId:
+          $ref: '#/components/schemas/Identifier'
     PublicLongTermAuction:
       type: object
       required:
@@ -12771,6 +13113,7 @@ components:
               - mtu
               - transferCapacity
               - locked
+              - closeAt
             properties:
               mtu:
                 $ref: '#/components/schemas/MtuStart'
@@ -12778,6 +13121,8 @@ components:
                 $ref: '#/components/schemas/Capacity'
               locked:
                 type: boolean
+              closeAt:
+                $ref: '#/components/schemas/DateTime'
     SecondaryMarketLongTermNoticeboardEntry:
       type: object
       required:
@@ -12923,6 +13268,7 @@ components:
         - returnAuction
         - returnedCapacity
         - status
+        - organisationName
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
@@ -12938,6 +13284,8 @@ components:
           $ref: '#/components/schemas/Currency'
         status:
           $ref: '#/components/schemas/SecondaryMarketReturnRequestStatus'
+        organisationName:
+          type: string
     SecondaryMarketReturnRequestBatch:
       type: object
       required:
@@ -13445,6 +13793,22 @@ components:
         compensationPrice:
           $ref: '#/components/schemas/Currency'
         revenue:
+          $ref: '#/components/schemas/Currency'
+    UnpaidInvoicesOverviewData:
+      type: object
+      required:
+        - standardInvoice
+        - salesCreditInvoice
+        - selfBillingInvoice
+        - total
+      properties:
+        standardInvoice:
+          $ref: '#/components/schemas/Currency'
+        salesCreditInvoice:
+          $ref: '#/components/schemas/Currency'
+        selfBillingInvoice:
+          $ref: '#/components/schemas/Currency'
+        total:
           $ref: '#/components/schemas/Currency'
     UnreadMessagesResponse:
       type: object

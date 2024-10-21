@@ -1,3 +1,40 @@
+## [5.0.0](https://github.com/britned/empire-platform-api/compare/v4.0.0...v5.0.0) (2024-10-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **finance:** change getFinanceInvoices response to groups
+* **participant-overview:** extend participant overview data
+* **finance:** support optional product types and multiple timescales in getFinanceSettlementPerDay
+* **secondary-market:** allow secondary market returns list for multiple participants
+
+### Features
+
+* **allocated-auctions:** add bidding period filter to allocated auction endpoints
+* **auctions, public-auctions:** add next / previous auction properties to auction details
+* **buy-now-offers:** add getBuyNowOffer endpoint
+* **finance, reporting:** add getInvoiceGroupPdfs endpoint
+* **finance:** add downloadAllFinanceInvoiceGroupPdfs endpoint
+* **finance:** add groupId to getFinanceInvoice response
+* **finance:** change getFinanceInvoices response to groups
+* **finance:** support optional product types and multiple timescales in getFinanceSettlementPerDay
+* **participant-overview:** extend participant overview data
+* **reporting:** getAuctionsBidsReport
+* **secondary-market:** allow secondary market returns list for multiple participants
+
+
+### Bug Fixes
+
+* **buy-now-offers:** make getBuyNowOffer endpoint plural
+* **finance:** getFinanceInvoices make due date optional
+* **secondary-market:** add nomination gate close to secondary market transfer request options
+* **secondary-market:** make getSecondaryMarketReturnRequests ParticipantIds mandatory
+
+
+### Styling
+
+* enforce alphabetical ordering for certain enums
+
 ## [4.0.0](https://github.com/britned/empire-platform-api/compare/v3.0.10...v4.0.0) (2024-08-13)
 
 
