@@ -1,3 +1,10 @@
+### [5.0.1](https://github.com/britned/empire-platform-api/compare/v5.0.0...v5.0.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* **finance:** optional product types and multiple timescales in getFinanceSettlementPerSource
+
 ## [5.0.0](https://github.com/britned/empire-platform-api/compare/v4.0.0...v5.0.0) (2024-10-21)
 
 
