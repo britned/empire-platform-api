@@ -1,3 +1,48 @@
+## [6.0.0](https://github.com/britned/empire-platform-api/compare/v5.0.3...v6.0.0) (2025-02-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **buy-now-offers:** change endpoints and schemas to Buy Now 2.0
+* **profile:** user preferences extended with browser notification
+* **bidding-configuration:** add day ahead and intraday bidding configuration
+* **profile:** add timescale preferences to profile and preference endpoints
+* **public-nominations:** typo in required field name
+
+### Features
+
+* **auctions:** add buy now offers to getAuctionOverview endpoint
+* **auctions:** add getAuctionOverview endpoint
+* **auctions:** update auction status filter and DayAheadAuction
+* **bidding-configuration:** add day ahead and intraday bidding configuration
+* **buy-now-offers:** change endpoints and schemas to Buy Now 2.0
+* change openapi version to 3.1.1
+* **profile:** add timescale preferences to profile and preference endpoints
+* **profile:** user preferences extended with browser notification
+* **webhooks:** add auction result webhook event types
+* **webhooks:** add get and update webhooks endpoints
+* **webhooks:** add get webhook history endpoint
+* **webhooks:** add webhook requests
+* **webhooks:** add webhook skeletons
+* **webhooks:** create testWebhook endpoint
+* **webhooks:** rename token to signing secret
+
+
+### Bug Fixes
+
+* **profile:** extend email notification options for unplanned outages and curtailment
+* **profile:** refactor notification preference schemas
+* **public-nominations:** typo in required field name
+* **reporting:** missing explicit array definitions
+* **webhooks:** plural responseHeaders and add errorMessage
+* **webhooks:** various fixes around webhook endpoints
+
+
+### Build
+
+* move existing python targets to python-legacy with oasg v16.0.0
+* re-add python targets with oasg v16.2.0
+
 ### [5.0.3](https://github.com/britned/empire-platform-api/compare/v5.0.2...v5.0.3) (2024-12-18)
 
 > No changes affecting Participants.

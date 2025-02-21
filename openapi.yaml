@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.1
 info:
   title: Platform API
   description: |
@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 5.0.3
+  version: 6.0.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -71,6 +71,8 @@ tags:
     description: Transmission Rights
   - name: user
     description: Users
+  - name: webhook
+    description: Webhooks
 paths:
   /v1/public/version:
     get:
@@ -638,11 +640,43 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /v1/auctions/overview:
+    get:
+      operationId: getAuctionOverview
+      description: |-
+        Fetch an overview for a given Timescale for "most relevant" Auctions
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_PUBLISHED_AUCTIONS`
+          * `VIEW_ANY_AUCTIONS`
+      tags:
+        - auction
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_PUBLISHED_AUCTIONS
+        - VIEW_ANY_AUCTIONS
+      parameters:
+        - $ref: '#/components/parameters/Timescale'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuctionOverview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
   /v1/auctions/{id}/bidding-configuration:
     get:
       operationId: getAuctionBiddingConfiguration
       description: |-
-        Fetch the Participant's Bidding Configuration for the given Auction's direction
+        Fetch the Participant's Bidding Configuration for the given Auction
 
         ---
 
@@ -765,7 +799,7 @@ paths:
                   - FINAL_SPEC_PUBLISHED (only if `preBiddingAllowed` is TRUE)
                   - BIDDING_OPEN
             *  `CREDIT_LIMIT_EXCEEDED` - Participant's "credit limit" is already exceeded, no bidding is possible
-            *  `CREDIT_LIMIT_TO_BE_EXCEECED` - if submitting and winning this bid, the Participants "credit limit" would be exceeded
+            *  `CREDIT_LIMIT_TO_BE_EXCEEDED` - if submitting and winning this bid, the Participants "credit limit" would be exceeded
           x-errors:
             - code: TIMESCALE_MISMATCH
               description: endpoint matching Auction timescale need to be used
@@ -777,7 +811,7 @@ paths:
                   - BIDDING_OPEN
             - code: CREDIT_LIMIT_EXCEEDED
               description: Participant's "credit limit" is already exceeded, no bidding is possible
-            - code: CREDIT_LIMIT_TO_BE_EXCEECED
+            - code: CREDIT_LIMIT_TO_BE_EXCEEDED
               description: if submitting and winning this bid, the Participants "credit limit" would be exceeded
           content:
             application/json:
@@ -802,15 +836,15 @@ paths:
                 - capacity for long-term bid
                 - must be greater than zero
                 - must be a multiply of the Auction's allocation resolution
-                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction
+                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction and timescale
             *  `INVALID_BID_PRICE`
                 - depending on "minimum bid price" being configured for the Auction:
                   * if NOT set: must be greater than or equal to zero
                   * if set: must be greater than or equal to the configured "minimum bid price"
-                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction
+                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction and timescale
                 - price value must be unique across all bids for the given Auction
             *  `TOO_MANY_BIDS`
-                - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion
+                - you cannot enter more bids than the configured "maximum bid count per participants" for the Auction
           x-errors:
             - code: INVALID_BID_ID
               description: |
@@ -823,17 +857,17 @@ paths:
                 - capacity for long-term bid
                 - must be greater than zero
                 - must be a multiply of the Auction's allocation resolution
-                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction
+                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction and timescale
             - code: INVALID_BID_PRICE
               description: |
                 - depending on "minimum bid price" being configured for the Auction:
                   * if NOT set: must be greater than or equal to zero
                   * if set: must be greater than or equal to the configured "minimum bid price"
-                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction
+                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction and timescale
                 - price value must be unique across all bids for the given Auction
             - code: TOO_MANY_BIDS
               description: |
-                - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion
+                - you cannot enter more bids than the configured "maximum bid count per participants" for the Auction
           content:
             application/json:
               schema:
@@ -927,7 +961,7 @@ paths:
             *  `TIMESCALE_MISMATCH` - endpoint matching Auction timescale need to be used
             *  `BIDDING_NOT_POSSIBLE` - bidding is only possible between PRELIMINARY_SPEC_PUBLISHED and BIDDING_CLOSED Auction states
             *  `CREDIT_LIMIT_EXCEEDED` - participant's "credit limit" is already exceeded, no bidding is possible
-            *  `CREDIT_LIMIT_TO_BE_EXCEECED` - if submitting and winning this bid, the Participants "credit limit" would be exceeded
+            *  `CREDIT_LIMIT_TO_BE_EXCEEDED` - if submitting and winning this bid, the Participants "credit limit" would be exceeded
           x-errors:
             - code: TIMESCALE_MISMATCH
               description: endpoint matching Auction timescale need to be used
@@ -935,7 +969,7 @@ paths:
               description: bidding is only possible between PRELIMINARY_SPEC_PUBLISHED and BIDDING_CLOSED Auction states
             - code: CREDIT_LIMIT_EXCEEDED
               description: participant's "credit limit" is already exceeded, no bidding is possible
-            - code: CREDIT_LIMIT_TO_BE_EXCEECED
+            - code: CREDIT_LIMIT_TO_BE_EXCEEDED
               description: if submitting and winning this bid, the Participants "credit limit" would be exceeded
           content:
             application/json:
@@ -960,9 +994,11 @@ paths:
                 - capacity for day ahead or intra-day bid
                 - must be greater than or equal to zero
                 - must be a multiply of the Auction's allocation resolution
+                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction and timescale
             *  `INVALID_BID_PRICE`
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
                 - price value for a given MTU must be unique across all bid groups for the given Auction
+                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction and timescale
             *  `TOO_MANY_BIDS`
                 - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion for the Auction's border direction
             *  `MTU_LIST_MISALIGNED`
@@ -981,10 +1017,12 @@ paths:
                 - capacity for day ahead or intra-day bid
                 - must be greater than or equal to zero
                 - must be a multiply of the Auction's allocation resolution
+                - must be less than or equal to the "maximum bid capacity" in the Partcipant's Bidding Configuration for the Auction's border direction and timescale
             - code: INVALID_BID_PRICE
               description: |
                 - must be greater than or equal to the configured "minimum bid price" for the Auction
                 - price value for a given MTU must be unique across all bid groups for the given Auction
+                - must be less than or equal to the "maximum bid price" in the Participant's Bidding Configuration for the Auction's border direction and timescale
             - code: TOO_MANY_BIDS
               description: |
                 - you cannot enter more bids than the configured "maximum bid count per participants" for the Aucion for the Auction's border direction
@@ -1496,7 +1534,7 @@ paths:
     put:
       operationId: updateBiddingConfiguration
       description: |-
-        Updat Bidding Configuration for a given Participant
+        Update Bidding Configuration for a given Participant
 
         ---
 
@@ -1548,7 +1586,7 @@ paths:
     get:
       operationId: getBuyNowOffers
       description: |-
-        Fetch a filterable, sortable list of Buy Now Offers
+        Fetch Buy Now Offers
 
         ---
 
@@ -1571,28 +1609,14 @@ paths:
             $ref: '#/components/schemas/Date'
         - $ref: '#/components/parameters/Timescale'
         - $ref: '#/components/parameters/BorderDirection'
-        - in: query
-          name: statuses
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/BuyNowOfferStatus'
-        - name: sortBy
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/BuyNowDayAheadOfferSortBy'
-        - $ref: '#/components/parameters/ProductTypeIntraDayOptional'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
       responses:
         '200':
           description: __OK__
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BuyNowOffer'
+                $ref: '#/components/schemas/BuyNowOffer'
         '400':
           description: |-
             __Bad Request__
@@ -1609,45 +1633,11 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-        '409':
-          description: |-
-            __Conflict__
-
-            *  `NO_OFFERS_PRESENT`
-                based on timing logic handle "nothing can be displayed" cases
-                  - Between 21:45 - 05:45 - MTU 1 - 7 can be displayed  (ID1) + delivery day selector disabled
-                  - Between 05:45 - 06:21 - nothing can be displayed
-                  - Between 06:21 - 09:45 - MTU 8 - 11 can be displayed (ID2) + delivery day selector disabled
-                  - Between 09:45 - 10:21 - nothing can be displayed
-                  - Between 10:21 - 13:45 - MTU 12 - 15 can be displayed (ID3) + delivery day selector disabled
-                  - Between 13:45 - 14:21 - nothing can be displayed
-                  - Between 14:21 - 20:01 - MTU 16 - 24 can be displayed (ID4) + delivery day selector disabled
-                  - Between 20:01 - 21:45 - delivery day selector enabled with current day + tomorrow day
-                    * Current delivery day MTU 16 - 24 can be displayed (ID4)
-                    * Tomorrow delivery day MTU 1 - 7 can be displayed  (ID1)
-          x-errors:
-            - code: NO_OFFERS_PRESENT
-              description: |
-                based on timing logic handle "nothing can be displayed" cases
-                  - Between 21:45 - 05:45 - MTU 1 - 7 can be displayed  (ID1) + delivery day selector disabled
-                  - Between 05:45 - 06:21 - nothing can be displayed
-                  - Between 06:21 - 09:45 - MTU 8 - 11 can be displayed (ID2) + delivery day selector disabled
-                  - Between 09:45 - 10:21 - nothing can be displayed
-                  - Between 10:21 - 13:45 - MTU 12 - 15 can be displayed (ID3) + delivery day selector disabled
-                  - Between 13:45 - 14:21 - nothing can be displayed
-                  - Between 14:21 - 20:01 - MTU 16 - 24 can be displayed (ID4) + delivery day selector disabled
-                  - Between 20:01 - 21:45 - delivery day selector enabled with current day + tomorrow day
-                    * Current delivery day MTU 16 - 24 can be displayed (ID4)
-                    * Tomorrow delivery day MTU 1 - 7 can be displayed  (ID1)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /v1/buy-now-offers/{id}/purchase:
+  /v1/buy-now-offers/purchase:
     put:
       operationId: purchaseBuyNowOffer
       description: |-
-        Purchase an existing Buy Now Offer by its identifier
+        Purchase Buy Now Offer
 
         ---
 
@@ -1663,8 +1653,12 @@ paths:
       x-permissions:
         - PURCHASE_BUY_NOW_OFFERS
       x-audit-log: PURCHASE_BUY_NOW_OFFER
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseBuyNowOffer'
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
@@ -1674,11 +1668,14 @@ paths:
 
             *  `STATUS_MISMATCH` - only `ACTIVE` offers can be purchased
             *  `VALIDITY_PERIOD_MISMATCH` - offers can only be purchased in their validity period
+            *  `CREDIT_LIMIT_TO_BE_EXCEEDED` - Credit Limit would be exceeded
           x-errors:
             - code: STATUS_MISMATCH
               description: only `ACTIVE` offers can be purchased
             - code: VALIDITY_PERIOD_MISMATCH
               description: offers can only be purchased in their validity period
+            - code: CREDIT_LIMIT_TO_BE_EXCEEDED
+              description: Credit Limit would be exceeded
           content:
             application/json:
               schema:
@@ -1689,44 +1686,20 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /v1/buy-now-offers/{id}:
-    get:
-      operationId: getBuyNowOffer
-      description: |-
-        Fetch a Buy Now Offer by UUID
+        '422':
+          description: |-
+            __Unprocessable Entity__
 
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `VIEW_ANY_BUY_NOW_OFFERS`
-          * `VIEW_OWN_BUY_NOW_OFFERS`
-      tags:
-        - buy-now-offers
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - VIEW_ANY_BUY_NOW_OFFERS
-        - VIEW_OWN_BUY_NOW_OFFERS
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            $ref: '#/components/schemas/Identifier'
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BuyNowOffer'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+            *  `INVALID_REQUESTED_CAPACITY` - Requested capacity is invalid or not matching the resolution.
+            *  `NO_OFFERS_PRESENT` - No offer present for at least one of the mtu
+            *  `MTU_LIST_MISALIGNED` - not the list we were looking for
+          x-errors:
+            - code: INVALID_REQUESTED_CAPACITY
+              description: Requested capacity is invalid or not matching the resolution.
+            - code: NO_OFFERS_PRESENT
+              description: No offer present for at least one of the mtu
+            - code: MTU_LIST_MISALIGNED
+              description: not the list we were looking for
   /v1/default-bids/options:
     get:
       operationId: getDefaultBidOptions
@@ -4928,27 +4901,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /v1/profile/zendesk-chat-token:
-    get:
-      operationId: getZendeskChatToken
-      description: |
-        Fetch a signed JWT for Zendesk Chat which encapsulates the authenticated User's identity
-
-        Used to authenticate the Zendesk Chat Web Widget so the user could see their message history
-      tags:
-        - profile
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZendeskChatTokenResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
   /v1/public/allocated-auctions:
     get:
       operationId: getPublicAllocatedAuctions
@@ -6477,6 +6429,7 @@ paths:
           in: query
           required: true
           schema:
+            type: array
             items:
               $ref: '#/components/schemas/SageCode'
         - $ref: '#/components/parameters/ParticipantIds'
@@ -8591,6 +8544,759 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /v1/webhooks:
+    get:
+      operationId: getWebhooks
+      description: |-
+        Fetch a list of Webhooks for a Participant
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_OWN_WEBHOOKS`
+          * `VIEW_ANY_WEBHOOKS`
+      tags:
+        - webhook
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - VIEW_OWN_WEBHOOKS
+        - VIEW_ANY_WEBHOOKS
+      parameters:
+        - $ref: '#/components/parameters/ParticipantId'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+          x-errors:
+            - code: INVALID_PARTICIPANT_ID
+              description: specified Participant not found in the system
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      operationId: createWebhook
+      description: |-
+        Create webhook
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_OWN_WEBHOOKS`
+          * `MANAGE_ANY_WEBHOOKS`
+
+        __Generates Audit Log Entry:__ `CREATE_WEBHOOK`
+      tags:
+        - webhook
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-audit-log: CREATE_WEBHOOK
+      x-permissions:
+        - MANAGE_OWN_WEBHOOKS
+        - MANAGE_ANY_WEBHOOKS
+      parameters:
+        - $ref: '#/components/parameters/ParticipantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateWebhookRequest'
+      responses:
+        '201':
+          description: __Created__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedWebhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `INVALID_PARTICIPANT_ID` - Participant not found
+            *  `TOO_MANY_WEBHOOKS` - Maximum number of webhooks for the participant organisation is reached
+            *  `URL_NOT_UNIQUE` - The URLs must be unique for the participant organisation
+            *  `INVALID_URL_PROTOCOL`
+                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
+                - On the TRAINING environment HTTP URLs can be submitted
+            *  `INVALID_WEBHOOK_EVENT` - The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
+          x-errors:
+            - code: INVALID_PARTICIPANT_ID
+              description: Participant not found
+            - code: TOO_MANY_WEBHOOKS
+              description: Maximum number of webhooks for the participant organisation is reached
+            - code: URL_NOT_UNIQUE
+              description: The URLs must be unique for the participant organisation
+            - code: INVALID_URL_PROTOCOL
+              description: |
+                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
+                - On the TRAINING environment HTTP URLs can be submitted
+            - code: INVALID_WEBHOOK_EVENT
+              description: The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/webhooks/{id}:
+    get:
+      operationId: getWebhook
+      description: |-
+        Fetch Webhook details by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_OWN_WEBHOOKS`
+          * `MANAGE_ANY_WEBHOOKS`
+      tags:
+        - webhook
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - MANAGE_OWN_WEBHOOKS
+        - MANAGE_ANY_WEBHOOKS
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookDetails'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateWebhook
+      description: |-
+        Update Webhook details by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_OWN_WEBHOOKS`
+          * `MANAGE_ANY_WEBHOOKS`
+
+        __Generates Audit Log Entry:__ `UPDATE_WEBHOOK`
+      tags:
+        - webhook
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-audit-log: UPDATE_WEBHOOK
+      x-permissions:
+        - MANAGE_OWN_WEBHOOKS
+        - MANAGE_ANY_WEBHOOKS
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateWebhookRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `INVALID_PARTICIPANT_ID` - Participant not found
+            *  `URL_NOT_UNIQUE` - The URLs must be unique for the participant organisation
+            *  `INVALID_URL_PROTOCOL`
+                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
+                - On the TRAINING environment HTTP URLs can be submitted
+            *  `INVALID_WEBHOOK_EVENT` - The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
+          x-errors:
+            - code: INVALID_PARTICIPANT_ID
+              description: Participant not found
+            - code: URL_NOT_UNIQUE
+              description: The URLs must be unique for the participant organisation
+            - code: INVALID_URL_PROTOCOL
+              description: |
+                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
+                - On the TRAINING environment HTTP URLs can be submitted
+            - code: INVALID_WEBHOOK_EVENT
+              description: The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      operationId: deleteWebhook
+      description: |-
+        Delete a Webhook by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_OWN_WEBHOOKS`
+          * `MANAGE_ANY_WEBHOOKS`
+
+        __Generates Audit Log Entry:__ `DELETE_WEBHOOK`
+      tags:
+        - webhook
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - MANAGE_OWN_WEBHOOKS
+        - MANAGE_ANY_WEBHOOKS
+      x-audit-log: DELETE_WEBHOOK
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/webhooks/{id}/history:
+    get:
+      operationId: getWebhookHistory
+      description: |-
+        Fetch a paginated list of Webhook History
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_OWN_WEBHOOKS`
+          * `MANAGE_ANY_WEBHOOKS`
+      tags:
+        - webhook
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - MANAGE_OWN_WEBHOOKS
+        - MANAGE_ANY_WEBHOOKS
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+        - $ref: '#/components/parameters/PageLimit'
+        - $ref: '#/components/parameters/PageOffset'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookHistoryBatch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/webhooks/{id}/test:
+    post:
+      operationId: testWebhook
+      description: |-
+        Test Webhook request sending with a TEST event
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_OWN_WEBHOOKS`
+          * `MANAGE_ANY_WEBHOOKS`
+
+        __Generates Audit Log Entry:__ `TEST_WEBHOOK`
+      tags:
+        - webhook
+      security:
+        - ApiKey: []
+        - AuthToken: []
+      x-permissions:
+        - MANAGE_OWN_WEBHOOKS
+        - MANAGE_ANY_WEBHOOKS
+      x-audit-log: TEST_WEBHOOK
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+webhooks:
+  longTermAuctionSpecificationUpdated:
+    post:
+      operationId: longTermAuctionSpecificationUpdated
+      description: |
+        Fired once when a Long Term Auction entered `PRELIMINARY_SPEC_PUBLISHED` state and then on any subsequent change in the Auction Specification
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LongTermAuctionSpecificationUpdatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  dayAheadAuctionSpecificationUpdated:
+    post:
+      operationId: dayAheadAuctionSpecificationUpdated
+      description: |
+        Fired once when a Day Ahead Auction entered `PRELIMINARY_SPEC_PUBLISHED` state and then on any subsequent change in the Auction Specification
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DayAheadOrIntraDayAuctionSpecificationUpdatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  intraDayAuctionSpecificationUpdated:
+    post:
+      operationId: intraDayAuctionSpecificationUpdated
+      description: |
+        Fired once when an Intra Day Auction entered `PRELIMINARY_SPEC_PUBLISHED` state and then on any subsequent change in the Auction Specification
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DayAheadOrIntraDayAuctionSpecificationUpdatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  auctionStatusUpdated:
+    post:
+      operationId: auctionStatusUpdated
+      description: |
+        Fired when an Auction (of any Timescale) status got updated.
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionStatusUpdatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  auctionCancelled:
+    post:
+      operationId: auctionCancelled
+      description: |
+        Fired when an Auction (of any Timescale) got cancelled
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionStatusUpdatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  longTermAuctionAllocated:
+    post:
+      operationId: longTermAuctionAllocated
+      description: |
+        Fired when the Participant got any capacity allocated in a Long Term Auction
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LongTermAuctionAllocatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  dayAheadAuctionAllocated:
+    post:
+      operationId: dayAheadAuctionAllocated
+      description: |
+        Fired when the Participant got any capacity allocated in a Day Ahead Auction
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DayAheadOrIntraDayAuctionAllocatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  intraDayAuctionAllocated:
+    post:
+      operationId: intraDayAuctionAllocated
+      description: |
+        Fired when the Participant got any capacity allocated in an Intra Day Auction
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DayAheadOrIntraDayAuctionAllocatedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  unplannedOutageCreated:
+    post:
+      operationId: unplannedOutageCreated
+      description: |
+        Fired when an Unplanned Outage got created
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnplannedOutageChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  unplannedOutageUpdated:
+    post:
+      operationId: unplannedOutageUpdated
+      description: |
+        Fired when an Unplanned Outage got updated
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnplannedOutageChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  unplannedOutageCancelled:
+    post:
+      operationId: unplannedOutageCancelled
+      description: |
+        Fired when an Unplanned Outage got cancelled
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnplannedOutageChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  unplannedOutageEnded:
+    post:
+      operationId: unplannedOutageEnded
+      description: |
+        Fired when an Unplanned Outage got ended
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnplannedOutageChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  curtailmentExecuted:
+    post:
+      operationId: curtailmentExecuted
+      description: |
+        Fired when a Curtailment got executed
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurtailmentExecutedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  buyNowOfferPublished:
+    post:
+      operationId: buyNowOfferPublished
+      description: |
+        Fired when a Buy Now Offer got published
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyNowOfferPublishedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  nominationWindowOverrideCreated:
+    post:
+      operationId: nominationWindowOverrideCreated
+      description: |
+        Fired when a Nomination Window Override (for any Timescale) got created
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NominationWindowOverrideChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  nominationWindowOverrideUpdated:
+    post:
+      operationId: nominationWindowOverrideUpdated
+      description: |
+        Fired when a Nomination Window Override (for any Timescale) got updated
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NominationWindowOverrideChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  longTermSecondaryMarketTransferRequestReceived:
+    post:
+      operationId: longTermSecondaryMarketTransferRequestReceived
+      description: |
+        Fired when a Long Term Transfer Request on the Secondary Market got received
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LongTermSecondaryMarketTransferRequestReceivedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  dayAheadSecondaryMarketTransferRequestReceived:
+    post:
+      operationId: dayAheadSecondaryMarketTransferRequestReceived
+      description: |
+        Fired when a Day Ahead Transfer Request on the Secondary Market got received
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DayAheadOrIntraDaySecondaryMarketTransferRequestReceivedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  intraDaySecondaryMarketTransferRequestReceived:
+    post:
+      operationId: intraDaySecondaryMarketTransferRequestReceived
+      description: |
+        Fired when an Intra Day Transfer Request on the Secondary Market got received
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DayAheadOrIntraDaySecondaryMarketTransferRequestReceivedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  financeInvoiceSent:
+    post:
+      operationId: financeInvoiceSent
+      description: |
+        Fired when an Invoice got sent
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinanceInvoiceGroupChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  financeInvoiceMarkedAsPaid:
+    post:
+      operationId: financeInvoiceMarkedAsPaid
+      description: |
+        Fired when an Invoice got marked as "Paid"
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinanceInvoiceGroupChangedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+  webhookTested:
+    post:
+      operationId: webhookTested
+      description: |
+        Fired when the `testWebhook` operation got triggered from the UI or through the API
+      tags:
+        - webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookEventType'
+        - $ref: '#/components/parameters/WebhookTimestamp'
+        - $ref: '#/components/parameters/WebhookSignature'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookTestedRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
 components:
   schemas:
     Address:
@@ -9040,19 +9746,27 @@ components:
         - BIDDING_OPEN
         - BIDDING_CLOSED
         - PROVISIONAL_RESULTS_PUBLISHED
+        - FINAL_RESULTS_PUBLISHED
         - CANCELLED
         - DELETED
-    AuctionIntraDayProductType:
-      type: string
-      enum:
-        - ID_EXPLICIT_ID_1
-        - ID_EXPLICIT_ID_2
-        - ID_EXPLICIT_ID_3
-        - ID_EXPLICIT_ID_4
     AuctionName:
       type: string
       description: Human readable name
       example: 2022 May Auction
+    AuctionOverview:
+      type: object
+      required:
+        - auctions
+        - buyNowOffers
+      properties:
+        auctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Auction'
+        buyNowOffers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuyNowOfferOverviewItem'
     AuctionProcessStepsAbsolute:
       type: object
       description: Deadlines of each phase of the auction
@@ -9175,6 +9889,31 @@ components:
         - FINAL_RESULTS_PUBLISHED
         - CANCELLED
         - DELETED
+    AuctionStatusUpdatedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - name
+        - displayId
+        - productType
+        - borderDirection
+        - status
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        name:
+          $ref: '#/components/schemas/AuctionName'
+        displayId:
+          $ref: '#/components/schemas/AuctionDisplayId'
+        productType:
+          $ref: '#/components/schemas/AuctionProductType'
+        borderDirection:
+          $ref: '#/components/schemas/BorderDirection'
+        status:
+          $ref: '#/components/schemas/AuctionStatus'
     AuctionTimescale:
       type: string
       description: |
@@ -9184,6 +9923,11 @@ components:
         - `INTRA_DAY = [ID_EXPLICIT_ID_1, ID_EXPLICIT_ID_2, ID_EXPLICIT_ID_3, ID_EXPLICIT_ID_4]`
       enum:
         - LONG_TERM
+        - DAY_AHEAD
+        - INTRA_DAY
+    AuctionTimescaleDayAheadOrIntraDay:
+      type: string
+      enum:
         - DAY_AHEAD
         - INTRA_DAY
     AuditLog:
@@ -9401,6 +10145,7 @@ components:
         - MARK_PAID_FINANCE_INVOICE
         - MARK_PAID_FINANCE_INVOICE_GROUP
         - SUBMIT_FINANCE_MANUAL_ITEMS_INVOICE
+        - GENERATE_MISSING_FINANCE_INVOICE
         - MANUAL_START_BUSINESS_PROCESS_WORKFLOW
         - RESOLVE_BUSINESS_PROCESS_STEP
         - RE_RUN_BUSINESS_PROCESS_STEP
@@ -9408,6 +10153,10 @@ components:
         - CREATE_DATA_FLOW
         - UPDATE_DATA_FLOW
         - UPDATE_FINANCE_INFORMATION
+        - CREATE_WEBHOOK
+        - UPDATE_WEBHOOK
+        - DELETE_WEBHOOK
+        - TEST_WEBHOOK
     AuditLogUser:
       type: object
       required:
@@ -9470,7 +10219,7 @@ components:
               direction:
                 $ref: '#/components/schemas/BorderDirection'
               configuration:
-                $ref: '#/components/schemas/BiddingConfigurationPerDirection'
+                $ref: '#/components/schemas/BiddingConfigurationTimescaleOptions'
         secondaryMarketNotices:
           type: object
           required:
@@ -9493,6 +10242,19 @@ components:
           $ref: '#/components/schemas/Currency'
         maximumBidPrice:
           $ref: '#/components/schemas/Currency'
+    BiddingConfigurationTimescaleOptions:
+      type: object
+      required:
+        - longTerm
+        - dayAhead
+        - intraDay
+      properties:
+        longTerm:
+          $ref: '#/components/schemas/BiddingConfigurationPerDirection'
+        dayAhead:
+          $ref: '#/components/schemas/BiddingConfigurationPerDirection'
+        intraDay:
+          $ref: '#/components/schemas/BiddingConfigurationPerDirection'
     BorderDirection:
       type: string
       description: Denotes the direction on the cable between Great Britain and the Netherlands
@@ -9514,51 +10276,16 @@ components:
         - NL_GB
         - BOTH
         - NONE
-    BuyNowDayAheadOfferSortBy:
-      type: string
-      enum:
-        - CAPACITY_ASC
-        - CAPACITY_DESC
-        - MOST_MTU_OFFERED_ASC
-        - MOST_MTU_OFFERED_DESC
-        - PRICE_ASC
-        - PRICE_DESC
-        - TIME_LEFT_ASC
-        - TIME_LEFT_DESC
     BuyNowOffer:
       type: object
       required:
-        - id
-        - validityPeriod
-        - currentPrice
-        - nextPriceChangeAt
-        - direction
-        - status
-        - totalTrs
-        - totalCost
         - mtuSize
         - mtus
       properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        validityPeriod:
-          $ref: '#/components/schemas/DateTimePeriod'
-        currentPrice:
-          $ref: '#/components/schemas/Currency'
-        nextPriceChangeAt:
-          $ref: '#/components/schemas/DateTime'
-        direction:
-          $ref: '#/components/schemas/BorderDirection'
-        status:
-          $ref: '#/components/schemas/BuyNowOfferStatus'
-        totalTrs:
-          $ref: '#/components/schemas/Capacity'
-        totalCost:
-          $ref: '#/components/schemas/Currency'
-        purchasedBy:
-          $ref: '#/components/schemas/PurchasedByOrganisation'
         mtuSize:
           $ref: '#/components/schemas/MtuSize'
+        nextPriceChangeAt:
+          $ref: '#/components/schemas/DateTime'
         mtus:
           type: array
           items:
@@ -9566,11 +10293,98 @@ components:
             required:
               - mtu
               - oc
+              - locked
+              - currentPrice
+              - status
+              - allocatedAc
+              - totalPrice
             properties:
               mtu:
                 $ref: '#/components/schemas/MtuStart'
+              validityPeriod:
+                $ref: '#/components/schemas/DateTimePeriod'
+              locked:
+                type: boolean
+              currentPrice:
+                $ref: '#/components/schemas/Currency'
+              nextPrice:
+                $ref: '#/components/schemas/Currency'
               oc:
                 $ref: '#/components/schemas/Capacity'
+              status:
+                $ref: '#/components/schemas/BuyNowOfferMtuStatus'
+              allocatedAc:
+                $ref: '#/components/schemas/Capacity'
+              participantCount:
+                $ref: '#/components/schemas/Count'
+              totalPrice:
+                $ref: '#/components/schemas/Currency'
+              expiredOc:
+                $ref: '#/components/schemas/Capacity'
+    BuyNowOfferMtuStatus:
+      type: string
+      enum:
+        - NOT_YET_AVAILABLE
+        - NOT_AVAILABLE
+        - ACTIVE
+        - DELETED
+        - EXPIRED
+    BuyNowOfferOverviewItem:
+      type: object
+      required:
+        - displayId
+        - validityPeriod
+        - deliveryPeriod
+        - productType
+        - direction
+      properties:
+        displayId:
+          type: string
+        validityPeriod:
+          $ref: '#/components/schemas/DateTimePeriod'
+        deliveryPeriod:
+          $ref: '#/components/schemas/MtuPeriod'
+        productType:
+          $ref: '#/components/schemas/AuctionProductType'
+        direction:
+          $ref: '#/components/schemas/BorderDirection'
+    BuyNowOfferPublishedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - timescale
+        - deliveryDay
+        - direction
+        - mtus
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        timescale:
+          $ref: '#/components/schemas/AuctionTimescale'
+        productType:
+          $ref: '#/components/schemas/AuctionProductType'
+        deliveryDay:
+          $ref: '#/components/schemas/Date'
+        direction:
+          $ref: '#/components/schemas/BorderDirection'
+        mtus:
+          type: array
+          items:
+            type: object
+            required:
+              - mtu
+              - offeredCapacity
+              - validityPeriod
+            properties:
+              mtu:
+                $ref: '#/components/schemas/MtuStart'
+              offeredCapacity:
+                $ref: '#/components/schemas/Capacity'
+              validityPeriod:
+                $ref: '#/components/schemas/DateTimePeriod'
     BuyNowOfferStatus:
       type: string
       enum:
@@ -9686,6 +10500,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BidValue'
+    CreateOrUpdateWebhookRequest:
+      type: object
+      required:
+        - url
+        - eventTypes
+      properties:
+        url:
+          $ref: '#/components/schemas/Url'
+        eventTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEventType'
     CreateOrganisationDocumentRequest:
       type: object
       required:
@@ -9931,6 +10757,16 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
+    CreatedWebhook:
+      type: object
+      required:
+        - id
+        - signingSecret
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        signingSecret:
+          type: string
     CreditCoverType:
       type: string
       enum:
@@ -9958,6 +10794,49 @@ components:
       description: Currency value in Euros (€), accepted with a precision of maximum 2 decimal places
       format: decimal
       multipleOf: 0.01
+    CurtailmentExecutedRequest:
+      type: object
+      required:
+        - eventType
+        - mtus
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        mtus:
+          type: array
+          items:
+            type: object
+            required:
+              - mtu
+              - values
+            properties:
+              mtu:
+                $ref: '#/components/schemas/MtuStart'
+              values:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - direction
+                    - timescales
+                  properties:
+                    direction:
+                      $ref: '#/components/schemas/BorderDirection'
+                    timescales:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - timescale
+                          - totalTrs
+                          - draftNominations
+                        properties:
+                          timescale:
+                            $ref: '#/components/schemas/AuctionTimescale'
+                          totalTrs:
+                            $ref: '#/components/schemas/Capacity'
+                          draftNominations:
+                            $ref: '#/components/schemas/Capacity'
     DashboardNextNominationGate:
       type: object
       required:
@@ -10092,6 +10971,58 @@ components:
           $ref: '#/components/schemas/Identifier'
         nextAuctionId:
           $ref: '#/components/schemas/Identifier'
+    DayAheadOrIntraDayAuctionAllocatedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - displayId
+        - productType
+        - borderDirection
+        - participant
+        - mtus
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        displayId:
+          $ref: '#/components/schemas/AuctionDisplayId'
+        productType:
+          $ref: '#/components/schemas/AuctionProductType'
+        borderDirection:
+          $ref: '#/components/schemas/BorderDirection'
+        participant:
+          type: object
+          required:
+            - id
+            - name
+            - eicCode
+          properties:
+            id:
+              $ref: '#/components/schemas/Identifier'
+            name:
+              type: string
+            eicCode:
+              $ref: '#/components/schemas/OrganisationEicCode'
+        mtus:
+          type: array
+          items:
+            type: object
+            required:
+              - mtu
+              - requestedCapacity
+              - allocatedTrs
+              - marginalPrice
+            properties:
+              mtu:
+                $ref: '#/components/schemas/MtuStart'
+              requestedCapacity:
+                $ref: '#/components/schemas/Capacity'
+              allocatedTrs:
+                $ref: '#/components/schemas/Capacity'
+              marginalPrice:
+                $ref: '#/components/schemas/Currency'
     DayAheadOrIntraDayAuctionBidGroup:
       type: object
       required:
@@ -10292,6 +11223,44 @@ components:
           $ref: '#/components/schemas/Count'
         bidCount:
           $ref: '#/components/schemas/Count'
+    DayAheadOrIntraDayAuctionSpecificationUpdatedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - displayId
+        - productType
+        - borderDirection
+        - biddingConfiguration
+        - processSteps
+        - mtus
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        displayId:
+          $ref: '#/components/schemas/AuctionDisplayId'
+        productType:
+          $ref: '#/components/schemas/AuctionProductType'
+        borderDirection:
+          $ref: '#/components/schemas/BorderDirection'
+        biddingConfiguration:
+          $ref: '#/components/schemas/AuctionBiddingConfiguration'
+        processSteps:
+          $ref: '#/components/schemas/AuctionProcessStepsAbsolute'
+        mtus:
+          type: array
+          items:
+            type: object
+            required:
+              - mtu
+              - offeredCapacity
+            properties:
+              mtu:
+                $ref: '#/components/schemas/MtuStart'
+              offeredCapacity:
+                $ref: '#/components/schemas/Capacity'
     DayAheadOrIntraDayDefaultBid:
       type: object
       required:
@@ -10337,6 +11306,56 @@ components:
                       $ref: '#/components/schemas/LocalMtuStart'
                     value:
                       $ref: '#/components/schemas/BidValue'
+    DayAheadOrIntraDaySecondaryMarketTransferRequestReceivedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - timescale
+        - deliveryPeriod
+        - direction
+        - requestedAt
+        - expiresAt
+        - sender
+        - receiver
+        - status
+        - resolution
+        - mtus
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        timescale:
+          $ref: '#/components/schemas/AuctionTimescale'
+        deliveryPeriod:
+          $ref: '#/components/schemas/DatePeriod'
+        direction:
+          $ref: '#/components/schemas/BorderDirection'
+        requestedAt:
+          $ref: '#/components/schemas/DateTime'
+        expiresAt:
+          $ref: '#/components/schemas/DateTime'
+        sender:
+          $ref: '#/components/schemas/OtherParty'
+        receiver:
+          $ref: '#/components/schemas/OtherParty'
+        status:
+          $ref: '#/components/schemas/SecondaryMarketTransferRequestStatus'
+        resolution:
+          $ref: '#/components/schemas/MtuSize'
+        mtus:
+          type: array
+          items:
+            type: object
+            required:
+              - mtu
+              - transferredCapacity
+            properties:
+              mtu:
+                $ref: '#/components/schemas/MtuStart'
+              transferredCapacity:
+                $ref: '#/components/schemas/Capacity'
     Decimal:
       type: number
       description: Decimal numbers, accepted with a precision of maximum 4 decimal places
@@ -10531,7 +11550,7 @@ components:
         - CAPACTY_ALREADY_ALLOCATED
         - CLOSURE_TIMES_MISALIGNED
         - CREDIT_LIMIT_EXCEEDED
-        - CREDIT_LIMIT_TO_BE_EXCEECED
+        - CREDIT_LIMIT_TO_BE_EXCEEDED
         - CURTAILMENT_NOT_POSSIBLE
         - DATA_FLOW_NOT_CREATABLE
         - DATA_FLOW_NOT_EDITABLE
@@ -10593,6 +11612,7 @@ components:
         - INVALID_PARTICIPANT_ID
         - INVALID_PERIOD_AMOUNT
         - INVALID_PURCHASE_VALUE
+        - INVALID_REQUESTED_CAPACITY
         - INVALID_RESERVE_PRICE
         - INVALID_RESPONSE_CAPACITY
         - INVALID_RESPONSE_PRICE
@@ -10604,8 +11624,11 @@ components:
         - INVALID_TRANSFER_CAPACITY
         - INVALID_TSO_ID
         - INVALID_UNPLANNED_OUTAGE_ID
+        - INVALID_URL_PROTOCOL
         - INVALID_USER_ID
+        - INVALID_WEBHOOK_EVENT
         - INVALID_WORKFLOW_TYPE_ID
+        - INVOICE_TYPE_NOT_MISSING
         - LAST_DAY_TOO_LATE
         - LONG_TERM_DELIVERY_PERIOD_MISMATCH
         - MARKET_NOMINATION_SETTING_LOCKED
@@ -10668,11 +11691,13 @@ components:
         - TARGET_NTC_MISSING
         - TIMESCALE_MISMATCH
         - TOO_MANY_BIDS
+        - TOO_MANY_WEBHOOKS
         - TRANCHE_SIZE_MISMATCH
         - TRANSFER_DATE_PERIOD_TOO_LONG
         - UNAUTHORIZED
         - UNDER_MTU_SIZE_MINIMUM
         - UPDATE_DEADLINE_MISSED
+        - URL_NOT_UNIQUE
         - VALIDITY_PERIOD_MISMATCH
         - VAT_NUMBER_MISSING
         - VAT_RATE_MARKET_MISMATCH
@@ -10801,6 +11826,65 @@ components:
           type: string
         orgShortName:
           type: string
+    FinanceInvoiceGroupChangedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - displayId
+        - participant
+        - netAmount
+        - grossAmount
+        - dueDate
+        - status
+        - lastStatusChange
+        - invoices
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        displayId:
+          type: string
+        participant:
+          $ref: '#/components/schemas/InvoiceParticipantDetails'
+        netAmount:
+          $ref: '#/components/schemas/Currency'
+        grossAmount:
+          $ref: '#/components/schemas/Currency'
+        dueDate:
+          $ref: '#/components/schemas/Date'
+        status:
+          $ref: '#/components/schemas/InvoiceStatus'
+        lastStatusChange:
+          $ref: '#/components/schemas/DateTime'
+        invoices:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - displayId
+              - netAmount
+              - grossAmount
+              - dueDate
+              - status
+              - lastStatusChange
+            properties:
+              id:
+                $ref: '#/components/schemas/Identifier'
+              displayId:
+                type: string
+              netAmount:
+                $ref: '#/components/schemas/Currency'
+              grossAmount:
+                $ref: '#/components/schemas/Currency'
+              dueDate:
+                $ref: '#/components/schemas/Date'
+              status:
+                $ref: '#/components/schemas/InvoiceStatus'
+              lastStatusChange:
+                $ref: '#/components/schemas/DateTime'
     FinanceOverview:
       type: object
       required:
@@ -10817,6 +11901,23 @@ components:
           $ref: '#/components/schemas/CreditUtilizationOverviewData'
         creditLimit:
           $ref: '#/components/schemas/Currency'
+    GeneralNotificationPreference:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: boolean
+    GeneralNotificationPreferenceWithSms:
+      type: object
+      required:
+        - email
+        - sms
+      properties:
+        email:
+          type: boolean
+        sms:
+          type: boolean
     Identifier:
       type: string
       description: Unique identifier for the record in UUID4 format
@@ -10886,6 +11987,7 @@ components:
         - grossAmount
         - status
         - lastStatusChange
+        - type
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
@@ -10905,6 +12007,8 @@ components:
           $ref: '#/components/schemas/DateTime'
         attachment:
           $ref: '#/components/schemas/Attachment'
+        type:
+          $ref: '#/components/schemas/InvoiceType'
     InvoiceActionType:
       type: string
       enum:
@@ -11103,6 +12207,12 @@ components:
           $ref: '#/components/schemas/Decimal'
         exchangeRateDay:
           $ref: '#/components/schemas/Date'
+    InvoiceType:
+      type: string
+      enum:
+        - SB
+        - SC
+        - SI
     InvoiceTypeWithNettingStatement:
       type: string
       enum:
@@ -11131,6 +12241,15 @@ components:
       format: string
       example: '10:00'
       pattern: ^(0[0-9]|1[0-9]|2[0-3]):(00|15|30|45)$
+    LocalTimeMinutes:
+      type: string
+      description: |
+        Local time with minute precision, interpreted in **System Time** zone.
+
+        - string, interpreted in `hh:mm` format
+      format: string
+      example: '12:00'
+      pattern: ^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$
     LongTermAuction:
       type: object
       required:
@@ -11176,6 +12295,51 @@ components:
           $ref: '#/components/schemas/LongTermOfferedCapacity'
         reservePrice:
           $ref: '#/components/schemas/LongTermReservePrice'
+    LongTermAuctionAllocatedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - name
+        - displayId
+        - productType
+        - borderDirection
+        - participant
+        - requestedCapacity
+        - allocatedTrs
+        - marginalPrice
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        name:
+          $ref: '#/components/schemas/AuctionName'
+        displayId:
+          $ref: '#/components/schemas/AuctionDisplayId'
+        productType:
+          $ref: '#/components/schemas/AuctionProductType'
+        borderDirection:
+          $ref: '#/components/schemas/BorderDirection'
+        participant:
+          type: object
+          required:
+            - id
+            - name
+            - eicCode
+          properties:
+            id:
+              $ref: '#/components/schemas/Identifier'
+            name:
+              type: string
+            eicCode:
+              $ref: '#/components/schemas/OrganisationEicCode'
+        requestedCapacity:
+          $ref: '#/components/schemas/Capacity'
+        allocatedTrs:
+          $ref: '#/components/schemas/Capacity'
+        marginalPrice:
+          $ref: '#/components/schemas/Currency'
     LongTermAuctionBid:
       type: object
       required:
@@ -11289,6 +12453,39 @@ components:
           $ref: '#/components/schemas/Currency'
         reservePrice:
           $ref: '#/components/schemas/Currency'
+    LongTermAuctionSpecificationUpdatedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - name
+        - displayId
+        - productType
+        - borderDirection
+        - biddingConfiguration
+        - processSteps
+        - offeredCapacity
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        name:
+          $ref: '#/components/schemas/AuctionName'
+        displayId:
+          $ref: '#/components/schemas/AuctionDisplayId'
+        productType:
+          $ref: '#/components/schemas/AuctionProductType'
+        borderDirection:
+          $ref: '#/components/schemas/BorderDirection'
+        biddingConfiguration:
+          $ref: '#/components/schemas/AuctionBiddingConfiguration'
+        processSteps:
+          $ref: '#/components/schemas/AuctionProcessStepsAbsolute'
+        offeredCapacity:
+          $ref: '#/components/schemas/Capacity'
+        reservePrice:
+          $ref: '#/components/schemas/LongTermReservePrice'
     LongTermDefaultBid:
       type: object
       required:
@@ -11361,6 +12558,46 @@ components:
                 $ref: '#/components/schemas/Currency'
         publish:
           $ref: '#/components/schemas/ReservePricePublishType'
+    LongTermSecondaryMarketTransferRequestReceivedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - timescale
+        - deliveryPeriod
+        - direction
+        - transferredCapacity
+        - requestedAt
+        - updatedAt
+        - expiresAt
+        - sender
+        - receiver
+        - status
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        timescale:
+          $ref: '#/components/schemas/AuctionTimescale'
+        deliveryPeriod:
+          $ref: '#/components/schemas/DatePeriod'
+        direction:
+          $ref: '#/components/schemas/BorderDirection'
+        transferredCapacity:
+          $ref: '#/components/schemas/Capacity'
+        requestedAt:
+          $ref: '#/components/schemas/DateTime'
+        updatedAt:
+          $ref: '#/components/schemas/DateTime'
+        expiresAt:
+          $ref: '#/components/schemas/DateTime'
+        sender:
+          $ref: '#/components/schemas/OtherParty'
+        receiver:
+          $ref: '#/components/schemas/OtherParty'
+        status:
+          $ref: '#/components/schemas/SecondaryMarketTransferRequestStatus'
     ManualFileUploadRequest:
       type: object
       required:
@@ -11555,6 +12792,28 @@ components:
       enum:
         - FLOORED
         - LOCKED
+    NominationWindowOverrideChangedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - timescale
+        - executionDay
+        - originalNominationWindow
+        - overriddenClosureTime
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        timescale:
+          $ref: '#/components/schemas/AuctionTimescale'
+        executionDay:
+          $ref: '#/components/schemas/Date'
+        originalNominationWindow:
+          $ref: '#/components/schemas/DateTimePeriod'
+        overriddenClosureTime:
+          $ref: '#/components/schemas/LocalTimeMinutes'
     NoticeboardEntryType:
       type: string
       enum:
@@ -11566,23 +12825,6 @@ components:
         - BOTH
         - BUY
         - SELL
-    NotificationPreference:
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: boolean
-    NotificationPreferenceWithSms:
-      type: object
-      required:
-        - email
-        - sms
-      properties:
-        email:
-          type: boolean
-        sms:
-          type: boolean
     NtcOverviewMtuData:
       type: object
       description: |
@@ -11910,6 +13152,11 @@ components:
           $ref: '#/components/schemas/Identifier'
         name:
           type: string
+    OutagePeriodDirection:
+      type: string
+      enum:
+        - BOTH
+        - PER_DIRECTION
     Participant:
       type: object
       required:
@@ -12058,6 +13305,7 @@ components:
           type: array
           items:
             type: object
+            title: ParticipantDashboardNettedNominationsDataMtus
             required:
               - mtu
               - aggregatedNominations
@@ -12355,6 +13603,10 @@ components:
         - VIEW_GENERAL_SYSTEM_MESSAGES
         - VIEW_OPERATIONAL_SYSTEM_MESSAGES
         - VIEW_PARTICIPANT_MESSAGES
+        - VIEW_OWN_WEBHOOKS
+        - VIEW_ANY_WEBHOOKS
+        - MANAGE_OWN_WEBHOOKS
+        - MANAGE_ANY_WEBHOOKS
         - VIEW_BUSINESS_SETTINGS
         - MANAGE_BUSINESS_SETTINGS
         - VIEW_PROTECTED_CONFIG_VARIABLES
@@ -12418,6 +13670,7 @@ components:
         - user
         - permissions
         - appearance
+        - timescalePreferences
       properties:
         user:
           $ref: '#/components/schemas/ProfileUser'
@@ -12427,6 +13680,8 @@ components:
             $ref: '#/components/schemas/Permission'
         appearance:
           $ref: '#/components/schemas/PlatformAppearance'
+        timescalePreferences:
+          $ref: '#/components/schemas/TimescalePreferences'
         impersonatedBy:
           $ref: '#/components/schemas/ProfileUser'
     ProfileDetails:
@@ -12486,7 +13741,7 @@ components:
     PublicAggregatedNominationsOverviewResponse:
       type: object
       required:
-        - mtusize
+        - mtuSize
         - mtus
       properties:
         mtuSize:
@@ -12805,16 +14060,32 @@ components:
           $ref: '#/components/schemas/Currency'
         reservePrice:
           $ref: '#/components/schemas/Currency'
-    PurchasedByOrganisation:
+    PurchaseBuyNowOffer:
       type: object
       required:
-        - id
-        - name
+        - deliveryDay
+        - direction
+        - timescale
+        - mtus
       properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        name:
-          type: string
+        deliveryDay:
+          $ref: '#/components/schemas/Date'
+        direction:
+          $ref: '#/components/schemas/BorderDirection'
+        timescale:
+          $ref: '#/components/schemas/AuctionTimescaleDayAheadOrIntraDay'
+        mtus:
+          type: array
+          items:
+            type: object
+            required:
+              - mtuStart
+              - requestedCapacity
+            properties:
+              mtuStart:
+                $ref: '#/components/schemas/MtuStart'
+              requestedCapacity:
+                $ref: '#/components/schemas/Capacity'
     ReportFile:
       type: string
       format: byte
@@ -13575,6 +14846,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubmitNominationsMtu'
+    SubscriptionNotificationPreference:
+      type: object
+      required:
+        - browser
+      properties:
+        browser:
+          type: boolean
+    SubscriptionNotificationPreferenceWithEmail:
+      type: object
+      required:
+        - browser
+        - email
+      properties:
+        browser:
+          type: boolean
+        email:
+          type: boolean
     SystemMessageCategory:
       type: string
       enum:
@@ -13693,6 +14981,19 @@ components:
                     $ref: '#/components/schemas/Capacity'
               notNominatedTrs:
                 $ref: '#/components/schemas/Capacity'
+    TimescalePreferences:
+      type: object
+      required:
+        - longTerm
+        - dayAhead
+        - intraday
+      properties:
+        longTerm:
+          type: boolean
+        dayAhead:
+          type: boolean
+        intraday:
+          type: boolean
     TransactionType:
       type: string
       enum:
@@ -13810,6 +15111,77 @@ components:
           $ref: '#/components/schemas/Currency'
         total:
           $ref: '#/components/schemas/Currency'
+    UnplannedOutageAvailableNtc:
+      type: string
+      enum:
+        - BIPOLE
+        - MONOPOLE
+        - MONOPOLE_WITH_OVERLOAD
+        - MANUAL
+        - NO_CHANGE
+    UnplannedOutageChangedRequest:
+      type: object
+      required:
+        - eventType
+        - id
+        - reasonCode
+        - status
+        - periods
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        reasonCode:
+          $ref: '#/components/schemas/UnplannedOutageReasonCode'
+        status:
+          $ref: '#/components/schemas/UnplannedOutageStatus'
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnplannedOutagePeriod'
+    UnplannedOutagePeriod:
+      type: object
+      required:
+        - reportingPeriod
+        - direction
+        - values
+      properties:
+        reportingPeriod:
+          $ref: '#/components/schemas/DateTimePeriod'
+        mtuPeriod:
+          $ref: '#/components/schemas/MtuPeriod'
+        direction:
+          $ref: '#/components/schemas/OutagePeriodDirection'
+        values:
+          type: array
+          items:
+            type: object
+            required:
+              - direction
+              - availableNtc
+            properties:
+              direction:
+                $ref: '#/components/schemas/BorderDirectionWithBoth'
+              availableNtc:
+                $ref: '#/components/schemas/UnplannedOutageAvailableNtc'
+              manualValue:
+                $ref: '#/components/schemas/Capacity'
+    UnplannedOutageReasonCode:
+      type: string
+      enum:
+        - FAILURE
+        - EMERGENCY_SITUATION
+        - FORCE_MAJEURE
+        - MAINTENANCE
+        - BREACH_OF_OPERATIONAL_SECURITY_LIMITS
+        - OTHER
+    UnplannedOutageStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - CANCELLED
+        - ENDED
     UnreadMessagesResponse:
       type: object
       required:
@@ -13910,6 +15282,9 @@ components:
           $ref: '#/components/schemas/UserRole'
         jobTitle:
           type: string
+    Url:
+      type: string
+      pattern: https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,63}(:\d{1,5})?([\/?#][^\s]*)?
     User:
       type: object
       required:
@@ -13953,6 +15328,7 @@ components:
         - generalNotifications
         - subscriptionNotifications
         - appearance
+        - timescalePreferences
       properties:
         generalNotifications:
           type: object
@@ -13963,25 +15339,39 @@ components:
             - normal
           properties:
             criticalAlert:
-              $ref: '#/components/schemas/NotificationPreferenceWithSms'
+              $ref: '#/components/schemas/GeneralNotificationPreferenceWithSms'
             critical:
-              $ref: '#/components/schemas/NotificationPreference'
+              $ref: '#/components/schemas/GeneralNotificationPreference'
             major:
-              $ref: '#/components/schemas/NotificationPreference'
+              $ref: '#/components/schemas/GeneralNotificationPreference'
             normal:
-              $ref: '#/components/schemas/NotificationPreference'
+              $ref: '#/components/schemas/GeneralNotificationPreference'
         subscriptionNotifications:
           type: object
           required:
             - longTermAuctionUpdates
+            - dayAheadAuctionUpdates
+            - intradayAuctionUpdates
             - buyNowTransmissionRightsOffers
+            - unplannedOutageUpdates
+            - curtailment
           properties:
             longTermAuctionUpdates:
-              $ref: '#/components/schemas/NotificationPreference'
+              $ref: '#/components/schemas/SubscriptionNotificationPreferenceWithEmail'
+            dayAheadAuctionUpdates:
+              $ref: '#/components/schemas/SubscriptionNotificationPreference'
+            intradayAuctionUpdates:
+              $ref: '#/components/schemas/SubscriptionNotificationPreference'
             buyNowTransmissionRightsOffers:
-              $ref: '#/components/schemas/NotificationPreference'
+              $ref: '#/components/schemas/SubscriptionNotificationPreferenceWithEmail'
+            unplannedOutageUpdates:
+              $ref: '#/components/schemas/SubscriptionNotificationPreferenceWithEmail'
+            curtailment:
+              $ref: '#/components/schemas/SubscriptionNotificationPreferenceWithEmail'
         appearance:
           $ref: '#/components/schemas/PlatformAppearance'
+        timescalePreferences:
+          $ref: '#/components/schemas/TimescalePreferences'
     UserRole:
       type: string
       enum:
@@ -14029,12 +15419,117 @@ components:
           type: string
         apiVersion:
           type: string
-    ZendeskChatTokenResponse:
+    Webhook:
       type: object
       required:
-        - token
+        - id
+        - url
+        - eventTypes
       properties:
-        token:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        url:
+          $ref: '#/components/schemas/Url'
+        eventTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEventType'
+    WebhookDetails:
+      type: object
+      required:
+        - id
+        - url
+        - eventTypes
+        - signingSecretMasked
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        url:
+          $ref: '#/components/schemas/Url'
+        eventTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEventType'
+        signingSecretMasked:
+          type: string
+    WebhookEventStatus:
+      type: string
+      enum:
+        - IN_PROGRESS
+        - SUCCESSFUL
+        - FAILED
+    WebhookEventType:
+      type: string
+      enum:
+        - LONG_TERM_AUCTION_SPECIFICATION_UPDATED
+        - DAY_AHEAD_AUCTION_SPECIFICATION_UPDATED
+        - INTRA_DAY_AUCTION_SPECIFICATION_UPDATED
+        - AUCTION_STATUS_UPDATED
+        - AUCTION_CANCELLED
+        - LONG_TERM_AUCTION_ALLOCATED
+        - DAY_AHEAD_AUCTION_ALLOCATED
+        - INTRA_DAY_AUCTION_ALLOCATED
+        - UNPLANNED_OUTAGE_CREATED
+        - UNPLANNED_OUTAGE_UPDATED
+        - UNPLANNED_OUTAGE_CANCELLED
+        - UNPLANNED_OUTAGE_ENDED
+        - CURTAILMENT_EXECUTED
+        - BUY_NOW_OFFER_PUBLISHED
+        - NOMINATION_WINDOW_OVERRIDE_CREATED
+        - NOMINATION_WINDOW_OVERRIDE_UPDATED
+        - LONG_TERM_SECONDARY_MARKET_TRANSFER_REQUEST_RECEIVED
+        - DAY_AHEAD_SECONDARY_MARKET_TRANSFER_REQUEST_RECEIVED
+        - INTRA_DAY_SECONDARY_MARKET_TRANSFER_REQUEST_RECEIVED
+        - FINANCE_INVOICE_SENT
+        - FINANCE_INVOICE_MARKED_AS_PAID
+        - WEBHOOK_TESTED
+    WebhookHistoryBatch:
+      required:
+        - entries
+        - totalCount
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookHistoryItem'
+        totalCount:
+          $ref: '#/components/schemas/Count'
+    WebhookHistoryItem:
+      type: object
+      required:
+        - status
+        - eventType
+        - url
+        - requestHeaders
+        - requestBody
+      properties:
+        status:
+          $ref: '#/components/schemas/WebhookEventStatus'
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        sentAt:
+          $ref: '#/components/schemas/DateTime'
+        requestHeaders:
+          type: string
+        requestBody:
+          type: string
+        errorMessage:
+          type: string
+        responseCode:
+          type: string
+        responseHeaders:
+          type: string
+        responseBody:
+          type: string
+    WebhookTestedRequest:
+      type: object
+      required:
+        - eventType
+        - message
+      properties:
+        eventType:
+          $ref: '#/components/schemas/WebhookEventType'
+        message:
           type: string
   responses:
     Unauthorized:
@@ -14094,6 +15589,27 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    WebhookEventType:
+      in: header
+      name: X-Webhook-Event-Type
+      required: true
+      description: Type of the Event being triggered
+      schema:
+        $ref: '#/components/schemas/WebhookEventType'
+    WebhookTimestamp:
+      in: header
+      name: X-Webhook-Timestamp
+      required: true
+      description: Unix timestamp (seconds) when the event was triggered
+      schema:
+        type: string
+    WebhookSignature:
+      in: header
+      name: X-Webhook-Signature
+      required: true
+      description: HMAC-SHA256 signature for the request
+      schema:
+        type: string
     PageLimit:
       in: query
       name: limit
@@ -14160,6 +15676,13 @@ components:
       description: Internal unique ID of an entity
       schema:
         $ref: '#/components/schemas/Identifier'
+    Timescale:
+      in: query
+      name: timescale
+      required: true
+      description: Auction Timescale
+      schema:
+        $ref: '#/components/schemas/AuctionTimescale'
     PageOffsetOptional:
       in: query
       name: offset
@@ -14202,19 +15725,6 @@ components:
       description: Border Direction
       schema:
         $ref: '#/components/schemas/BorderDirection'
-    Timescale:
-      in: query
-      name: timescale
-      required: true
-      description: Auction Timescale
-      schema:
-        $ref: '#/components/schemas/AuctionTimescale'
-    ProductTypeIntraDayOptional:
-      in: query
-      name: productType
-      description: Auction Product Type (ID only, optional)
-      schema:
-        $ref: '#/components/schemas/AuctionIntraDayProductType'
     ProductTypes:
       in: query
       name: productTypes
