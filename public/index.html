@@ -23,7 +23,7 @@
         max-width: 100px;
       }
 
-      .swagger-ui .topbar-wrapper .link img {
+      .swagger-ui .topbar-wrapper .link {
         content: url('logo-light.svg');
       }
     </style>
@@ -118,6 +118,9 @@
       const defaultName = versions.find(version => version.default)?.name || versions.slice(-1)[0].name;
       const selectedName = urlName || defaultName;
 
+      // if UI is already annotated
+      let annotated = false;
+
       // initialize Swagger UI
       window.ui = SwaggerUIBundle({
         urls: urls,
@@ -130,29 +133,37 @@
           SwaggerUIStandalonePreset
         ],
         layout: "StandaloneLayout",
+        onComplete: function() {
+          if (annotated) {
+            return;
+          }
+
+          // handle "home" click
+          const logo = document.querySelectorAll('.swagger-ui .topbar-wrapper .link')[0];
+
+          logo.addEventListener('click', () => {
+            window.location.href = window.location.href.split('?')[0];
+          });
+
+          // attach custom labels
+          for (const version of versions) {
+            const option = document.querySelector(`#swagger-ui .topbar-wrapper select option[value="${version.file}"]`);
+            const text = option.text;
+
+            if (version.environments.length) {
+              option.text = `${text} - deployed on ${version.environments.join(', ')}`;
+              continue;
+            }
+
+            if (version.label) {
+              option.text = `${text} - ${version.label}`;
+              continue;
+            }
+          }
+
+          annotated = true;
+        }
       });
-
-      // handle "home" click
-      const logo = document.querySelectorAll('.swagger-ui .topbar-wrapper .link')[0];
-      logo.addEventListener('click', () => {
-        window.location.href = window.location.href.split('?')[0];
-      })
-
-      // attach custom labels
-      for (const version of versions) {
-        const option = document.querySelector(`#swagger-ui .topbar-wrapper select option[value="${version.file}"]`);
-        const text = option.text;
-
-        if (version.environments.length) {
-          option.text = `${text} - deployed on ${version.environments.join(', ')}`;
-          continue;
-        }
-
-        if (version.label) {
-          option.text = `${text} - ${version.label}`;
-          continue;
-        }
-      }
     };
   </script>
 
