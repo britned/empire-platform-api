@@ -1,3 +1,10 @@
+### [6.0.1](https://github.com/britned/empire-platform-api/compare/v6.0.0...v6.0.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* remove operations from public-api-docs that are no longer accessible via API Keys
+
 ## [6.0.0](https://github.com/britned/empire-platform-api/compare/v5.0.3...v6.0.0) (2025-02-21)
 
 

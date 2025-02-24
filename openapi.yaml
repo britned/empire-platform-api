@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 6.0.0
+  version: 6.0.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -103,7 +103,6 @@ paths:
         - allocated-auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -201,7 +200,6 @@ paths:
         - allocated-auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -321,7 +319,6 @@ paths:
         - attachment
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_CRISIS_ACTIONS
         - INVITE_USERS
@@ -388,7 +385,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -424,7 +420,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -517,7 +512,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -563,7 +557,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -609,7 +602,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -655,7 +647,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -687,7 +678,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_LT_AUCTION_BIDS
         - MANAGE_DA_ID_AUCTION_BIDS
@@ -720,7 +710,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_LT_AUCTION_BIDS
       parameters:
@@ -773,7 +762,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_LT_AUCTION_BIDS
       x-audit-log: SUBMIT_LONG_TERM_BIDS
@@ -886,7 +874,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_DA_ID_AUCTION_BIDS
       parameters:
@@ -939,7 +926,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_DA_ID_AUCTION_BIDS
       x-audit-log: SUBMIT_DAY_AHEAD_OR_INTRA_DAY_BIDS
@@ -1050,7 +1036,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -1101,7 +1086,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -1152,7 +1136,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -1211,7 +1194,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -1270,7 +1252,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -1328,7 +1309,6 @@ paths:
         - auction
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -1380,7 +1360,6 @@ paths:
         - audit-log
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
@@ -1468,7 +1447,6 @@ paths:
         - audit-log
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
@@ -1502,7 +1480,6 @@ paths:
         - bidding-configuration
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_BIDDING_CONFIGURATION
         - VIEW_ANY_BIDDING_CONFIGURATION
@@ -1547,7 +1524,6 @@ paths:
         - bidding-configuration
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_BIDDING_CONFIGURATION
         - MANAGE_ANY_BIDDING_CONFIGURATION
@@ -1597,7 +1573,6 @@ paths:
         - buy-now-offers
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_BUY_NOW_OFFERS
         - VIEW_OWN_BUY_NOW_OFFERS
@@ -1649,7 +1624,6 @@ paths:
         - buy-now-offers
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - PURCHASE_BUY_NOW_OFFERS
       x-audit-log: PURCHASE_BUY_NOW_OFFER
@@ -1719,7 +1693,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
         - MANAGE_OWN_DEFAULT_BIDS
@@ -1751,7 +1724,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
         - VIEW_ANY_DEFAULT_BIDS
@@ -1836,7 +1808,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
         - MANAGE_ANY_DEFAULT_BIDS
@@ -1915,7 +1886,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
         - MANAGE_ANY_DEFAULT_BIDS
@@ -1999,7 +1969,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
         - VIEW_ANY_DEFAULT_BIDS
@@ -2048,7 +2017,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
         - MANAGE_ANY_DEFAULT_BIDS
@@ -2126,7 +2094,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_BIDS
         - VIEW_ANY_DEFAULT_BIDS
@@ -2175,7 +2142,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
         - MANAGE_ANY_DEFAULT_BIDS
@@ -2262,7 +2228,6 @@ paths:
         - default-bid
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_BIDS
         - MANAGE_ANY_DEFAULT_BIDS
@@ -2307,7 +2272,6 @@ paths:
         - default-nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_NOMINATIONS
         - VIEW_ANY_DEFAULT_NOMINATIONS
@@ -2337,7 +2301,6 @@ paths:
         - default-nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_NOMINATIONS
         - VIEW_ANY_DEFAULT_NOMINATIONS
@@ -2407,7 +2370,6 @@ paths:
         - default-nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_NOMINATIONS
         - MANAGE_ANY_DEFAULT_NOMINATIONS
@@ -2475,7 +2437,6 @@ paths:
         - default-nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_DEFAULT_NOMINATIONS
         - VIEW_ANY_DEFAULT_NOMINATIONS
@@ -2510,7 +2471,6 @@ paths:
         - default-nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_NOMINATIONS
         - MANAGE_ANY_DEFAULT_NOMINATIONS
@@ -2579,7 +2539,6 @@ paths:
         - default-nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_DEFAULT_NOMINATIONS
         - MANAGE_ANY_DEFAULT_NOMINATIONS
@@ -2622,7 +2581,6 @@ paths:
         - finance-information
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
@@ -2666,7 +2624,6 @@ paths:
         - finance
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_SETTLEMENT
         - VIEW_ANY_SETTLEMENT
@@ -2747,7 +2704,6 @@ paths:
         - finance
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_SETTLEMENT
         - VIEW_ANY_SETTLEMENT
@@ -2828,7 +2784,6 @@ paths:
         - finance
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_UIOSI
         - VIEW_ANY_UIOSI
@@ -2879,7 +2834,6 @@ paths:
         - finance
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_INVOICES
         - VIEW_ANY_INVOICES
@@ -2942,7 +2896,6 @@ paths:
         - finance
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_INVOICES
         - VIEW_ANY_INVOICES
@@ -2976,7 +2929,6 @@ paths:
         - finance
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_INVOICES
         - VIEW_ANY_INVOICES
@@ -3015,7 +2967,6 @@ paths:
         - manual-file-upload
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
@@ -3096,7 +3047,6 @@ paths:
         - manual-file-upload
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_MANUAL_FILE_UPLOAD_BIDS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
@@ -3178,7 +3128,6 @@ paths:
         - manual-file-upload
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_MANUAL_FILE_UPLOAD_NOMINATIONS
         - MANAGE_ANY_MANUAL_FILE_UPLOAD
@@ -3247,7 +3196,6 @@ paths:
         - messages
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_GENERAL_SYSTEM_MESSAGES
         - VIEW_OPERATIONAL_SYSTEM_MESSAGES
@@ -3339,7 +3287,6 @@ paths:
         - messages
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_MESSAGES
       parameters:
@@ -3437,7 +3384,6 @@ paths:
         - messages
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_MESSAGES
       responses:
@@ -3482,7 +3428,6 @@ paths:
         - nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_NOMINATIONS
         - VIEW_ANY_TIMESCALE_NOMINATIONS
@@ -3542,7 +3487,6 @@ paths:
         - nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_NOMINATIONS
         - VIEW_ANY_TIMESCALE_NOMINATIONS
@@ -3602,7 +3546,6 @@ paths:
         - nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_TIMESCALE_NOMINATIONS
         - MANAGE_ANY_TIMESCALE_NOMINATIONS
@@ -3703,7 +3646,6 @@ paths:
         - nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
       responses:
@@ -3746,7 +3688,6 @@ paths:
         - nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
         - VIEW_ANY_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
@@ -3786,7 +3727,6 @@ paths:
         - nomination
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
         - VIEW_ANY_TIMESCALE_OR_BPP_AGGREGATED_NOMINATIONS
@@ -3852,7 +3792,6 @@ paths:
         - organisation-document
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_ORGANISATION_DOCUMENTS
         - VIEW_ANY_ORGANISATION_DOCUMENTS
@@ -3896,7 +3835,6 @@ paths:
         - organisation-document
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_ORGANISATION_DOCUMENTS
         - VIEW_ANY_ORGANISATION_DOCUMENTS
@@ -3988,7 +3926,6 @@ paths:
         - organisation-document
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_ORGANISATION_DOCUMENTS
         - MANAGE_ANY_ORGANISATION_DOCUMENTS
@@ -4047,7 +3984,6 @@ paths:
         - organisation-document
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_ORGANISATION_DOCUMENTS
         - MANAGE_ANY_ORGANISATION_DOCUMENTS
@@ -4090,7 +4026,6 @@ paths:
         - organisation
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
@@ -4124,7 +4059,6 @@ paths:
         - organisation
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
@@ -4164,7 +4098,6 @@ paths:
         - organisation
       security:
         - ApiKey: []
-        - AuthToken: []
       responses:
         '200':
           description: __OK__
@@ -4192,7 +4125,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       responses:
@@ -4232,7 +4164,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       responses:
@@ -4274,7 +4205,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       parameters:
@@ -4340,7 +4270,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       parameters:
@@ -4386,7 +4315,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       parameters:
@@ -4453,7 +4381,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       parameters:
@@ -4500,7 +4427,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       parameters:
@@ -4546,7 +4472,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       responses:
@@ -4586,7 +4511,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       responses:
@@ -4626,7 +4550,6 @@ paths:
         - participant-dashboard
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PARTICIPANT_DASHBOARD
       responses:
@@ -4667,7 +4590,6 @@ paths:
         - participant-overview
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_ORGANISATIONS
         - VIEW_OWN_ORGANISATIONS
@@ -4705,7 +4627,6 @@ paths:
         - profile
       security:
         - ApiKey: []
-        - AuthToken: []
       responses:
         '200':
           description: __OK__
@@ -4724,7 +4645,6 @@ paths:
         - profile
       security:
         - ApiKey: []
-        - AuthToken: []
       responses:
         '200':
           description: __OK__
@@ -4746,7 +4666,6 @@ paths:
         - profile
       security:
         - ApiKey: []
-        - AuthToken: []
       x-audit-log: UPDATE_PROFILE_DETAILS
       requestBody:
         required: true
@@ -4776,7 +4695,6 @@ paths:
         - profile
       security:
         - ApiKey: []
-        - AuthToken: []
       responses:
         '200':
           description: __OK__
@@ -4798,7 +4716,6 @@ paths:
         - profile
       security:
         - ApiKey: []
-        - AuthToken: []
       x-audit-log: UPDATE_PREFERENCES
       requestBody:
         required: true
@@ -4811,96 +4728,6 @@ paths:
           $ref: '#/components/responses/NoContent'
         '401':
           $ref: '#/components/responses/Unauthorized'
-  /v1/profile/api-keys:
-    get:
-      operationId: getApiKeys
-      description: |
-        Fetch API Keys for the currently authenticated User
-      tags:
-        - profile
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ApiKey'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-    post:
-      operationId: createApiKey
-      description: |-
-        Create a new API Key for the currently authenticated User
-
-        The key value itself will be only presented once in the response
-
-        ---
-
-        __Generates Audit Log Entry:__ `CREATE_API_KEY`
-      tags:
-        - profile
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-audit-log: CREATE_API_KEY
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateApiKeyRequest'
-      responses:
-        '201':
-          description: __Created__
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreatedApiKey'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '422':
-          description: |-
-            __Unprocessable Entity__
-
-            *  `API_KEY_NAME_NOT_UNIQUE` - the name of the API Key has to be unique among the User's API Keys
-          x-errors:
-            - code: API_KEY_NAME_NOT_UNIQUE
-              description: the name of the API Key has to be unique among the User's API Keys
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /v1/profile/api-keys/{id}:
-    delete:
-      operationId: deleteApiKey
-      description: |-
-        Delete an API Key by its identifier for the currently authenticated User
-
-        ---
-
-        __Generates Audit Log Entry:__ `DELETE_API_KEY`
-      tags:
-        - profile
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-audit-log: DELETE_API_KEY
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
-      responses:
-        '204':
-          $ref: '#/components/responses/NoContent'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
   /v1/public/allocated-auctions:
     get:
       operationId: getPublicAllocatedAuctions
@@ -5398,7 +5225,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -5471,7 +5297,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -5560,7 +5385,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_PUBLISHED_AUCTIONS
         - VIEW_ANY_AUCTIONS
@@ -5604,7 +5428,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TRANSMISSION_RIGHTS
         - VIEW_ANY_TRANSMISSION_RIGHTS
@@ -5683,7 +5506,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TIMESCALE_NOMINATIONS
         - VIEW_ANY_TIMESCALE_NOMINATIONS
@@ -5755,7 +5577,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_BUY_NOW_OFFERS
         - VIEW_OWN_BUY_NOW_OFFERS
@@ -5834,7 +5655,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TRANSMISSION_RIGHTS
         - VIEW_ANY_TRANSMISSION_RIGHTS
@@ -5906,7 +5726,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
@@ -5962,7 +5781,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_AUDIT_LOGS
         - VIEW_ANY_AUDIT_LOGS
@@ -6037,7 +5855,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_FINANCE_REPORTS
         - VIEW_ANY_FINANCE_REPORTS
@@ -6105,7 +5922,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_FINANCE_REPORTS
         - VIEW_ANY_FINANCE_REPORTS
@@ -6171,7 +5987,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_FINANCE_REPORTS
         - VIEW_ANY_FINANCE_REPORTS
@@ -6233,7 +6048,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_FINANCE_REPORTS
         - VIEW_ANY_FINANCE_REPORTS
@@ -6265,7 +6079,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_FINANCE_REPORTS
         - VIEW_OWN_FINANCE_REPORTS
@@ -6302,7 +6115,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_FINANCE_REPORTS
         - VIEW_OWN_FINANCE_REPORTS
@@ -6340,7 +6152,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_FINANCE_REPORTS
         - VIEW_OWN_FINANCE_REPORTS
@@ -6401,7 +6212,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_FINANCE_REPORTS
         - VIEW_OWN_FINANCE_REPORTS
@@ -6477,7 +6287,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_FINANCE_REPORTS
         - VIEW_OWN_FINANCE_REPORTS
@@ -6548,7 +6357,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_FINANCE_REPORTS
         - VIEW_OWN_FINANCE_REPORTS
@@ -6619,7 +6427,6 @@ paths:
         - reporting
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_FINANCE_REPORTS
         - VIEW_OWN_FINANCE_REPORTS
@@ -6680,7 +6487,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_RETURNS
       parameters:
@@ -6732,7 +6538,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_RETURNS
         - VIEW_OWN_SECONDARY_MARKET_RETURNS
@@ -6805,7 +6610,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_RETURNS
       x-audit-log: CREATE_SECONDARY_MARKET_RETURN_REQUEST
@@ -6865,7 +6669,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_RETURNS
       x-audit-log: WITHDRAW_SECONDARY_MARKET_RETURN_REQUEST
@@ -6907,7 +6710,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
@@ -6984,7 +6786,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7037,7 +6838,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7090,7 +6890,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7136,7 +6935,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
@@ -7182,7 +6980,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
@@ -7229,7 +7026,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
       parameters:
@@ -7291,7 +7087,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       parameters:
@@ -7355,7 +7150,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
       x-audit-log: CREATE_LT_SECONDARY_MARKET_TRANSFER_REQUEST
@@ -7420,7 +7214,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: CREATE_DA_OR_ID_SECONDARY_MARKET_TRANSFER_REQUEST
@@ -7483,7 +7276,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
@@ -7552,7 +7344,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
@@ -7597,7 +7388,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
       parameters:
@@ -7657,7 +7447,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       parameters:
@@ -7716,7 +7505,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
       x-audit-log: CREATE_LT_SECONDARY_MARKET_NOTICEBOARD_ENTRY
@@ -7787,7 +7575,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: CREATE_DA_OR_ID_SECONDARY_MARKET_NOTICEBOARD_ENTRY
@@ -7847,7 +7634,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
@@ -7881,7 +7667,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_ANY_SECONDARY_MARKET_TRANSFERS
         - VIEW_OWN_SECONDARY_MARKET_TRANSFERS
@@ -7919,7 +7704,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
       x-audit-log: CREATE_LT_SECONDARY_MARKET_NOTICEBOARD_RESPONSE
@@ -7982,7 +7766,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       x-audit-log: CREATE_DA_OR_ID_SECONDARY_MARKET_NOTICEBOARD_RESPONSE
@@ -8045,7 +7828,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_LT_TRANSFERS
       parameters:
@@ -8094,7 +7876,6 @@ paths:
         - secondary-market
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_SECONDARY_MARKET_DA_ID_TRANSFERS
       parameters:
@@ -8144,7 +7925,6 @@ paths:
         - transmission-right
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_TRANSMISSION_RIGHTS
         - VIEW_ANY_TRANSMISSION_RIGHTS
@@ -8210,7 +7990,6 @@ paths:
         - user
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
@@ -8260,7 +8039,6 @@ paths:
         - user
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - VIEW_OWN_USERS
         - VIEW_ANY_USERS
@@ -8307,7 +8085,6 @@ paths:
         - user
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
         - MANAGE_ANY_USERS
@@ -8364,7 +8141,6 @@ paths:
         - user
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
         - MANAGE_ANY_USERS
@@ -8412,7 +8188,6 @@ paths:
         - user
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
         - MANAGE_ANY_USERS
@@ -8465,7 +8240,6 @@ paths:
         - user
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
         - MANAGE_ANY_USERS
@@ -8513,7 +8287,6 @@ paths:
         - user
       security:
         - ApiKey: []
-        - AuthToken: []
       x-permissions:
         - MANAGE_OWN_USERS
         - MANAGE_ANY_USERS
@@ -8538,318 +8311,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/webhooks:
-    get:
-      operationId: getWebhooks
-      description: |-
-        Fetch a list of Webhooks for a Participant
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `VIEW_OWN_WEBHOOKS`
-          * `VIEW_ANY_WEBHOOKS`
-      tags:
-        - webhook
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - VIEW_OWN_WEBHOOKS
-        - VIEW_ANY_WEBHOOKS
-      parameters:
-        - $ref: '#/components/parameters/ParticipantId'
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Webhook'
-        '400':
-          description: |-
-            __Bad Request__
-
-            *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
-          x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: specified Participant not found in the system
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-    post:
-      operationId: createWebhook
-      description: |-
-        Create webhook
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_WEBHOOKS`
-          * `MANAGE_ANY_WEBHOOKS`
-
-        __Generates Audit Log Entry:__ `CREATE_WEBHOOK`
-      tags:
-        - webhook
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-audit-log: CREATE_WEBHOOK
-      x-permissions:
-        - MANAGE_OWN_WEBHOOKS
-        - MANAGE_ANY_WEBHOOKS
-      parameters:
-        - $ref: '#/components/parameters/ParticipantId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateOrUpdateWebhookRequest'
-      responses:
-        '201':
-          description: __Created__
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreatedWebhook'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          description: |-
-            __Unprocessable Entity__
-
-            *  `INVALID_PARTICIPANT_ID` - Participant not found
-            *  `TOO_MANY_WEBHOOKS` - Maximum number of webhooks for the participant organisation is reached
-            *  `URL_NOT_UNIQUE` - The URLs must be unique for the participant organisation
-            *  `INVALID_URL_PROTOCOL`
-                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
-                - On the TRAINING environment HTTP URLs can be submitted
-            *  `INVALID_WEBHOOK_EVENT` - The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
-          x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: Participant not found
-            - code: TOO_MANY_WEBHOOKS
-              description: Maximum number of webhooks for the participant organisation is reached
-            - code: URL_NOT_UNIQUE
-              description: The URLs must be unique for the participant organisation
-            - code: INVALID_URL_PROTOCOL
-              description: |
-                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
-                - On the TRAINING environment HTTP URLs can be submitted
-            - code: INVALID_WEBHOOK_EVENT
-              description: The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /v1/webhooks/{id}:
-    get:
-      operationId: getWebhook
-      description: |-
-        Fetch Webhook details by its identifier
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_WEBHOOKS`
-          * `MANAGE_ANY_WEBHOOKS`
-      tags:
-        - webhook
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - MANAGE_OWN_WEBHOOKS
-        - MANAGE_ANY_WEBHOOKS
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WebhookDetails'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      operationId: updateWebhook
-      description: |-
-        Update Webhook details by its identifier
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_WEBHOOKS`
-          * `MANAGE_ANY_WEBHOOKS`
-
-        __Generates Audit Log Entry:__ `UPDATE_WEBHOOK`
-      tags:
-        - webhook
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-audit-log: UPDATE_WEBHOOK
-      x-permissions:
-        - MANAGE_OWN_WEBHOOKS
-        - MANAGE_ANY_WEBHOOKS
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateOrUpdateWebhookRequest'
-      responses:
-        '204':
-          $ref: '#/components/responses/NoContent'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          description: |-
-            __Unprocessable Entity__
-
-            *  `INVALID_PARTICIPANT_ID` - Participant not found
-            *  `URL_NOT_UNIQUE` - The URLs must be unique for the participant organisation
-            *  `INVALID_URL_PROTOCOL`
-                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
-                - On the TRAINING environment HTTP URLs can be submitted
-            *  `INVALID_WEBHOOK_EVENT` - The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
-          x-errors:
-            - code: INVALID_PARTICIPANT_ID
-              description: Participant not found
-            - code: URL_NOT_UNIQUE
-              description: The URLs must be unique for the participant organisation
-            - code: INVALID_URL_PROTOCOL
-              description: |
-                - On the PRODUCTION environment only HTTPS URLs are supported (with strict TLS validation)
-                - On the TRAINING environment HTTP URLs can be submitted
-            - code: INVALID_WEBHOOK_EVENT
-              description: The webhook event must be valid. Minimum one event must be in the list and no duplicates. Events can't contain TEST event type.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-    delete:
-      operationId: deleteWebhook
-      description: |-
-        Delete a Webhook by its identifier
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_WEBHOOKS`
-          * `MANAGE_ANY_WEBHOOKS`
-
-        __Generates Audit Log Entry:__ `DELETE_WEBHOOK`
-      tags:
-        - webhook
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - MANAGE_OWN_WEBHOOKS
-        - MANAGE_ANY_WEBHOOKS
-      x-audit-log: DELETE_WEBHOOK
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
-      responses:
-        '204':
-          $ref: '#/components/responses/NoContent'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/webhooks/{id}/history:
-    get:
-      operationId: getWebhookHistory
-      description: |-
-        Fetch a paginated list of Webhook History
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_WEBHOOKS`
-          * `MANAGE_ANY_WEBHOOKS`
-      tags:
-        - webhook
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - MANAGE_OWN_WEBHOOKS
-        - MANAGE_ANY_WEBHOOKS
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
-        - $ref: '#/components/parameters/PageLimit'
-        - $ref: '#/components/parameters/PageOffset'
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WebhookHistoryBatch'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/webhooks/{id}/test:
-    post:
-      operationId: testWebhook
-      description: |-
-        Test Webhook request sending with a TEST event
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `MANAGE_OWN_WEBHOOKS`
-          * `MANAGE_ANY_WEBHOOKS`
-
-        __Generates Audit Log Entry:__ `TEST_WEBHOOK`
-      tags:
-        - webhook
-      security:
-        - ApiKey: []
-        - AuthToken: []
-      x-permissions:
-        - MANAGE_OWN_WEBHOOKS
-        - MANAGE_ANY_WEBHOOKS
-      x-audit-log: TEST_WEBHOOK
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
-      responses:
-        '204':
-          $ref: '#/components/responses/NoContent'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -9587,19 +9048,6 @@ components:
         - BORDER_DIRECTION_DESC
         - MARGINAL_CLEARING_PRICE_ASC
         - MARGINAL_CLEARING_PRICE_DESC
-    ApiKey:
-      type: object
-      required:
-        - id
-        - name
-        - createdAt
-      properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        name:
-          type: string
-        createdAt:
-          $ref: '#/components/schemas/DateTime'
     Attachment:
       type: object
       description: |
@@ -10403,13 +9851,6 @@ components:
       description: Natural numbers {0, 1, 2, 3, ...} used for counting elements
       format: int64
       minimum: 0
-    CreateApiKeyRequest:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
     CreateDayAheadOrIntraDayDefaultBidRequest:
       type: object
       required:
@@ -10500,18 +9941,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BidValue'
-    CreateOrUpdateWebhookRequest:
-      type: object
-      required:
-        - url
-        - eventTypes
-      properties:
-        url:
-          $ref: '#/components/schemas/Url'
-        eventTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookEventType'
     CreateOrganisationDocumentRequest:
       type: object
       required:
@@ -10674,19 +10103,6 @@ components:
           $ref: '#/components/schemas/Identifier'
         returnCapacity:
           $ref: '#/components/schemas/Capacity'
-    CreatedApiKey:
-      type: object
-      required:
-        - id
-        - name
-        - token
-      properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        name:
-          type: string
-        token:
-          type: string
     CreatedDefaultBid:
       type: object
       required:
@@ -10757,16 +10173,6 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
-    CreatedWebhook:
-      type: object
-      required:
-        - id
-        - signingSecret
-      properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        signingSecret:
-          type: string
     CreditCoverType:
       type: string
       enum:
@@ -15282,9 +14688,6 @@ components:
           $ref: '#/components/schemas/UserRole'
         jobTitle:
           type: string
-    Url:
-      type: string
-      pattern: https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,63}(:\d{1,5})?([\/?#][^\s]*)?
     User:
       type: object
       required:
@@ -15419,45 +14822,6 @@ components:
           type: string
         apiVersion:
           type: string
-    Webhook:
-      type: object
-      required:
-        - id
-        - url
-        - eventTypes
-      properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        url:
-          $ref: '#/components/schemas/Url'
-        eventTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookEventType'
-    WebhookDetails:
-      type: object
-      required:
-        - id
-        - url
-        - eventTypes
-        - signingSecretMasked
-      properties:
-        id:
-          $ref: '#/components/schemas/Identifier'
-        url:
-          $ref: '#/components/schemas/Url'
-        eventTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookEventType'
-        signingSecretMasked:
-          type: string
-    WebhookEventStatus:
-      type: string
-      enum:
-        - IN_PROGRESS
-        - SUCCESSFUL
-        - FAILED
     WebhookEventType:
       type: string
       enum:
@@ -15483,44 +14847,6 @@ components:
         - FINANCE_INVOICE_SENT
         - FINANCE_INVOICE_MARKED_AS_PAID
         - WEBHOOK_TESTED
-    WebhookHistoryBatch:
-      required:
-        - entries
-        - totalCount
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookHistoryItem'
-        totalCount:
-          $ref: '#/components/schemas/Count'
-    WebhookHistoryItem:
-      type: object
-      required:
-        - status
-        - eventType
-        - url
-        - requestHeaders
-        - requestBody
-      properties:
-        status:
-          $ref: '#/components/schemas/WebhookEventStatus'
-        eventType:
-          $ref: '#/components/schemas/WebhookEventType'
-        sentAt:
-          $ref: '#/components/schemas/DateTime'
-        requestHeaders:
-          type: string
-        requestBody:
-          type: string
-        errorMessage:
-          type: string
-        responseCode:
-          type: string
-        responseHeaders:
-          type: string
-        responseBody:
-          type: string
     WebhookTestedRequest:
       type: object
       required:
@@ -15784,9 +15110,5 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
-    AuthToken:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
   links: {}
   callbacks: {}
