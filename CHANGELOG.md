@@ -1,3 +1,15 @@
+### [6.0.2](https://github.com/britned/empire-platform-api/compare/v6.0.1...v6.0.2) (2025-03-05)
+
+
+### Bug Fixes
+
+* allow phone numbers to be at most 20 digits long after plus sign
+
+
+### Documentation
+
+* publish getBuyNowOfferPurchaseDetails endpoint to the public
+
 ### [6.0.1](https://github.com/britned/empire-platform-api/compare/v6.0.0...v6.0.1) (2025-02-24)
 
 

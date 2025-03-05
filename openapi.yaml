@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 6.0.1
+  version: 6.0.2
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -1674,6 +1674,55 @@ paths:
               description: No offer present for at least one of the mtu
             - code: MTU_LIST_MISALIGNED
               description: not the list we were looking for
+    get:
+      operationId: getBuyNowOfferPurchaseDetails
+      description: |-
+        Fetch Buy Now Offer purchase details
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_ANY_BUY_NOW_OFFERS`
+          * `VIEW_OWN_BUY_NOW_OFFERS`
+      tags:
+        - buy-now-offers
+      security:
+        - ApiKey: []
+      x-permissions:
+        - VIEW_ANY_BUY_NOW_OFFERS
+        - VIEW_OWN_BUY_NOW_OFFERS
+      parameters:
+        - name: mtu
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/MtuStart'
+        - $ref: '#/components/parameters/BorderDirection'
+        - $ref: '#/components/parameters/Timescale'
+        - $ref: '#/components/parameters/ParticipantIdOptional'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyNowOfferPurchaseDetails'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `TIMESCALE_MISMATCH` - DA/ID Timescale need to be used
+          x-errors:
+            - code: TIMESCALE_MISMATCH
+              description: DA/ID Timescale need to be used
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
   /v1/default-bids/options:
     get:
       operationId: getDefaultBidOptions
@@ -9833,6 +9882,23 @@ components:
                 $ref: '#/components/schemas/Capacity'
               validityPeriod:
                 $ref: '#/components/schemas/DateTimePeriod'
+    BuyNowOfferPurchaseDetail:
+      type: object
+      required:
+        - participantName
+        - price
+        - capacity
+      properties:
+        participantName:
+          type: string
+        price:
+          $ref: '#/components/schemas/Currency'
+        capacity:
+          $ref: '#/components/schemas/Capacity'
+    BuyNowOfferPurchaseDetails:
+      type: array
+      items:
+        $ref: '#/components/schemas/BuyNowOfferPurchaseDetail'
     BuyNowOfferStatus:
       type: string
       enum:
@@ -13060,7 +13126,7 @@ components:
     PhoneNumber:
       type: string
       format: phone-number
-      pattern: ^\+\d{10,13}$
+      pattern: ^\+\d{10,20}$
     PlatformAppearance:
       type: string
       description: |
