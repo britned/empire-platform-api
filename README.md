@@ -136,6 +136,8 @@ The _Partcipant ID_ can be treated as a **constant** in your integrations, it wo
 
 In **Empire** each individual User is assigned a _Role_ which encapsulates a set of _Permissions_. This information can be retrieved using the `getProfile` operation as seen previously in the [What is _Participant ID_](#-what-is-participant-id) section (fields `user.role` and `permissions[]`).
 
+> 💡 The current configuration of _Roles_ and _Permissions_ available for Participants can be found on the Wiki under [Role / Permission Matrix](https://github.com/britned/empire-platform-api/wiki/General#role--permission-matrix)
+
 In the API each endpoint is annotated with a list of _Permissions_ documented in the `x-permissions` field, the values being validated against the `#/components/schemas/Permission` enum:
 
 ```yaml
