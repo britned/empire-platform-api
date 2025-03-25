@@ -1,3 +1,11 @@
+### [6.0.4](https://github.com/britned/empire-platform-api/compare/v6.0.3...v6.0.4) (2025-03-25)
+
+
+### Bug Fixes
+
+* **buy-now-offers:** add response for purchasing a buy now offer
+
+
 ### [6.0.3](https://github.com/britned/empire-platform-api/compare/v6.0.2...v6.0.3) (2025-03-19)
 
 > No changes affecting Participants.
