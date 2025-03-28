@@ -1,3 +1,7 @@
+### [6.0.5](https://github.com/britned/empire-platform-api/compare/v6.0.4...v6.0.5) (2025-03-28)
+
+> No changes affecting Participants.
+
 ### [6.0.4](https://github.com/britned/empire-platform-api/compare/v6.0.3...v6.0.4) (2025-03-25)
 
 
