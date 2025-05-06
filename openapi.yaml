@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 6.0.5
+  version: 6.1.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -12531,6 +12531,7 @@ components:
         - eicCode
         - gbNominationSettings
         - nlNominationSettings
+        - participateInGopacs
       properties:
         eicCode:
           $ref: '#/components/schemas/OrganisationEicCode'
@@ -12558,6 +12559,8 @@ components:
               type: string
             onBehalfParticipantId:
               $ref: '#/components/schemas/Identifier'
+        participateInGopacs:
+          type: boolean
     OrganisationStatus:
       type: string
       enum:

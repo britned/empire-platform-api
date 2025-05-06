@@ -1,3 +1,10 @@
+## [6.1.0](https://github.com/britned/empire-platform-api/compare/v6.0.5...v6.1.0) (2025-05-06)
+
+
+### Features
+
+* **organisations:** participate in gopacs flag for participant
+
 ### [6.0.5](https://github.com/britned/empire-platform-api/compare/v6.0.4...v6.0.5) (2025-03-28)
 
 > No changes affecting Participants.
