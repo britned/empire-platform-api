@@ -1,3 +1,16 @@
+## [7.0.0](https://github.com/britned/empire-platform-api/compare/v6.1.0...v7.0.0) (2025-07-18)
+
+
+### Features
+
+* **common:** add general bad request error code
+* **finance-information:** add error codes for updateFinanceInformation
+* **finance:** add invoice type to InvoiceDetails
+* **finance:** align path prefix and operation ids
+* **finance:** remove required from fields in invoice group
+* **profile:** add manage api keys permission
+* **user:** add senior admin help desk role
+
 ## [6.1.0](https://github.com/britned/empire-platform-api/compare/v6.0.5...v6.1.0) (2025-05-06)
 
 

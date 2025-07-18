@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 6.1.0
+  version: 7.0.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -2872,11 +2872,44 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /v1/finance/invoices:
+  /v1/finance/invoices/{id}:
     get:
-      operationId: getFinanceInvoices
+      operationId: getFinanceInvoice
       description: |-
-        Fetch a paginated, filterable list of Invoices
+        Fetch an Invoice by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `VIEW_OWN_INVOICES`
+          * `VIEW_ANY_INVOICES`
+      tags:
+        - finance
+      security:
+        - ApiKey: []
+      x-permissions:
+        - VIEW_OWN_INVOICES
+        - VIEW_ANY_INVOICES
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      responses:
+        '200':
+          description: __OK__
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceDetails'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/finance/invoice-groups:
+    get:
+      operationId: getFinanceInvoiceGroups
+      description: |-
+        Fetch a paginated, filterable list of Invoice groups
 
         ---
 
@@ -2934,39 +2967,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /v1/finance/invoices/{id}:
-    get:
-      operationId: getFinanceInvoice
-      description: |-
-        Fetch an Invoice by its identifier
-
-        ---
-
-        __Requires Permission:__ (at least one)
-          * `VIEW_OWN_INVOICES`
-          * `VIEW_ANY_INVOICES`
-      tags:
-        - finance
-      security:
-        - ApiKey: []
-      x-permissions:
-        - VIEW_OWN_INVOICES
-        - VIEW_ANY_INVOICES
-      parameters:
-        - $ref: '#/components/parameters/Identifier'
-      responses:
-        '200':
-          description: __OK__
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvoiceDetails'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
   /v1/finance/invoice-groups/{id}/download-all:
     get:
       operationId: downloadAllFinanceInvoiceGroupPdfs
@@ -9777,6 +9777,105 @@ components:
         - NL_GB
         - BOTH
         - NONE
+    BusinessProcessContentBlock:
+      oneOf:
+        - $ref: '#/components/schemas/BusinessProcessForkBlock'
+        - $ref: '#/components/schemas/BusinessProcessStepBlock'
+      discriminator:
+        propertyName: blockType
+        mapping:
+          FORK: '#/components/schemas/BusinessProcessForkBlock'
+          STEP: '#/components/schemas/BusinessProcessStepBlock'
+    BusinessProcessForkBlock:
+      type: object
+      required:
+        - blockType
+        - blocks
+      properties:
+        blockType:
+          type: string
+        blocks:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/BusinessProcessContentBlock'
+    BusinessProcessStepAttempt:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: '#/components/schemas/BusinessProcessStepStatus'
+        startedAt:
+          $ref: '#/components/schemas/DateTime'
+        endedAt:
+          $ref: '#/components/schemas/DateTime'
+        failReason:
+          type: string
+    BusinessProcessStepBlock:
+      type: object
+      required:
+        - blockType
+        - stepType
+        - logicType
+        - resolvable
+        - rerunnable
+        - attempts
+      properties:
+        blockType:
+          type: string
+        stepType:
+          $ref: '#/components/schemas/BusinessProcessStepType'
+        logicType:
+          $ref: '#/components/schemas/BusinessProcessStepLogicType'
+        dataFlowDirection:
+          $ref: '#/components/schemas/DataFlowDirection'
+        interface:
+          $ref: '#/components/schemas/Interface'
+        id:
+          $ref: '#/components/schemas/Identifier'
+        resolvable:
+          type: boolean
+        rerunnable:
+          type: boolean
+        attempts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessProcessStepAttempt'
+        dataFlowVersionId:
+          $ref: '#/components/schemas/Identifier'
+    BusinessProcessStepLogicType:
+      type: string
+      enum:
+        - INTERNAL_LOGIC
+        - REQUEST_GENERATION
+        - REQUEST_SENDING
+        - RESPONSE_POLLING
+        - IMPORT
+    BusinessProcessStepStatus:
+      type: string
+      enum:
+        - SCHEDULED
+        - CANCELLED
+        - PENDING
+        - IN_PROGRESS
+        - FAILED
+        - RESOLVED
+        - SUCCEEDED
+    BusinessProcessStepType:
+      type: object
+      required:
+        - id
+        - displayName
+      properties:
+        id:
+          $ref: '#/components/schemas/BusinessProcessStepTypeId'
+        displayName:
+          type: string
+    BusinessProcessStepTypeId:
+      type: string
+      description: Internal ID of a "Step Type" (e.g `CAPACITY_CHECK`, `GENERATE_OC_SUBMISSION`, etc)
     BuyNowOffer:
       type: object
       required:
@@ -10345,6 +10444,11 @@ components:
       enum:
         - NOT_YET_OPEN
         - OPEN
+    DataFlowDirection:
+      type: string
+      enum:
+        - INCOMING
+        - OUTGOING
     Date:
       type: string
       description: |
@@ -11018,6 +11122,7 @@ components:
         - AUCTION_RESULTS_NOT_AVAILABLE
         - AUCTION_UNDER_PROCESSING
         - AUTH_METHOD_MISMATCH
+        - BAD_REQUEST
         - BIDDING_NOT_POSSIBLE
         - BUSINESS_DAY_PERIOD_TOO_LONG
         - CANCEL_DEADLINE_MISSED
@@ -11067,12 +11172,14 @@ components:
         - INVALID_BPP_MARKET
         - INVALID_BPP_PROVIDER
         - INVALID_CLOSURE_TIME
+        - INVALID_DATA_FLOW_TYPE_ID
         - INVALID_DELIVERY_DAY
         - INVALID_DIRECTION_ENTRIES
         - INVALID_DIRECTIONAL_VALUES
         - INVALID_EXECUTION_DAY
         - INVALID_EXPIRY_DAY
         - INVALID_ID_AUCTION_PRODUCT_TYPE
+        - INVALID_INTERFACE_ID
         - INVALID_LINE_ITEM_ID
         - INVALID_MTU
         - INVALID_NEW_PERIOD_START
@@ -11102,6 +11209,7 @@ components:
         - INVALID_UNPLANNED_OUTAGE_ID
         - INVALID_URL_PROTOCOL
         - INVALID_USER_ID
+        - INVALID_VIRTUAL_WORKFLOW_ID
         - INVALID_WEBHOOK_EVENT
         - INVALID_WORKFLOW_TYPE_ID
         - INVOICE_TYPE_NOT_MISSING
@@ -11160,6 +11268,8 @@ components:
         - REPORTING_PERIOD_OVERLAP
         - RETURNS_WINDOW_CLOSED
         - ROLE_MISMATCH
+        - SAGE_ORG_CODE_MUST_BE_UNIQUE
+        - SAGE_ORG_SHORT_NAME_MUST_BE_UNIQUE
         - SCHEMA_MISMATCH
         - SCHEMA_VALIDATION_ERROR
         - STATIC_TASK_ALREADY_COMPLETED
@@ -11399,6 +11509,18 @@ components:
       description: Unique identifier for the record in UUID4 format
       format: uuid
       example: 8d3787bb-b9ce-4d75-9a75-074ddd5d1e09
+    Interface:
+      type: object
+      required:
+        - id
+        - displayName
+      properties:
+        id:
+          $ref: '#/components/schemas/InterfaceId'
+        displayName:
+          type: string
+    InterfaceId:
+      type: string
     IntraDayAuction:
       type: object
       required:
@@ -11499,6 +11621,7 @@ components:
         - id
         - groupId
         - displayId
+        - type
         - participant
         - period
         - netAmount
@@ -11517,6 +11640,8 @@ components:
           $ref: '#/components/schemas/Identifier'
         displayId:
           type: string
+        type:
+          $ref: '#/components/schemas/InvoiceType'
         participant:
           $ref: '#/components/schemas/InvoiceParticipantDetails'
         period:
@@ -11561,10 +11686,7 @@ components:
         - id
         - displayId
         - invoices
-        - netAmount
-        - grossAmount
         - status
-        - lastStatusChange
         - participant
       properties:
         id:
@@ -13077,6 +13199,7 @@ components:
         - MANAGE_ANY_USERS
         - INVITE_USERS
         - IMPERSONATE_USERS
+        - MANAGE_API_KEYS
         - VIEW_ICO_DASHBOARD
         - VIEW_PARTICIPANT_DASHBOARD
         - VIEW_GENERAL_SYSTEM_MESSAGES
@@ -14880,6 +15003,7 @@ components:
         - ICO_ONCALL_ANALYIST_AUCT
         - ICO_ONCALL_TRAINING
         - ICO_FINANCE
+        - ICO_SENIOR_ADMIN_HELPDESK
         - ICO_VIEW
         - ICO_VIEW_AUCT
         - TSO_USER
