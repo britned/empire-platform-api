@@ -1,3 +1,15 @@
+## [7.1.0](https://github.com/britned/empire-platform-api/compare/v7.0.0...v7.1.0) (2025-12-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* modify enum values for unplanned outages
+
+### Features
+
+* **capacity:** add optional id query param to getUnplannedOutageOptions
+* modify enum values for unplanned outages
+
 ## [7.0.0](https://github.com/britned/empire-platform-api/compare/v6.1.0...v7.0.0) (2025-07-18)
 
 

@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 7.0.0
+  version: 7.1.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -14793,11 +14793,7 @@ components:
       type: string
       enum:
         - FAILURE
-        - EMERGENCY_SITUATION
-        - FORCE_MAJEURE
-        - MAINTENANCE
-        - BREACH_OF_OPERATIONAL_SECURITY_LIMITS
-        - OTHER
+        - FORESEEN_MAINTENANCE
     UnplannedOutageStatus:
       type: string
       enum:
