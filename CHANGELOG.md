@@ -1,3 +1,10 @@
+### [7.1.1](https://github.com/britned/empire-platform-api/compare/v7.1.0...v7.1.1) (2026-02-09)
+
+
+### Bug Fixes
+
+* **common:** enforce email TLD length to 63 and max length to 255
+
 ## [7.1.0](https://github.com/britned/empire-platform-api/compare/v7.0.0...v7.1.0) (2025-12-03)
 
 
