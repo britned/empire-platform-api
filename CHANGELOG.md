@@ -1,3 +1,37 @@
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [8.0.0](https://github.com/britned/empire-platform-api/compare/v7.2.0...v8.0.0) (2026-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **organisations:** modify get participant api
+* **user-administration:** flag expired api keys with a status
+* **secondary-market:** add warning for affected transfers
+* **profile:** add buy now auction user preferences
+
+### Features
+
+* add PARTICIPANT_DEACTIVATED error code
+* **organisations:** modify get participant api
+* **profile:** add buy now auction user preferences
+* **public-nominations:** add ntc details to public aggregated overview response
+* **secondary-market:** add active participant list to secondary market options
+* **secondary-market:** add warning for affected transfers
+* **user-administration:** flag expired api keys with a status
+* **users:** introduce locked user status
+
+
+### Bug Fixes
+
+* **buy-now-offers:** add required nominationWindowClose to BuyNowOffer MTU schema
+* **platform-api:** add PARTICIPANT_DEACTIVATED error code to missing write endpoints
+
+
+### Build
+
+* **deps:** update dependency team-supercharge/jarvis/jarvis to v12
+
 ## [7.2.0](https://github.com/britned/empire-platform-api/compare/v7.1.1...v7.2.0) (2026-03-26)
 
 > No changes affecting Participants.

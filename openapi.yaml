@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 7.2.0
+  version: 8.0.0
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -1545,11 +1545,14 @@ paths:
 
             *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
             *  `MISSING_DIRECTIONAL_CONFIG` - always both directions need to be updated
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: INVALID_PARTICIPANT_ID
               description: specified Participant not found in the system
             - code: MISSING_DIRECTIONAL_CONFIG
               description: always both directions need to be updated
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -1647,6 +1650,7 @@ paths:
             *  `STATUS_MISMATCH` - only `ACTIVE` offers can be purchased
             *  `VALIDITY_PERIOD_MISMATCH` - offers can only be purchased in their validity period
             *  `CREDIT_LIMIT_TO_BE_EXCEEDED` - Credit Limit would be exceeded
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: STATUS_MISMATCH
               description: only `ACTIVE` offers can be purchased
@@ -1654,6 +1658,8 @@ paths:
               description: offers can only be purchased in their validity period
             - code: CREDIT_LIMIT_TO_BE_EXCEEDED
               description: Credit Limit would be exceeded
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -1885,9 +1891,12 @@ paths:
             __Bad Request__
 
             *  `PRODUCT_TYPE_MISMATCH` - only LT product types are accepted
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: PRODUCT_TYPE_MISMATCH
               description: only LT product types are accepted
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -1963,9 +1972,12 @@ paths:
             __Bad Request__
 
             *  `PRODUCT_TYPE_MISMATCH` - only DA/ID product types are accepted
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: PRODUCT_TYPE_MISMATCH
               description: only DA/ID product types are accepted
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -2091,11 +2103,14 @@ paths:
 
             *  `TIMESCALE_MISMATCH` - endpoint matching timescale need to be used
             *  `STATUS_MISMATCH` - only Active entries can be updated
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: TIMESCALE_MISMATCH
               description: endpoint matching timescale need to be used
             - code: STATUS_MISMATCH
               description: only Active entries can be updated
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -2216,11 +2231,14 @@ paths:
 
             *  `TIMESCALE_MISMATCH` - endpoint matching timescale need to be used
             *  `STATUS_MISMATCH` - only Active entries can be updated
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: TIMESCALE_MISMATCH
               description: endpoint matching timescale need to be used
             - code: STATUS_MISMATCH
               description: only Active entries can be updated
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -2442,6 +2460,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedDefaultNomination'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -2539,6 +2569,18 @@ paths:
       responses:
         '204':
           $ref: '#/components/responses/NoContent'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -3042,6 +3084,7 @@ paths:
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Bid Document" schema
             *  `TIMESCALE_MISMATCH` - matching endpoint need to be used, see `submitLongTermBids`
             *  `BIDDING_NOT_POSSIBLE` - bidding is only possible in certain statuses, see `submitLongTermBids`
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: INVALID_PARTICIPANT_EIC_CODE
               description: specified EIC code for a Participant not found in the system
@@ -3053,6 +3096,8 @@ paths:
               description: matching endpoint need to be used, see `submitLongTermBids`
             - code: BIDDING_NOT_POSSIBLE
               description: bidding is only possible in certain statuses, see `submitLongTermBids`
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -3122,6 +3167,7 @@ paths:
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Bid Document" schema
             *  `TIMESCALE_MISMATCH` - matching endpoint need to be used, see `submitDayAheadOrIntraDayBids`
             *  `BIDDING_NOT_POSSIBLE` - bidding is only possible in certain statuses, see `submitDayAheadOrIntraDayBids`
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: INVALID_PARTICIPANT_EIC_CODE
               description: specified EIC code for a Participant not found in the system
@@ -3133,6 +3179,8 @@ paths:
               description: matching endpoint need to be used, see `submitDayAheadOrIntraDayBids`
             - code: BIDDING_NOT_POSSIBLE
               description: bidding is only possible in certain statuses, see `submitDayAheadOrIntraDayBids`
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -3201,6 +3249,7 @@ paths:
             *  `INVALID_PARTICIPANT_EIC_CODE` - specified EIC code for a Participant not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
             *  `SCHEMA_VALIDATION_ERROR` - contents of the submitted Attachment does not conform to the "Schedule Document" schema
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: INVALID_PARTICIPANT_EIC_CODE
               description: specified EIC code for a Participant not found in the system
@@ -3208,6 +3257,8 @@ paths:
               description: Attachment ID not found in the system
             - code: SCHEMA_VALIDATION_ERROR
               description: contents of the submitted Attachment does not conform to the "Schedule Document" schema
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -3630,9 +3681,12 @@ paths:
             __Bad Request__
 
             *  `INVALID_PARTICIPANT_ID` - specified Participant not found in the system
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: INVALID_PARTICIPANT_ID
               description: specified Participant not found in the system
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -4007,11 +4061,14 @@ paths:
 
             *  `INVALID_ORGANISATION_ID` - specified Organisation not found in the system
             *  `INVALID_ATTACHMENT_ID` - Attachment ID not found in the system
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: INVALID_ORGANISATION_ID
               description: specified Organisation not found in the system
             - code: INVALID_ATTACHMENT_ID
               description: Attachment ID not found in the system
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -4142,28 +4199,159 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /v1/organisations/participant-names:
-    get:
-      operationId: getParticipantNames
-      description: |
-        Fetches every identifier and name of every Participant-type Organisation
+  /v1/organisations/participant/{id}/deactivate:
+    put:
+      operationId: deactivateParticipantOrganisation
+      description: |-
+        Deactivate a Participant-type Organisation by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_ANY_ORGANISATIONS`
+
+        __Generates Audit Log Entry:__ `DEACTIVATE_PARTICIPANT_ORGANISATION`
       tags:
         - organisation
       security:
         - ApiKey: []
+      x-permissions:
+        - MANAGE_ANY_ORGANISATIONS
+      x-audit-log: DEACTIVATE_PARTICIPANT_ORGANISATION
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
       responses:
-        '200':
-          description: __OK__
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `ORGANISATION_TYPE_MISMATCH` - only Participant-type Organisations can be queried
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: ORGANISATION_TYPE_MISMATCH
+              description: only Participant-type Organisations can be queried
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Participant'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `ORGANISATION_HAS_ACTIVE_USERS` - all users must be deactivated first
+            *  `CREDIT_LIMIT_IS_NOT_COVERED` - the credit limit must be covered by letter of credit and bank deposit
+            *  `PARTICIPANT_HAS_UNPAID_INVOICE` - the participant organisation has at least one unpaid invoice
+          x-errors:
+            - code: ORGANISATION_HAS_ACTIVE_USERS
+              description: all users must be deactivated first
+            - code: CREDIT_LIMIT_IS_NOT_COVERED
+              description: the credit limit must be covered by letter of credit and bank deposit
+            - code: PARTICIPANT_HAS_UNPAID_INVOICE
+              description: the participant organisation has at least one unpaid invoice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/organisations/participant/{id}/reactivate:
+    put:
+      operationId: reactivateParticipantOrganisation
+      description: |-
+        Reactivate a Participant-type Organisation by its identifier
+
+        ---
+
+        __Requires Permission:__ (at least one)
+          * `MANAGE_ANY_ORGANISATIONS`
+
+        __Generates Audit Log Entry:__ `REACTIVATE_PARTICIPANT_ORGANISATION`
+      tags:
+        - organisation
+      security:
+        - ApiKey: []
+      x-permissions:
+        - MANAGE_ANY_ORGANISATIONS
+      x-audit-log: REACTIVATE_PARTICIPANT_ORGANISATION
+      parameters:
+        - $ref: '#/components/parameters/Identifier'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReactivateParticipantOrganisationRequest'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `ORGANISATION_TYPE_MISMATCH` - only Participant-type Organisations can be queried
+          x-errors:
+            - code: ORGANISATION_TYPE_MISMATCH
+              description: only Participant-type Organisations can be queried
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: |-
+            __Unprocessable Entity__
+
+            *  `HELPDESK_PIN_SHOULD_BE_UNIQUE` - one Helpdesk PIN can only be used by a single Organisation
+            *  `EIC_CODE_SHOULD_BE_UNIQUE` - one EIC Code can only be used by a single Organisation
+            *  `MARKET_NOMINATION_SETTING_LOCKED`
+                - check for each market (GB, NL)
+                - the `ableToNominate` flag can only be set from TRUE to FALSE, if there are no other Participant who has the current Organisation set in `onBehalfParticipantId`
+                - the `ableToNominate` flag can any time be set from FALSE to TRUE
+            *  `MARKET_NOMINATION_SETTING_MISMATCH`
+                - for the GB market, if `ableToNominate` is
+                  - TRUE => the two **BMU Codes** must be specified
+                  - FALSE => `onBehalfParticipantId` must be specified
+                - for the NL market, if `ableToNominate` is
+                  - TRUE => **EAN Code** must be specified
+                  - FALSE =>`onBehalfParticipantId` must be specified
+            *  `INVALID_PARTICIPANT_ID`
+                - if specified, the `onBehalfParticipantId` must exist in the system
+                - and also must be the ID of an Organisation with PARTICIPANT type
+          x-errors:
+            - code: HELPDESK_PIN_SHOULD_BE_UNIQUE
+              description: one Helpdesk PIN can only be used by a single Organisation
+            - code: EIC_CODE_SHOULD_BE_UNIQUE
+              description: one EIC Code can only be used by a single Organisation
+            - code: MARKET_NOMINATION_SETTING_LOCKED
+              description: |
+                - check for each market (GB, NL)
+                - the `ableToNominate` flag can only be set from TRUE to FALSE, if there are no other Participant who has the current Organisation set in `onBehalfParticipantId`
+                - the `ableToNominate` flag can any time be set from FALSE to TRUE
+            - code: MARKET_NOMINATION_SETTING_MISMATCH
+              description: |
+                - for the GB market, if `ableToNominate` is
+                  - TRUE => the two **BMU Codes** must be specified
+                  - FALSE => `onBehalfParticipantId` must be specified
+                - for the NL market, if `ableToNominate` is
+                  - TRUE => **EAN Code** must be specified
+                  - FALSE =>`onBehalfParticipantId` must be specified
+            - code: INVALID_PARTICIPANT_ID
+              description: |
+                - if specified, the `onBehalfParticipantId` must exist in the system
+                - and also must be the ID of an Organisation with PARTICIPANT type
   /v1/participant-dashboard/messages:
     get:
       operationId: getParticipantDashboardMessages
@@ -5922,11 +6110,16 @@ paths:
           in: query
           schema:
             $ref: '#/components/schemas/Date'
-        - name: invoicePeriod
+        - name: invoicePeriodStart
           in: query
           required: true
           schema:
             $ref: '#/components/schemas/BeginningOfMonth'
+        - name: invoicePeriodEnd
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/EndOfMonth'
         - name: accountingCodes
           in: query
           required: true
@@ -6554,9 +6747,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SourceAuction'
+                $ref: '#/components/schemas/SecondaryMarketReturnRequestOptions'
         '400':
           description: |-
             __Bad Request__
@@ -6689,6 +6880,7 @@ paths:
             *  `INVALID_RETURN_CAPACITY`
                 - the submitted capacity is greater than the `results.availableAllocatedCapacity` from `getSecondaryMarketReturnRequestOptions`
                 - submitted capacity must be (strictly) greater than 0 => `VALUE` > 0
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: STATUS_MISMATCH
               description: |
@@ -6698,6 +6890,8 @@ paths:
               description: |
                 - the submitted capacity is greater than the `results.availableAllocatedCapacity` from `getSecondaryMarketReturnRequestOptions`
                 - submitted capacity must be (strictly) greater than 0 => `VALUE` > 0
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -6854,11 +7048,14 @@ paths:
 
             *  `STATUS_MISMATCH` - only PENDING requests can be accepted
             *  `ALREADY_EXPIRED` - time is after expiresAt
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: STATUS_MISMATCH
               description: only PENDING requests can be accepted
             - code: ALREADY_EXPIRED
               description: time is after expiresAt
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -6906,11 +7103,14 @@ paths:
 
             *  `STATUS_MISMATCH` - only PENDING requests can be rejected
             *  `ALREADY_EXPIRED` - time is after expiresAt
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: STATUS_MISMATCH
               description: only PENDING requests can be rejected
             - code: ALREADY_EXPIRED
               description: time is after expiresAt
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -6958,11 +7158,14 @@ paths:
 
             *  `STATUS_MISMATCH` - only PENDING requests can be withdrawn
             *  `ALREADY_EXPIRED` - time is after expiresAt
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
           x-errors:
             - code: STATUS_MISMATCH
               description: only PENDING requests can be withdrawn
             - code: ALREADY_EXPIRED
               description: time is after expiresAt
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
           content:
             application/json:
               schema:
@@ -7219,6 +7422,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedSecondaryMarketLongTermTransferRequest'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -7283,6 +7498,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedSecondaryMarketDayAheadOrIntraDayTransferRequest'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -7574,6 +7801,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedSecondaryMarketLongTermNoticeboardEntry'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -7644,6 +7883,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedSecondaryMarketDayAheadOrIntraDayNoticeboardEntry'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -7773,6 +8024,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedSecondaryMarketLongTermNoticeboardResponse'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -7835,6 +8098,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedSecondaryMarketDayAheadOrIntraDayNoticeboardResponse'
+        '400':
+          description: |-
+            __Bad Request__
+
+            *  `PARTICIPANT_DEACTIVATED` - The participant is deactivated
+          x-errors:
+            - code: PARTICIPANT_DEACTIVATED
+              description: The participant is deactivated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -8022,7 +8297,7 @@ paths:
 
         Sorting using the `sortBy` query parameter is implemented with the following options:
           * `NAME`
-            - _primary:_ always ACTIVE/SUSPENDED first, INVITED last
+            - _primary:_ always ACTIVE/LOCKED/SUSPENDED first, INVITED last
             - _secondary:_ name by ASC/DESC
           * `ROLE`
             - `ASC/DESC` - ordered alphabetically by role name
@@ -8030,8 +8305,8 @@ paths:
             - `ASC/DESC` - ordered by time
           * `STATUS`
             - _primary:_
-              * `ASC` - ACTIVE, INVITED, SUSPENDED
-              * `DESC` - SUSPENDED, INVITED, ACTIVE
+              * `ASC` - ACTIVE, INVITED, LOCKED, SUSPENDED
+              * `DESC` - SUSPENDED, LOCKED, INVITED, ACTIVE
             - _secondary:_ always by name by ASC
 
         ---
@@ -8108,10 +8383,10 @@ paths:
           description: |-
             __Bad Request__
 
-            *  `STATUS_MISMATCH` - only users in ACTIVE/SUSPENDED status can be queried
+            *  `STATUS_MISMATCH` - only users in ACTIVE/LOCKED/SUSPENDED status can be queried
           x-errors:
             - code: STATUS_MISMATCH
-              description: only users in ACTIVE/SUSPENDED status can be queried
+              description: only users in ACTIVE/LOCKED/SUSPENDED status can be queried
           content:
             application/json:
               schema:
@@ -8158,13 +8433,13 @@ paths:
             __Bad Request__
 
             *  `AUTH_METHOD_MISMATCH` - only Users from Organisations authenticated through the Platform (not through SSO) can be updated
-            *  `STATUS_MISMATCH` - only users in ACTIVE/SUSPENDED status can be updated
+            *  `STATUS_MISMATCH` - only users in ACTIVE/LOCKED/SUSPENDED status can be updated
             *  `ROLE_MISMATCH` - only roles matching the Organisation's type can be specified (e.g ICO_ roles for ICO type Organisation)
           x-errors:
             - code: AUTH_METHOD_MISMATCH
               description: only Users from Organisations authenticated through the Platform (not through SSO) can be updated
             - code: STATUS_MISMATCH
-              description: only users in ACTIVE/SUSPENDED status can be updated
+              description: only users in ACTIVE/LOCKED/SUSPENDED status can be updated
             - code: ROLE_MISMATCH
               description: only roles matching the Organisation's type can be specified (e.g ICO_ roles for ICO type Organisation)
           content:
@@ -8307,12 +8582,12 @@ paths:
             __Bad Request__
 
             *  `AUTH_METHOD_MISMATCH` - only Users from Organisations authenticated through the Platform (not through SSO) can be suspended
-            *  `STATUS_MISMATCH` - only users in ACTIVE status can be suspended
+            *  `STATUS_MISMATCH` - only users in ACTIVE/LOCKED status can be suspended
           x-errors:
             - code: AUTH_METHOD_MISMATCH
               description: only Users from Organisations authenticated through the Platform (not through SSO) can be suspended
             - code: STATUS_MISMATCH
-              description: only users in ACTIVE status can be suspended
+              description: only users in ACTIVE/LOCKED status can be suspended
           content:
             application/json:
               schema:
@@ -9595,6 +9870,8 @@ components:
         - UPLOAD_ATTACHMENT
         - CREATE_PARTICIPANT_ORGANISATION
         - UPDATE_PARTICIPANT_ORGANISATION
+        - DEACTIVATE_PARTICIPANT_ORGANISATION
+        - REACTIVATE_PARTICIPANT_ORGANISATION
         - UPDATE_USER
         - INVITE_USER
         - BULK_INVITE_USERS
@@ -9602,6 +9879,7 @@ components:
         - REVOKE_USER_INVITE
         - SUSPEND_USER
         - UNSUSPEND_USER
+        - DEACTIVATE_USER
         - RESET_USER_SECOND_AUTH_FACTOR
         - IMPERSONATE_USER
         - UPDATE_PROFILE_DETAILS
@@ -9898,6 +10176,7 @@ components:
               - status
               - allocatedAc
               - totalPrice
+              - nominationWindowClose
             properties:
               mtu:
                 $ref: '#/components/schemas/MtuStart'
@@ -9921,6 +10200,8 @@ components:
                 $ref: '#/components/schemas/Currency'
               expiredOc:
                 $ref: '#/components/schemas/Capacity'
+              nominationWindowClose:
+                $ref: '#/components/schemas/DateTime'
     BuyNowOfferMtuStatus:
       type: string
       enum:
@@ -9948,6 +10229,13 @@ components:
           $ref: '#/components/schemas/AuctionProductType'
         direction:
           $ref: '#/components/schemas/BorderDirection'
+    BuyNowOfferPreferences:
+      type: object
+      required:
+        - defaultHidePastMtus
+      properties:
+        defaultHidePastMtus:
+          type: boolean
     BuyNowOfferPublishedRequest:
       type: object
       required:
@@ -11111,6 +11399,16 @@ components:
       format: email
       pattern: ^[\w-\.]+@([\w-]+\.)+[\w-]{2,63}$
       maxLength: 255
+    EndOfMonth:
+      type: string
+      description: |
+        One single calendar day, interpreted in **System Time**
+
+        - ISO 8601 compliant string in `yyyy-mm-dd` format
+        - Must be the last day of the given month
+      format: date
+      pattern: \d{4}-\d{2}-(28|29|30|31)
+      example: '2022-01-31'
     ErrorCode:
       type: string
       x-ordered-enum: true
@@ -11132,6 +11430,7 @@ components:
         - CAPACTY_ALREADY_ALLOCATED
         - CLOSURE_TIMES_MISALIGNED
         - CREDIT_LIMIT_EXCEEDED
+        - CREDIT_LIMIT_IS_NOT_COVERED
         - CREDIT_LIMIT_TO_BE_EXCEEDED
         - CURTAILMENT_NOT_POSSIBLE
         - DATA_FLOW_NOT_CREATABLE
@@ -11241,6 +11540,7 @@ components:
         - OC_UNDEFINED
         - OC_VALUE_MISMATCH
         - ORGANISATION_CANNOT_BE_LOCKED
+        - ORGANISATION_HAS_ACTIVE_USERS
         - ORGANISATION_NAME_MUST_BE_UNIQUE
         - ORGANISATION_TYPE_MISMATCH
         - OUTAGE_CANNOT_BE_EXTENDED
@@ -11249,6 +11549,8 @@ components:
         - OUTAGE_PERIOD_TOO_SHORT
         - OUTAGE_PERIODS_CROSS_OVER_YEAR
         - OUTAGE_PERIODS_UNORDERED
+        - PARTICIPANT_DEACTIVATED
+        - PARTICIPANT_HAS_UNPAID_INVOICE
         - PERIOD_CANNOT_BE_REMOVED
         - PERIOD_END_TOO_LATE
         - PERIOD_MISALIGNED
@@ -12443,6 +12745,14 @@ components:
           $ref: '#/components/schemas/Capacity'
         ntc:
           $ref: '#/components/schemas/Capacity'
+    NtcReductionOrigin:
+      type: string
+      description: |
+        Describes where an "offline" NTC Reduction request is originated from e.g. in email of fax format
+      enum:
+        - NATIONAL_GRID
+        - TENNET
+        - OTHER
     NullableIdentifier:
       type: string
       description: |
@@ -12689,6 +12999,7 @@ components:
       enum:
         - ACTIVE
         - SSO_PENDING
+        - DEACTIVATED
     OrganisationType:
       type: string
       enum:
@@ -13274,6 +13585,7 @@ components:
         - permissions
         - appearance
         - timescalePreferences
+        - buyNowOfferPreferences
       properties:
         user:
           $ref: '#/components/schemas/ProfileUser'
@@ -13285,6 +13597,8 @@ components:
           $ref: '#/components/schemas/PlatformAppearance'
         timescalePreferences:
           $ref: '#/components/schemas/TimescalePreferences'
+        buyNowOfferPreferences:
+          $ref: '#/components/schemas/BuyNowOfferPreferences'
         impersonatedBy:
           $ref: '#/components/schemas/ProfileUser'
     ProfileDetails:
@@ -13373,6 +13687,29 @@ components:
                       $ref: '#/components/schemas/BorderDirection'
                     ntc:
                       $ref: '#/components/schemas/Capacity'
+                    ntcDetails:
+                      type: object
+                      required:
+                        - defaultCapacity
+                        - reductions
+                      properties:
+                        defaultCapacity:
+                          $ref: '#/components/schemas/Capacity'
+                        addition:
+                          $ref: '#/components/schemas/Capacity'
+                        reductions:
+                          type: array
+                          items:
+                            type: object
+                            required:
+                              - origin
+                            properties:
+                              origin:
+                                $ref: '#/components/schemas/NtcReductionOrigin'
+                              amount:
+                                $ref: '#/components/schemas/Capacity'
+                        outage:
+                          $ref: '#/components/schemas/Capacity'
                     aggregatedNominations:
                       $ref: '#/components/schemas/Capacity'
               nettedNominations:
@@ -13709,6 +14046,19 @@ components:
                 $ref: '#/components/schemas/Capacity'
               price:
                 $ref: '#/components/schemas/Currency'
+    ReactivateParticipantOrganisationRequest:
+      type: object
+      required:
+        - contactInformation
+        - marketSettings
+        - fileSettings
+      properties:
+        contactInformation:
+          $ref: '#/components/schemas/OrganisationContactInformation'
+        marketSettings:
+          $ref: '#/components/schemas/OrganisationMarketSettings'
+        fileSettings:
+          $ref: '#/components/schemas/OrganisationFileSettings'
     ReportFile:
       type: string
       format: byte
@@ -13994,9 +14344,14 @@ components:
     SecondaryMarketDayAheadOrIntraDayTransferRequestOptions:
       type: object
       required:
+        - participants
         - resolution
         - mtus
       properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Participant'
         resolution:
           $ref: '#/components/schemas/MtuSize'
         mtus:
@@ -14099,8 +14454,13 @@ components:
     SecondaryMarketLongTermTransferRequestOptions:
       type: object
       required:
+        - participants
         - availableCapacity
       properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Participant'
         availableCapacity:
           $ref: '#/components/schemas/Capacity'
     SecondaryMarketNoticeboardEntry:
@@ -14192,6 +14552,18 @@ components:
             $ref: '#/components/schemas/SecondaryMarketReturnRequest'
         totalCount:
           $ref: '#/components/schemas/Count'
+    SecondaryMarketReturnRequestOptions:
+      type: object
+      required:
+        - sourceAuctions
+        - affectedByTransfer
+      properties:
+        sourceAuctions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceAuction'
+        affectedByTransfer:
+          type: boolean
     SecondaryMarketReturnRequestStatus:
       type: string
       enum:
@@ -14945,6 +15317,7 @@ components:
         - subscriptionNotifications
         - appearance
         - timescalePreferences
+        - buyNowOfferPreferences
       properties:
         generalNotifications:
           type: object
@@ -14988,6 +15361,8 @@ components:
           $ref: '#/components/schemas/PlatformAppearance'
         timescalePreferences:
           $ref: '#/components/schemas/TimescalePreferences'
+        buyNowOfferPreferences:
+          $ref: '#/components/schemas/BuyNowOfferPreferences'
     UserRole:
       type: string
       enum:
@@ -15014,7 +15389,9 @@ components:
       enum:
         - ACTIVE
         - INVITED
+        - LOCKED
         - SUSPENDED
+        - DEACTIVATED
     VatRateType:
       type: string
       enum:
