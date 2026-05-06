@@ -1,3 +1,43 @@
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [8.0.0](https://github.com/britned/empire-platform-api/compare/v7.2.0...v8.0.0) (2026-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **organisations:** modify get participant api
+* **secondary-market:** add warning for affected transfers
+* **finance:** add pageable credit overview
+
+### Features
+
+* add PARTICIPANT_DEACTIVATED error code
+* **capacity:** add message object to end unplanned outage request
+* **crisis-management:** add BOP widget endpoint
+* **finance:** add pageable credit overview
+* **organisations:** add participant organisation deactivation
+* **organisations:** modify get participant api
+* **profile:** add buy now auction user preferences
+* **public-nominations:** add ntc details to public aggregated overview response
+* **reporting:** add endpoint for fetching unplanned outages exec report
+* **reporting:** extend finance billing report with invoice period parameters
+* **secondary-market:** add active participant list to secondary market options
+* **secondary-market:** add warning for affected transfers
+* **user-administration:** flag expired api keys with a status
+* **users:** add user deactivation api
+* **users:** introduce locked user status
+
+
+### Bug Fixes
+
+* **buy-now-offers:** add required nominationWindowClose to BuyNowOffer MTU schema
+* **platform-api:** add PARTICIPANT_DEACTIVATED error code to missing write endpoints
+
+
+### Build
+
+* **deps:** update dependency team-supercharge/jarvis/jarvis to v12
+
 ## [7.2.0](https://github.com/britned/empire-platform-api/compare/v7.1.1...v7.2.0) (2026-03-26)
 
 > No changes affecting Participants.
