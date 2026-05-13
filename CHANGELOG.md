@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/britned/empire-platform-api/compare/v8.0.0...v8.0.1) (2026-05-13)
+
+
+### Features
+
+* add NOBO participant list to getParticipantOrganisation operation
+
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
 ## [8.0.0](https://github.com/britned/empire-platform-api/compare/v7.2.0...v8.0.0) (2026-05-06)

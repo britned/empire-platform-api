@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 8.0.0
+  version: 8.0.1
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -13385,6 +13385,7 @@ components:
         - contactInformation
         - marketSettings
         - fileSettings
+        - onBehalfParticipants
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
@@ -13400,6 +13401,18 @@ components:
           $ref: '#/components/schemas/OrganisationMarketSettings'
         fileSettings:
           $ref: '#/components/schemas/OrganisationFileSettings'
+        onBehalfParticipants:
+          type: array
+          items:
+            type: object
+            required:
+              - market
+              - participant
+            properties:
+              market:
+                $ref: '#/components/schemas/Market'
+              participant:
+                $ref: '#/components/schemas/Participant'
     ParticipantOverviewData:
       type: object
       required:
