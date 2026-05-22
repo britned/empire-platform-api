@@ -7,7 +7,7 @@ info:
     ---
 
     Additional documentation available in the API's [GitHub repository](https://github.com/britned/empire-platform-api)
-  version: 8.0.1
+  version: 8.0.2
   contact:
     name: BritNed
     url: https://www.britned.com
@@ -7310,13 +7310,13 @@ paths:
             __Bad Request__
 
             *  `PERIOD_MISALIGNED` - the `firstDay` and `lastDay` parameters must come after each other
-            *  `FIRST_DAY_TOO_SOON` - first day need to be at least T+2
+            *  `FIRST_DAY_TOO_SOON` - first day need to be at least T+1
             *  `LAST_DAY_TOO_LATE` - last day maximum one year
           x-errors:
             - code: PERIOD_MISALIGNED
               description: the `firstDay` and `lastDay` parameters must come after each other
             - code: FIRST_DAY_TOO_SOON
-              description: first day need to be at least T+2
+              description: first day need to be at least T+1
             - code: LAST_DAY_TOO_LATE
               description: last day maximum one year
           content:
@@ -7443,21 +7443,24 @@ paths:
             __Unprocessable Entity__
 
             *  `PERIOD_MISALIGNED` - the `firstDay` and `lastDay` values must come after each other
-            *  `FIRST_DAY_TOO_SOON` - first day need to be at least T+2
+            *  `FIRST_DAY_TOO_SOON` - first day need to be at least T+1
             *  `LAST_DAY_TOO_LATE` - last day maximum one year
             *  `INVALID_TRANSFER_CAPACITY` - can only be 0 < `VALUE` <= `availableCapacity`
             *  `INVALID_PARTICIPANT_ID` - Specified Participant not found in the system
+            *  `MTU_ALREADY_LOCKED` - nomination window already closed for T+1
           x-errors:
             - code: PERIOD_MISALIGNED
               description: the `firstDay` and `lastDay` values must come after each other
             - code: FIRST_DAY_TOO_SOON
-              description: first day need to be at least T+2
+              description: first day need to be at least T+1
             - code: LAST_DAY_TOO_LATE
               description: last day maximum one year
             - code: INVALID_TRANSFER_CAPACITY
               description: can only be 0 < `VALUE` <= `availableCapacity`
             - code: INVALID_PARTICIPANT_ID
               description: Specified Participant not found in the system
+            - code: MTU_ALREADY_LOCKED
+              description: nomination window already closed for T+1
           content:
             application/json:
               schema:
@@ -14454,21 +14457,28 @@ components:
       type: object
       required:
         - availableTransmissionRights
+        - locked
       properties:
         availableTransmissionRights:
           $ref: '#/components/schemas/Capacity'
+        locked:
+          type: boolean
     SecondaryMarketLongTermNoticeboardResponseOptions:
       type: object
       required:
         - availableTransmissionRights
+        - locked
       properties:
         availableTransmissionRights:
           $ref: '#/components/schemas/Capacity'
+        locked:
+          type: boolean
     SecondaryMarketLongTermTransferRequestOptions:
       type: object
       required:
         - participants
         - availableCapacity
+        - locked
       properties:
         participants:
           type: array
@@ -14476,6 +14486,8 @@ components:
             $ref: '#/components/schemas/Participant'
         availableCapacity:
           $ref: '#/components/schemas/Capacity'
+        locked:
+          type: boolean
     SecondaryMarketNoticeboardEntry:
       type: object
       required:

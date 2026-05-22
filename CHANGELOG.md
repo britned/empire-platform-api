@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/britned/empire-platform-api/compare/v8.0.1...v8.0.2) (2026-05-22)
+
+
+### Bug Fixes
+
+* **secondary-market:** indicate LT nomination window is closed for T+1 on requests and noticeboard
+
 ## [8.0.1](https://github.com/britned/empire-platform-api/compare/v8.0.0...v8.0.1) (2026-05-13)
 
 
