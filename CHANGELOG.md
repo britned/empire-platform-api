@@ -1,3 +1,7 @@
+## [8.0.3](https://github.com/britned/empire-platform-api/compare/v8.0.2...v8.0.3) (2026-05-27)
+
+> No changes affecting Participants.
+
 ## [8.0.2](https://github.com/britned/empire-platform-api/compare/v8.0.1...v8.0.2) (2026-05-22)
 
 
