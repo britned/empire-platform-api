@@ -1,3 +1,11 @@
+## [8.2.0](https://github.com/britned/empire-platform-api/compare/v8.1.0...v8.2.0) (2026-10-08)
+
+
+### Bug Fixes
+
+* **capacity:** add MTU_END_BEFORE_EARLIEST error code to outage updates
+* **capacity:** make reason required for planned outage requests
+
 ## [8.1.0](https://github.com/britned/empire-platform-api/compare/v8.0.3...v8.1.0) (2026-08-27)
 
 > No changes affecting Participants.
